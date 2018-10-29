@@ -1,8 +1,8 @@
-package com.hangloose
+package com.hangloose.ui.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_splash.*
+import com.hangloose.R
 
 class SplashActivity : AppCompatActivity() {
 

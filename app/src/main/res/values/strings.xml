@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Hangloose</string>
+    <string name="SHA1">C1:54:BD:60:E2:62:AE:C6:5F:B4:FD:BB:CD:26:B4:9E:0B:3A:D3:F6</string>
+    <string name="client_id">281705038572-s4a65h0b1uk836q424s3l3imknvkaj9n.apps.googleusercontent.com</string>
 </resources>
