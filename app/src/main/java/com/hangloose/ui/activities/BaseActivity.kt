@@ -3,10 +3,7 @@ package com.hangloose.ui.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-
-
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -15,7 +12,6 @@ abstract class BaseActivity : AppCompatActivity() {
     var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestEmail()
         .build()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
