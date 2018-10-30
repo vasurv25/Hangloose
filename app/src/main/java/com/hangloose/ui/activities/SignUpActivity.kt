@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import java.util.Arrays
@@ -24,13 +25,19 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG: String = "SignUpActivity"
     private var mGoogleSignInClient: GoogleSignInClient? = null
-    private val RC_SIGN_IN = 1
+    private val RC_SIGN_IN = 9001
     private var mFBCallbackManager: CallbackManager? = null
     private var mAccessToken: AccessToken? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.server_client_id))
+            .requestEmail()
+            .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
@@ -93,13 +100,20 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+            val idToken = account!!.idToken
+            val name = account!!.displayName
+            val mail = account!!.email
+            val id = account.id
+            val token = account.idToken
+            val expired = account.isExpired
+            val url = account.photoUrl
             // Signed in successfully, show authenticated UI.
-            Log.d(TAG, "signInResult:success $account")
+            Log.i(TAG, "signInResult:success token= $idToken")
             //updateUI(account)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.d(TAG, """signInResult:failed code=${e.statusCode}""")
+            Log.i(TAG, """signInResult:failed code=${e.statusCode}""")
             //updateUI(null)
         }
     }
