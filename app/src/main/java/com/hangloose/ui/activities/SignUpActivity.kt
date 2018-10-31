@@ -9,7 +9,6 @@ import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.GraphRequest
-import com.facebook.GraphResponse
 import com.facebook.Profile
 import com.facebook.ProfileTracker
 import com.facebook.login.LoginResult
@@ -21,7 +20,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.json.JSONObject
 import java.util.Arrays
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
@@ -43,17 +41,25 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
         signInWithFacebook()
     }
 
     override fun init() {
-        btnSignIn.setOnClickListener(this)
+        btnGoogleSignIn.setOnClickListener(this)
+        btnGoogleSignOut.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
-            btnSignIn.id -> signIn()
+            btnGoogleSignIn.id -> signIn()
+            btnGoogleSignOut.id -> signOut()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
+            handleSignInResult(it)
         }
     }
 
@@ -108,18 +114,17 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun getFacebookUserProfile(accessToken: AccessToken) {
-        val dataRequest = GraphRequest.newMeRequest(accessToken,
-            object : GraphRequest.GraphJSONObjectCallback {
-                override fun onCompleted(jsonObject: JSONObject?, response: GraphResponse?) {
-                    val first_name = jsonObject!!.getString("first_name")
-                    val last_name = jsonObject.getString("last_name")
-                    val email = jsonObject.getString("email")
-                    val id = jsonObject.getString("id")
-                    val image_url = "https://graph.facebook.com/$id/picture?type=normal"
+        val dataRequest = GraphRequest.newMeRequest(
+            accessToken
+        ) { jsonObject, response ->
+            val first_name = jsonObject!!.getString("first_name")
+            val last_name = jsonObject.getString("last_name")
+            val email = jsonObject.getString("email")
+            val id = jsonObject.getString("id")
+            val image_url = "https://graph.facebook.com/$id/picture?type=normal"
 
-                    Log.i(TAG, "$first_name $last_name $email $image_url")
-                }
-            })
+            Log.i(TAG, "$first_name $last_name $email $image_url")
+        }
 
         val parameters = Bundle()
         parameters.putString("fields", "first_name,last_name,email,id")
@@ -130,6 +135,12 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun signIn() {
         var signInIntent = mGoogleSignInClient?.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun signOut() {
+        mGoogleSignInClient!!.signOut().addOnCompleteListener {
+            updateUI(false)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -152,17 +163,27 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             val name = account.displayName
             val mail = account.email
             val id = account.id
-            val token = account.idToken
             val expired = account.isExpired
             val url = account.photoUrl
             // Signed in successfully, show authenticated UI.
-            Log.i(TAG, "signInResult:success token= $idToken")
-            //updateUI(account)
+            Log.i(
+                TAG,
+                "signInResult:success token= $idToken , id= $id , displayName= $name , mail= $mail, expired= $expired, url= $url"
+            )
+            updateUI(true)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i(TAG, """signInResult:failed code=${e.statusCode}""")
             //updateUI(null)
         }
+    }
+
+    private fun updateUI(isSignedIn: Boolean) = if (isSignedIn) {
+        btnGoogleSignIn.visibility = View.GONE
+        btnGoogleSignOut.visibility = View.VISIBLE
+    } else {
+        btnGoogleSignOut.visibility = View.GONE
+        btnGoogleSignIn.visibility = View.VISIBLE
     }
 }
