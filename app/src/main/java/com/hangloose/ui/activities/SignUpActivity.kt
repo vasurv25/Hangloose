@@ -8,17 +8,20 @@ import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.GraphRequest
+import com.facebook.GraphResponse
 import com.facebook.Profile
-import com.facebook.login.LoginManager
+import com.facebook.ProfileTracker
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
+import kotlinx.android.synthetic.main.activity_sign_up.*
+import org.json.JSONObject
 import java.util.Arrays
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
@@ -27,7 +30,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private val RC_SIGN_IN = 9001
     private var mFBCallbackManager: CallbackManager? = null
-    private var mAccessToken: AccessToken? = null
+    private var mProfileTracker: ProfileTracker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,41 +43,88 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        signInWithFacebook()
     }
 
     override fun init() {
         btnSignIn.setOnClickListener(this)
-        signInWithFacebook()
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
             btnSignIn.id -> signIn()
-            btnSignInFB.id -> {
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"))
-            }
         }
     }
 
     private fun signInWithFacebook() {
+//        val loggedOut = AccessToken.getCurrentAccessToken() == null
+//
+//        if (!loggedOut) {
+//            Log.d(TAG, "Username is: " + Profile.getCurrentProfile().name)
+//            //Using Graph API
+//            getFacebookUserProfile(AccessToken.getCurrentAccessToken())
+//        }
+//
+//        val fbTracker = object : AccessTokenTracker() {
+//            override fun onCurrentAccessTokenChanged(accessToken: AccessToken, accessToken2: AccessToken?) {
+//                if (accessToken2 == null) {
+//                    Toast.makeText(applicationContext, "User Logged Out.", Toast.LENGTH_LONG).show()
+//                }
+//            }
+//        }
+//        fbTracker.startTracking()
+
         mFBCallbackManager = CallbackManager.Factory.create()
 
-        btnSignInFB.setReadPermissions(Arrays.asList("email"))
+        btnSignInFB.setReadPermissions(Arrays.asList("email", "public_profile"))
 
         btnSignInFB.registerCallback(mFBCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult?) {
-                mAccessToken = loginResult!!.accessToken
-                val isLogin = mAccessToken != null && !mAccessToken!!.isExpired
-                val mProfile = Profile.getCurrentProfile()
-                Log.i(TAG, "$isLogin, ${mProfile.firstName}")
+
+                if (Profile.getCurrentProfile() == null) {
+                    mProfileTracker = object : ProfileTracker() {
+                        override fun onCurrentProfileChanged(oldProfile: Profile?, currentProfile: Profile?) {
+                            Log.v(TAG, currentProfile!!.firstName)
+                            getFacebookUserProfile(AccessToken.getCurrentAccessToken())
+                            mProfileTracker!!.stopTracking()
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "Username is: " + Profile.getCurrentProfile().name)
+                    getFacebookUserProfile(AccessToken.getCurrentAccessToken())
+                }
+                mProfileTracker!!.startTracking()
             }
 
             override fun onCancel() {
+                Log.i(TAG, "onCancel")
             }
 
             override fun onError(error: FacebookException?) {
+                Log.i(TAG, "onError")
             }
         })
+    }
+
+    fun getFacebookUserProfile(accessToken: AccessToken) {
+        val dataRequest = GraphRequest.newMeRequest(accessToken,
+            object : GraphRequest.GraphJSONObjectCallback {
+                override fun onCompleted(jsonObject: JSONObject?, response: GraphResponse?) {
+                    val first_name = jsonObject!!.getString("first_name")
+                    val last_name = jsonObject.getString("last_name")
+                    val email = jsonObject.getString("email")
+                    val id = jsonObject.getString("id")
+                    val image_url = "https://graph.facebook.com/$id/picture?type=normal"
+
+                    Log.i(TAG, "$first_name $last_name $email $image_url")
+                }
+            })
+
+        val parameters = Bundle()
+        parameters.putString("fields", "first_name,last_name,email,id")
+        dataRequest.parameters = parameters
+        dataRequest.executeAsync()
     }
 
     private fun signIn() {
@@ -91,9 +141,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             var task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         } else {
-            if (mFBCallbackManager != null) {
-                mFBCallbackManager!!.onActivityResult(requestCode, resultCode, data)
-            }
+            mFBCallbackManager!!.onActivityResult(requestCode, resultCode, data)
         }
     }
 
