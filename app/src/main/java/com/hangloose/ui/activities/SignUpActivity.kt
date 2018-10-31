@@ -149,8 +149,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             val idToken = account!!.idToken
-            val name = account!!.displayName
-            val mail = account!!.email
+            val name = account.displayName
+            val mail = account.email
             val id = account.id
             val token = account.idToken
             val expired = account.isExpired

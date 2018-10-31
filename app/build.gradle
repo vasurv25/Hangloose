@@ -14,10 +14,42 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        hangLooseDebug {
+            keyAlias "${KEYSTORE_DEBUG_KEYALIAS}"
+            keyPassword "${KEYSTORE_DEBUG_KEYPASS}"
+            storeFile file("${KEYSTORE_DEBUG_FILE}")
+            storePassword "${KEYSTORE_DEBUG_STOREPASS}"
+        }
+        hangLooseRelease {
+            keyAlias "${KEYSTORE_RELEASE_KEYALIAS}"
+            keyPassword "${KEYSTORE_RELEASE_KEYPASS}"
+            storeFile file("${KEYSTORE_RELEASE_FILE}")
+            storePassword "${KEYSTORE_RELEASE_STOREPASS}"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appName: project.APPLICATION_NAME]
+            signingConfig android.signingConfigs.hangLooseRelease
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [appName: "$project.APPLICATION_NAME" + "_Debug"]
+            signingConfig android.signingConfigs.hangLooseDebug
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def buildType = variant.variantData.variantConfiguration.buildType.name
+            def appName = project.APPLICATION_NAME
+            def versionName = variant.versionName
+            def versionCode = variant.versionCode
+            outputFileName = appName + "-" + buildType + "-" + versionName + "-" + "(" + versionCode + ")" + ".apk"
         }
     }
 }
