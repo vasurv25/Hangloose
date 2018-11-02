@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="textWhiteMedium">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="textLarge">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="textXLarge">
+        <item name="android:textSize">36sp</item>
+    </style>
 </resources>
