@@ -1,9 +1,8 @@
 package com.hangloose.handler.network.retrofit
 
-import android.arch.lifecycle.BuildConfig
 import android.content.Context
 import com.google.gson.GsonBuilder
-import com.hangloose.utils.BASE_URL
+import com.hangloose.BuildConfig
 import com.hangloose.utils.HTTPCLIENT_CONNECT_TIMEOUT
 import com.hangloose.utils.HTTPCLIENT_READ_TIMEOUT
 import okhttp3.OkHttpClient
@@ -40,7 +39,7 @@ class RetrofitApiHandler(val context: Context) {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
             .build()
