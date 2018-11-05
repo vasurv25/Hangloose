@@ -33,14 +33,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.server_client_id))
-            .requestEmail()
-            .build()
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        intializeGoogleSignInOptions()
         signInWithFacebook()
     }
 
@@ -61,6 +54,20 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
             handleSignInResult(it)
         }
+    }
+
+    /**
+     * method to intialize google signIn options
+     */
+    private fun intializeGoogleSignInOptions() {
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.server_client_id))
+            .requestEmail()
+            .build()
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
     private fun signInWithFacebook() {
@@ -156,6 +163,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * method to get successful/failure google login
+     */
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)

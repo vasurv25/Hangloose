@@ -8,6 +8,7 @@
     <string name="client_secret">Ux2SShMhe6AFaRmKh2IVihOA</string>
     <string name="your_phone">Your Phone</string>
     <string name="btn_logout_from_google">Sign Out</string>
+    <string name="no_network_connectivity">No network available. Please try again!</string>
     <string name="hangloose">Hang Loose</string>
     <string name="sign_in_with_social">Sign In with social</string>
     <string name="have_it_your_way">Have it your way</string>
