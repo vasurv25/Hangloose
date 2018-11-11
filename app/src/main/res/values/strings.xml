@@ -6,6 +6,8 @@
     <string name="SHA1">CF:5F:B2:B8:94:33:7D:D6:34:98:52:7B:34:B3:2F:0C:7B:DD:96:12</string>
     <string name="server_client_id">430634342873-unvagf3q4qkttp8jgoksj8vnj2gv2kh3.apps.googleusercontent.com</string>
     <string name="client_secret">Ux2SShMhe6AFaRmKh2IVihOA</string>
+
+    <string name="Web_client_id">430634342873-unvagf3q4qkttp8jgoksj8vnj2gv2kh3.apps.googleusercontent.com</string>
     <string name="your_phone">Your Phone</string>
     <string name="btn_logout_from_google">Sign Out</string>
     <string name="no_network_connectivity">No network available. Please try again!</string>

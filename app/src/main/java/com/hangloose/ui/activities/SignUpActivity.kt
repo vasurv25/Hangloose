@@ -39,13 +39,15 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     override fun init() {
         btnGoogleSignIn.setOnClickListener(this)
-        btnGoogleSignOut.setOnClickListener(this)
+        //btnGoogleSignOut.setOnClickListener(this)
+        btnCustomSignInFB.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
             btnGoogleSignIn.id -> signIn()
-            btnGoogleSignOut.id -> signOut()
+            //btnGoogleSignOut.id -> signOut()
+            btnCustomSignInFB.id -> btnSignInFB.performClick()
         }
     }
 
@@ -144,12 +146,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun signOut() {
-        mGoogleSignInClient!!.signOut().addOnCompleteListener {
-            updateUI(false)
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...)
@@ -180,20 +176,10 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 TAG,
                 "signInResult:success token= $idToken , id= $id , displayName= $name , mail= $mail, expired= $expired, url= $url"
             )
-            updateUI(true)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i(TAG, """signInResult:failed code=${e.statusCode}""")
-            //updateUI(null)
         }
-    }
-
-    private fun updateUI(isSignedIn: Boolean) = if (isSignedIn) {
-        btnGoogleSignIn.visibility = View.GONE
-        btnGoogleSignOut.visibility = View.VISIBLE
-    } else {
-        btnGoogleSignOut.visibility = View.GONE
-        btnGoogleSignIn.visibility = View.VISIBLE
     }
 }

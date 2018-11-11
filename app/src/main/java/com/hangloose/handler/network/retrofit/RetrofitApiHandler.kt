@@ -3,6 +3,7 @@ package com.hangloose.handler.network.retrofit
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.hangloose.BuildConfig
+import com.hangloose.handler.network.ApiInf
 import com.hangloose.utils.HTTPCLIENT_CONNECT_TIMEOUT
 import com.hangloose.utils.HTTPCLIENT_READ_TIMEOUT
 import okhttp3.OkHttpClient
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit
 /**
  *  This class is a implementation of {@ApiInf}. It uses Retrofit for network connectivity.
  */
-class RetrofitApiHandler(val context: Context) {
+class RetrofitApiHandler(val context: Context) : ApiInf {
 
     private val retrofitApis: RetrofitApis
 

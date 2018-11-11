@@ -35,11 +35,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [appName: project.APPLICATION_NAME]
             signingConfig android.signingConfigs.hangLooseRelease
+            buildConfigField "String", "BASE_URL", '"http://url"'
         }
         debug {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [appName: "$project.APPLICATION_NAME" + "_Debug"]
             signingConfig android.signingConfigs.hangLooseDebug
+            buildConfigField "String", "BASE_URL", '"http://url"'
         }
     }
 
@@ -79,6 +81,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.1'
     //interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    //country code picker
+    implementation 'com.hbb20:ccp:1.7.1'
 
 }
 
