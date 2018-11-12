@@ -8,17 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="textWhiteMedium">
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@android:color/white</item>
+    <style name="text16">
+        <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="textLarge">
+    <style name="text20">
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="textXLarge">
+    <style name="text36">
         <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="text12">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">

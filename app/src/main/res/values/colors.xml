@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">@color/colorApp</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">@android:color/white</color>
     <color name="colorApp">#b72125</color>
     <color name="colorSeperator">#e6e6e6</color>
     <color name="colorFb">#3b5998</color>
+    <color name="colorSignInBtn">#b51f1f</color>
 </resources>

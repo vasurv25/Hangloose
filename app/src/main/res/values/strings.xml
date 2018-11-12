@@ -14,4 +14,8 @@
     <string name="hangloose">Hang Loose</string>
     <string name="sign_in_with_social">Sign In with social</string>
     <string name="have_it_your_way">Have it your way</string>
+    <string name="or">or</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="dont_have_an_account">Don\'t have an account? Sign Up</string>
 </resources>
