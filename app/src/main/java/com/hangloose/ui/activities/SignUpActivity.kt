@@ -1,7 +1,9 @@
 package com.hangloose.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.*
 import android.util.Log
 import android.view.View
 import com.facebook.AccessToken
@@ -21,6 +23,15 @@ import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.Arrays
+import android.text.util.Linkify
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.widget.TextView
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_sample.*
+
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
@@ -30,11 +41,13 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var mFBCallbackManager: CallbackManager? = null
     private var mProfileTracker: ProfileTracker? = null
 
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
         intializeGoogleSignInOptions()
         signInWithFacebook()
+        setSpannableString()
     }
 
     override fun init() {
@@ -181,5 +194,56 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i(TAG, """signInResult:failed code=${e.statusCode}""")
         }
+    }
+
+    @SuppressLint("NewApi")
+    private fun setSpannableString() {
+        // Make links in the EditText clickable
+        etPhone.movementMethod = LinkMovementMethod.getInstance()
+        // Setup my Spannable with clickable URLs
+        val spannable = SpannableString("IN +91 | ")
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                etPhone.post {
+                    Selection.setSelection(etPhone.text, etPhone.text.length)
+                }
+                Toast.makeText(this@SignUpActivity, "Spannable Clicked", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun updateDrawState(ds: TextPaint?) {
+                super.updateDrawState(ds)
+                ds!!.isUnderlineText = false
+                ds!!.bgColor = android.R.color.white
+            }
+        }
+
+        spannable.setSpan(RelativeSizeSpan(1.5f), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        spannable.setSpan(clickableSpan, 0, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(ForegroundColorSpan(resources.getColor(android.R.color.white, null)), 0, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        //etPhoneNumber.setText(spannable, TextView.BufferType.NORMAL)
+        //Selection.setSelection(etPhoneNumber.text, etPhoneNumber.text.length)
+        //etPhoneNumber.post { etPhoneNumber.setSelection(etPhoneNumber.length()) }
+        //tvCountryCode.text = spannable
+        etPhone.addTextChangedListener(object : TextWatcher {
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (!s.toString().startsWith(spannable)) {
+                    etPhone.setText(spannable, TextView.BufferType.SPANNABLE)
+                    Selection.setSelection(etPhone.text, etPhone.text.length)
+                }
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int, count: Int,
+                after: Int
+            ) {
+                // TODO Auto-generated method stub
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
     }
 }
