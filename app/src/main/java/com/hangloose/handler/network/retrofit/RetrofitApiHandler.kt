@@ -4,12 +4,16 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.hangloose.BuildConfig
 import com.hangloose.handler.network.ApiInf
+import com.hangloose.model.UserRegister
 import com.hangloose.utils.HTTPCLIENT_CONNECT_TIMEOUT
 import com.hangloose.utils.HTTPCLIENT_READ_TIMEOUT
+import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 /**
@@ -48,5 +52,10 @@ class RetrofitApiHandler(val context: Context) : ApiInf {
         retrofitApis = retrofit.create(RetrofitApis::class.java)
     }
 
-    interface RetrofitApis {}
+    interface RetrofitApis {
+        @POST("/register")
+        fun userRegister(@Query("authType") authType: String, @Query("id") id: String, @Query("password") password: String
+        , @Query("otpRequestReason") requestReason: String) : Observable<UserRegister>
+
+    }
 }
