@@ -25,7 +25,16 @@ class ConsumerViewModel : ViewModel() {
 
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
+        verifySignIn()
+    }
 
+    fun onFacebookSignInClick(fbLoginRequest: ConsumerLoginRequest) {
+        Log.i(TAG, "onFacebookSignInClick")
+        consumerLoginRequest = fbLoginRequest
+        verifySignIn()
+    }
+
+    private fun verifySignIn() {
         val disposable = getApiService()!!.consumerLogin(consumerLoginRequest)
             .subscribeOn(subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
