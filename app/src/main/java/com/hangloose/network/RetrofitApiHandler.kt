@@ -1,30 +1,22 @@
-package com.hangloose.handler.network.retrofit
+package com.hangloose.network
 
 import android.content.Context
 import com.google.gson.GsonBuilder
 import com.hangloose.BuildConfig
-import com.hangloose.handler.network.ApiInf
-import com.hangloose.model.UserRegister
 import com.hangloose.utils.HTTPCLIENT_CONNECT_TIMEOUT
 import com.hangloose.utils.HTTPCLIENT_READ_TIMEOUT
-import io.reactivex.Observable
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.POST
-import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 /**
  *  This class is a implementation of {@ApiInf}. It uses Retrofit for network connectivity.
  */
-class RetrofitApiHandler(val context: Context) : ApiInf {
-
-    private val retrofitApis: RetrofitApis
-
-    init {
-
+class RetrofitApiHandler(private val context: Context) {
+    fun create(): ApiInf {
         val gsonBuilder = GsonBuilder()
             .setLenient()
             .create()
@@ -47,15 +39,9 @@ class RetrofitApiHandler(val context: Context) : ApiInf {
             .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
-        retrofitApis = retrofit.create(RetrofitApis::class.java)
-    }
-
-    interface RetrofitApis {
-        @POST("/register")
-        fun userRegister(@Query("authType") authType: String, @Query("id") id: String, @Query("password") password: String
-        , @Query("otpRequestReason") requestReason: String) : Observable<UserRegister>
-
+        return retrofit.create(ApiInf::class.java)
     }
 }

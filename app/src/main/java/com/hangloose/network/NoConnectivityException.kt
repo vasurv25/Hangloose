@@ -1,4 +1,4 @@
-package com.hangloose.handler.network.retrofit
+package com.hangloose.network
 
 import android.content.Context
 import com.hangloose.R

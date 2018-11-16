@@ -1,4 +1,4 @@
-package com.hangloose.handler.network.retrofit
+package com.hangloose.network
 
 import android.content.Context
 import com.hangloose.utils.isOnline
@@ -13,7 +13,7 @@ class ConnectivityInterceptor(val context: Context) : Interceptor {
         if (!isOnline(context)) {
             throw NoConnectivityException(context)
         }
-        val builder = chain!!.request().newBuilder()
+        val builder = chain.request().newBuilder()
         return chain.proceed(builder.build())
     }
 }

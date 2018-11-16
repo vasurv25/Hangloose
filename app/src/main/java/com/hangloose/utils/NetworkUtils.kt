@@ -2,7 +2,7 @@ package com.hangloose.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.hangloose.handler.network.retrofit.NoConnectivityException
+import com.hangloose.network.NoConnectivityException
 
 /**
  * utilities for network

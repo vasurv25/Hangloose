@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<data>
+    <import type="android.view.View" />
+
+    <variable
+            name="consumerViewModel"
+            type="com.hangloose.viewmodel.ConsumerViewModel" />
+</data>
 <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -19,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_thumb"/>
+            android:contentDescription="TODO" app:srcCompat="@drawable/ic_thumb"/>
 
     <TextView
             android:id="@+id/textView"
@@ -37,7 +44,7 @@
             android:id="@+id/btnFacebook"
             android:layout_width="133dp"
             android:layout_height="58dp"
-            android:scaleType="center"
+            android:contentDescription="TODO" android:scaleType="center"
             android:src="@drawable/ic_facebook"
             android:background="@drawable/rounded_facebook"
             app:layout_constraintTop_toTopOf="parent"
@@ -51,7 +58,7 @@
             android:layout_height="58dp"
             android:layout_marginTop="232dp"
             android:background="@drawable/rounded_google"
-            android:scaleType="center"
+            android:contentDescription="TODO" android:scaleType="center"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_google"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +107,7 @@
             android:layout_marginEnd="40dp"
             android:textColorHint="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <EditText
@@ -108,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/your_phone"
                 android:inputType="phone"
+                android:id="@+id/editPhone"
                 android:maxLength="10"
                 android:backgroundTint="@android:color/white"
                 android:textColor="@android:color/white"
@@ -124,13 +132,14 @@
             android:textColorHint="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/textInputLayout2"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
+                android:id="@+id/editPassword"
                 android:backgroundTint="@android:color/white"
                 android:textColor="@android:color/white"
                 android:inputType="textPassword"/>
@@ -151,8 +160,11 @@
             android:textSize="16sp"
             android:background="@drawable/rounded_sign_in"
             android:textColor="@android:color/white"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"/>
+            android:layout_marginTop="16dp"
+            android:onClick="@{consumerViewModel::onSignInClick}"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="52dp"/>
 
     <TextView
             android:text="@string/dont_have_an_account"
@@ -165,8 +177,9 @@
             android:layout_marginEnd="8dp"
             android:textColor="@android:color/white"
             style="@style/text16"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/btnSignIn"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="22dp"/>
 
 
 </android.support.constraint.ConstraintLayout>
+</layout>

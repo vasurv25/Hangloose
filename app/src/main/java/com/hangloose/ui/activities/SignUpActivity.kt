@@ -3,9 +3,20 @@ package com.hangloose.ui.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.text.*
+import android.text.Editable
+import android.text.Selection
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -23,15 +34,6 @@ import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.Arrays
-import android.text.util.Linkify
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
-import android.widget.TextView
-import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_sample.*
-
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
@@ -213,14 +215,19 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun updateDrawState(ds: TextPaint?) {
                 super.updateDrawState(ds)
                 ds!!.isUnderlineText = false
-                ds!!.bgColor = android.R.color.white
+                ds.bgColor = android.R.color.white
             }
         }
 
         spannable.setSpan(RelativeSizeSpan(1.5f), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         spannable.setSpan(clickableSpan, 0, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(ForegroundColorSpan(resources.getColor(android.R.color.white, null)), 0, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(
+            ForegroundColorSpan(resources.getColor(android.R.color.white, null)),
+            0,
+            spannable.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         //etPhoneNumber.setText(spannable, TextView.BufferType.NORMAL)
         //Selection.setSelection(etPhoneNumber.text, etPhoneNumber.text.length)
         //etPhoneNumber.post { etPhoneNumber.setSelection(etPhoneNumber.length()) }
@@ -239,7 +246,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 after: Int
             ) {
                 // TODO Auto-generated method stub
-
             }
 
             override fun afterTextChanged(s: Editable) {
