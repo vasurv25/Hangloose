@@ -1,129 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@android:color/black">
 
     <ImageView
-        android:id="@+id/ivClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24.3dp"
-        android:layout_marginTop="43.7dp"
-        android:background="@drawable/ic_close"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" android:contentDescription="TODO"  />
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24.3dp"
+            android:layout_marginTop="43.7dp"
+            android:background="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/close"/>
 
     <TextView
-        android:id="@+id/tvGetStarted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="97.7dp"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="Get Started with Social"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/ivClose"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/tvGetStarted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="97.7dp"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="Get Started with Social"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/ivClose"
+            app:layout_constraintTop_toTopOf="parent"/>
 
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/btnGoogleSignIn"
-        android:layout_width="133.3dp"
-        android:layout_height="62.3dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginEnd="37dp"
-        android:text="Google"
-        android:textAllCaps="false"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
-        app:layout_constraintStart_toEndOf="@+id/flFacebook"
-        app:layout_constraintTop_toTopOf="@+id/flFacebook" />
+            android:id="@+id/btnGoogleSignIn"
+            android:layout_width="133.3dp"
+            android:layout_height="62.3dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="37dp"
+            android:text="Google"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.575"
+            app:layout_constraintStart_toEndOf="@+id/flFacebook"
+            app:layout_constraintTop_toTopOf="@+id/flFacebook"/>
 
     <FrameLayout
-        android:id="@+id/flFacebook"
-        android:layout_width="133.3dp"
-        android:layout_height="58.3dp"
-        android:layout_marginTop="20.3dp"
-        app:layout_constraintStart_toStartOf="@+id/tvGetStarted"
-        app:layout_constraintTop_toBottomOf="@+id/tvGetStarted">
+            android:id="@+id/flFacebook"
+            android:layout_width="133.3dp"
+            android:layout_height="58.3dp"
+            android:layout_marginTop="20.3dp"
+            app:layout_constraintStart_toStartOf="@+id/tvGetStarted"
+            app:layout_constraintTop_toBottomOf="@+id/tvGetStarted">
 
         <com.facebook.login.widget.LoginButton
-            android:id="@+id/btnSignInFB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+                android:id="@+id/btnSignInFB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
         <Button
-            android:id="@+id/btnCustomSignInFB"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#3b5998"
-            android:text="Facebook"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white" />
+                android:id="@+id/btnCustomSignInFB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#3b5998"
+                android:text="Facebook"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"/>
 
     </FrameLayout>
 
     <View
-        android:id="@+id/firstSeperator"
-        android:layout_width="118.3dp"
-        android:layout_height="1.3dp"
-        android:layout_marginTop="21.3dp"
-        android:background="@android:color/white"
-        app:layout_constraintStart_toStartOf="@+id/flFacebook"
-        app:layout_constraintTop_toBottomOf="@+id/flFacebook" />
+            android:id="@+id/firstSeperator"
+            android:layout_width="118.3dp"
+            android:layout_height="1.3dp"
+            android:layout_marginTop="21.3dp"
+            android:background="@android:color/white"
+            app:layout_constraintStart_toStartOf="@+id/flFacebook"
+            app:layout_constraintTop_toBottomOf="@+id/flFacebook"/>
 
     <TextView
-        android:id="@+id/tvOr"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="or"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/firstSeperator"
-        app:layout_constraintTop_toBottomOf="@+id/flFacebook" />
+            android:id="@+id/tvOr"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="or"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/firstSeperator"
+            app:layout_constraintTop_toBottomOf="@+id/flFacebook"/>
 
     <View
-        android:id="@+id/secondSeperator"
-        android:layout_width="118.3dp"
-        android:layout_height="1.3dp"
-        android:layout_marginStart="16.7dp"
-        android:layout_marginTop="19dp"
-        android:background="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/btnGoogleSignIn"
-        app:layout_constraintStart_toEndOf="@+id/tvOr"
-        app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn" />
+            android:id="@+id/secondSeperator"
+            android:layout_width="118.3dp"
+            android:layout_height="1.3dp"
+            android:layout_marginStart="16.7dp"
+            android:layout_marginTop="19dp"
+            android:background="@android:color/white"
+            app:layout_constraintEnd_toEndOf="@+id/btnGoogleSignIn"
+            app:layout_constraintStart_toEndOf="@+id/tvOr"
+            app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn"/>
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/ilPhone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toEndOf="@+id/secondSeperator"
-        app:layout_constraintStart_toStartOf="@+id/firstSeperator"
-        app:layout_constraintTop_toBottomOf="@+id/firstSeperator">
+            android:id="@+id/ilPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="@+id/secondSeperator"
+            app:layout_constraintStart_toStartOf="@+id/firstSeperator"
+            app:layout_constraintTop_toBottomOf="@+id/firstSeperator">
 
         <EditText
-            android:id="@+id/etPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="20"
-            android:hint="Your Phone"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLines="1"
-            android:textColor="@android:color/white" />
+                android:id="@+id/etPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="20"
+                android:hint="Your Phone"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLines="1"
+                android:textColor="@android:color/white"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -148,81 +149,81 @@
         app:layout_constraintStart_toEndOf="@+id/tvCountryCode" />
 -->
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/ilPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColorHint="@color/colorSeperator"
-        app:layout_constraintEnd_toEndOf="@+id/ilPhone"
-        app:layout_constraintStart_toStartOf="@+id/ilPhone"
-        app:layout_constraintTop_toBottomOf="@+id/ilPhone">
+            android:id="@+id/ilPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColorHint="@color/colorSeperator"
+            app:layout_constraintEnd_toEndOf="@+id/ilPhone"
+            app:layout_constraintStart_toStartOf="@+id/ilPhone"
+            app:layout_constraintTop_toBottomOf="@+id/ilPhone">
 
         <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="20"
-            android:hint="Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textColor="@android:color/white" />
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="20"
+                android:hint="Password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="@android:color/white"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/ilConfirmPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColorHint="@color/colorSeperator"
-        app:layout_constraintEnd_toEndOf="@+id/ilPassword"
-        app:layout_constraintStart_toStartOf="@+id/ilPassword"
-        app:layout_constraintTop_toBottomOf="@+id/ilPassword">
+            android:id="@+id/ilConfirmPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColorHint="@color/colorSeperator"
+            app:layout_constraintEnd_toEndOf="@+id/ilPassword"
+            app:layout_constraintStart_toStartOf="@+id/ilPassword"
+            app:layout_constraintTop_toBottomOf="@+id/ilPassword">
 
         <EditText
-            android:id="@+id/etConfirmPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="20"
-            android:hint="Confirm Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textColor="@android:color/white" />
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="20"
+                android:hint="Confirm Password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="@android:color/white"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/btSignIn"
-        android:layout_width="305dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#b72125"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="Sign In"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/ilConfirmPassword"
-        app:layout_constraintStart_toStartOf="@+id/ilConfirmPassword"
-        app:layout_constraintTop_toBottomOf="@+id/ilConfirmPassword" />
+            android:id="@+id/btSignIn"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="#b72125"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="Sign In"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/ilConfirmPassword"
+            app:layout_constraintStart_toStartOf="@+id/ilConfirmPassword"
+            app:layout_constraintTop_toBottomOf="@+id/ilConfirmPassword"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="85.3dp"
-        android:layout_marginBottom="23.7dp"
-        android:gravity="center_horizontal"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="Don’t have an account? Sign Up"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSignIn" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="85.3dp"
+            android:layout_marginBottom="23.7dp"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="Don’t have an account? Sign Up"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btSignIn"/>
 
 </android.support.constraint.ConstraintLayout>
