@@ -35,13 +35,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [appName: project.APPLICATION_NAME]
             signingConfig android.signingConfigs.hangLooseRelease
-            buildConfigField "String", "BASE_URL", '"http://hangloose-env.m4nk3aaj6d.ap-south-1.elasticbeanstalk.com"'
+            buildConfigField "String", "BASE_URL", '"http://hangloose-env.m4nk3aaj6d.ap-south-1.elasticbeanstalk.com/"'
         }
         debug {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [appName: "$project.APPLICATION_NAME" + "_Debug"]
             signingConfig android.signingConfigs.hangLooseDebug
-            buildConfigField "String", "BASE_URL", '"http://hangloose-env.m4nk3aaj6d.ap-south-1.elasticbeanstalk.com"'
+            buildConfigField "String", "BASE_URL", '"http://hangloose-env.m4nk3aaj6d.ap-south-1.elasticbeanstalk.com/"'
         }
     }
 

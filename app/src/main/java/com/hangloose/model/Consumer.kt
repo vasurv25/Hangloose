@@ -34,10 +34,10 @@ data class ConsumerAuthDetailResponse(
 data class ConsumerCreateRequest(
     @SerializedName("authId") val authId: String,
     @SerializedName("authType") val authType: String,
-    @SerializedName("firstName") val firstName: String,
-    @SerializedName("lastName") val lastName: String,
-    @SerializedName("password") val password: String,
-    @SerializedName("snToken") val snToken: String
+    //@SerializedName("firstName") val firstName: String,
+    //@SerializedName("lastName") val lastName: String,
+    @SerializedName("password") val password: String
+    //@SerializedName("snToken") val snToken: String
 ) : BaseModel()
 
 data class ConsumerLoginRequest(

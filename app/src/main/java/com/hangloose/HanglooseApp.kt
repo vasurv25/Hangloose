@@ -1,7 +1,6 @@
 package com.hangloose
 
 import android.app.Application
-import android.content.Context
 import com.hangloose.network.ApiInf
 import com.hangloose.network.RetrofitApiHandler
 import io.reactivex.Scheduler
@@ -9,40 +8,29 @@ import io.reactivex.schedulers.Schedulers
 
 class HanglooseApp : Application() {
 
-    private var api: ApiInf? = null
-    private var scheduler: Scheduler? = null
+    override fun onCreate() {
+        super.onCreate()
+        api = RetrofitApiHandler(this).create()
+    }
 
     companion object {
-        fun create(context: Context): HanglooseApp {
-            return HanglooseApp()[context]
-        }
-    }
+        private var api: ApiInf? = null
+        private var mScheduler: Scheduler? = null
 
-    operator fun get(context: Context): HanglooseApp {
-        return context.applicationContext as HanglooseApp
-    }
-
-    fun getApiService(): ApiInf {
-        if (api == null) {
-            api = RetrofitApiHandler(get(this)).create()
+        fun getApiService(): ApiInf? {
+            return api!!
         }
 
-        return api!!
-    }
+        fun subscribeScheduler(): Scheduler {
+            if (mScheduler == null) {
+                mScheduler = Schedulers.io()
+            }
 
-    fun setApiService(api: ApiInf) {
-        this.api = api
-    }
-
-    fun subscribeScheduler(): Scheduler {
-        if (scheduler == null) {
-            scheduler = Schedulers.io()
+            return mScheduler!!
         }
 
-        return scheduler!!
-    }
-
-    fun setScheduler(scheduler: Scheduler) {
-        this.scheduler = scheduler
+        fun setScheduler(scheduler: Scheduler) {
+            this.mScheduler = scheduler
+        }
     }
 }
