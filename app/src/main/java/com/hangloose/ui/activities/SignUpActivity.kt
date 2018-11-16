@@ -38,32 +38,32 @@ import java.util.Arrays
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG: String = "SignUpActivity"
-    private var mGoogleSignInClient: GoogleSignInClient? = null
-    private val RC_SIGN_IN = 9001
-    private var mFBCallbackManager: CallbackManager? = null
-    private var mProfileTracker: ProfileTracker? = null
+        private var mGoogleSignInClient: GoogleSignInClient? = null
+        private val RC_SIGN_IN = 9001
+        private var mFBCallbackManager: CallbackManager? = null
+        private var mProfileTracker: ProfileTracker? = null
 
-    @SuppressLint("NewApi")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
-        intializeGoogleSignInOptions()
-        signInWithFacebook()
-        setSpannableString()
-    }
-
-    override fun init() {
-        btnGoogleSignIn.setOnClickListener(this)
-        //btnGoogleSignOut.setOnClickListener(this)
-        btnCustomSignInFB.setOnClickListener(this)
-    }
-
-    override fun onClick(view: View?) {
-        when (view!!.id) {
-            btnGoogleSignIn.id -> signIn()
-            //btnGoogleSignOut.id -> signOut()
-            btnCustomSignInFB.id -> btnSignInFB.performClick()
+        @SuppressLint("NewApi")
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_sign_up)
+            intializeGoogleSignInOptions()
+            signInWithFacebook()
+            //setSpannableString()
         }
+
+        override fun init() {
+            btnGoogleSignIn.setOnClickListener(this)
+            //btnGoogleSignOut.setOnClickListener(this)
+            btnCustomSignInFB.setOnClickListener(this)
+        }
+
+        override fun onClick(view: View?) {
+            when (view!!.id) {
+                btnGoogleSignIn.id -> signIn()
+                //btnGoogleSignOut.id -> signOut()
+                btnCustomSignInFB.id -> btnSignInFB.performClick()
+            }
     }
 
     override fun onStart() {
