@@ -10,7 +10,7 @@
         android:id="@+id/ivClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24.3dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="43.7dp"
         android:background="@drawable/ic_close"
         android:contentDescription="@string/close"
@@ -33,23 +33,26 @@
 
     <ImageView
         android:id="@+id/btnGoogleSignIn"
-        android:layout_width="133.3dp"
+        android:layout_width="0dp"
         android:layout_height="58.3dp"
         android:layout_marginStart="19dp"
         android:layout_marginEnd="37dp"
         android:contentDescription="@string/google"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/flFacebook"
         app:layout_constraintTop_toTopOf="@+id/flFacebook"
         app:srcCompat="@drawable/ic_google" />
 
     <FrameLayout
         android:id="@+id/flFacebook"
-        android:layout_width="133.3dp"
+        android:layout_width="0dp"
         android:layout_height="58.3dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="20.3dp"
-        app:layout_constraintStart_toStartOf="@+id/tvGetStarted"
+        app:layout_constraintEnd_toStartOf="@+id/btnGoogleSignIn"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGetStarted">
 
         <com.facebook.login.widget.LoginButton
@@ -69,11 +72,12 @@
 
     <View
         android:id="@+id/firstSeperator"
-        android:layout_width="118.3dp"
+        android:layout_width="0dp"
         android:layout_height="1.3dp"
         android:layout_marginTop="21.3dp"
         android:background="@android:color/white"
-        app:layout_constraintStart_toStartOf="@+id/flFacebook"
+        app:layout_constraintEnd_toStartOf="@+id/tvOr"
+        app:layout_constraintStart_toStartOf="@+id/tvGetStarted"
         app:layout_constraintTop_toBottomOf="@+id/flFacebook" />
 
     <TextView
@@ -81,24 +85,28 @@
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:letterSpacing="0.02"
         android:lineSpacingExtra="-11.7sp"
         android:text="or"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/secondSeperator"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/firstSeperator"
         app:layout_constraintTop_toBottomOf="@+id/flFacebook" />
 
     <View
         android:id="@+id/secondSeperator"
-        android:layout_width="118.3dp"
+        android:layout_width="0dp"
         android:layout_height="1.3dp"
         android:layout_marginStart="16.7dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="21.3dp"
+        android:layout_marginEnd="14dp"
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/btnGoogleSignIn"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvOr"
         app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn" />
 
@@ -193,7 +201,7 @@
 
     <Button
         android:id="@+id/btSignIn"
-        android:layout_width="305dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="#b72125"
@@ -208,7 +216,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ilConfirmPassword" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="85.3dp"
         android:layout_marginBottom="23.7dp"
