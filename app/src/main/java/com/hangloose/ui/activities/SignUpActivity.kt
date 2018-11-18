@@ -1,7 +1,10 @@
 package com.hangloose.ui.activities
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.text.Editable
 import android.text.Selection
@@ -32,38 +35,45 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
+import com.hangloose.databinding.ActivitySignUpBinding
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerCreateRequest
+import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.viewmodel.ConsumerViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.Arrays
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG: String = "SignUpActivity"
-        private var mGoogleSignInClient: GoogleSignInClient? = null
-        private val RC_SIGN_IN = 9001
-        private var mFBCallbackManager: CallbackManager? = null
-        private var mProfileTracker: ProfileTracker? = null
+    private var mGoogleSignInClient: GoogleSignInClient? = null
+    private val RC_SIGN_IN = 9001
+    private var mFBCallbackManager: CallbackManager? = null
+    private var mProfileTracker: ProfileTracker? = null
+    private var mActivitySignUpBinding: ActivitySignUpBinding? = null
+    private var mConsumerViewModel: ConsumerViewModel = ConsumerViewModel()
 
-        @SuppressLint("NewApi")
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_sign_up)
-            intializeGoogleSignInOptions()
-            signInWithFacebook()
-            //setSpannableString()
+    @SuppressLint("NewApi")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_sign_up)
+        intializeGoogleSignInOptions()
+        signInWithFacebook()
+        initBinding()
+        //setSpannableString()
+    }
+
+    override fun init() {
+        btnGoogleSignIn.setOnClickListener(this)
+        btnCustomSignInFB.setOnClickListener(this)
+    }
+
+    override fun onClick(view: View?) {
+        when (view!!.id) {
+            btnGoogleSignIn.id -> signIn()
+            btnCustomSignInFB.id -> btnSignInFB.performClick()
         }
-
-        override fun init() {
-            btnGoogleSignIn.setOnClickListener(this)
-            //btnGoogleSignOut.setOnClickListener(this)
-            btnCustomSignInFB.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View?) {
-            when (view!!.id) {
-                btnGoogleSignIn.id -> signIn()
-                //btnGoogleSignOut.id -> signOut()
-                btnCustomSignInFB.id -> btnSignInFB.performClick()
-            }
     }
 
     override fun onStart() {
@@ -71,6 +81,42 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
             handleSignInResult(it)
         }
+    }
+
+    /**
+     * method to perform click on signUp button after user enters mobile number and password
+     * @view view clicked
+     */
+    fun onSignUpClick(view: View) {
+        Log.d(TAG, """Phone : ${etPhone.text}--Password : ${etPassword.text}""")
+        mConsumerViewModel.onGoogleSignUpClick(
+            ConsumerCreateRequest(
+                etPhone.text.toString(),
+                AUTH_TYPE.MOBILE.name,
+                etPassword.text.toString()
+            )
+        )
+    }
+
+    /**
+     * method to perform click on close button
+     * @view view clicked
+     */
+    fun onCloseClick(view: View) {
+        finish()
+    }
+
+    /**
+     * method to intialize data binding with view
+     */
+    private fun initBinding() {
+        mActivitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
+        mActivitySignUpBinding!!.clickHandler = this
+        mConsumerViewModel = ViewModelProviders.of(this).get(ConsumerViewModel::class.java)
+        mConsumerViewModel.loginResponse()
+            ?.observe(this, Observer<ConsumerAuthDetailResponse> { t ->
+                Log.i(TAG, "onChanged")
+            })
     }
 
     /**
@@ -88,22 +134,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun signInWithFacebook() {
-//        val loggedOut = AccessToken.getCurrentAccessToken() == null
-//
-//        if (!loggedOut) {
-//            Log.d(TAG, "Username is: " + Profile.getCurrentProfile().name)
-//            //Using Graph API
-//            getFacebookUserProfile(AccessToken.getCurrentAccessToken())
-//        }
-//
-//        val fbTracker = object : AccessTokenTracker() {
-//            override fun onCurrentAccessTokenChanged(accessToken: AccessToken, accessToken2: AccessToken?) {
-//                if (accessToken2 == null) {
-//                    Toast.makeText(applicationContext, "User Logged Out.", Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        }
-//        fbTracker.startTracking()
 
         mFBCallbackManager = CallbackManager.Factory.create()
 
@@ -141,13 +171,15 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         val dataRequest = GraphRequest.newMeRequest(
             accessToken
         ) { jsonObject, response ->
-            val first_name = jsonObject!!.getString("first_name")
-            val last_name = jsonObject.getString("last_name")
             val email = jsonObject.getString("email")
-            val id = jsonObject.getString("id")
-            val image_url = "https://graph.facebook.com/$id/picture?type=normal"
 
-            Log.i(TAG, "$first_name $last_name $email $image_url")
+            mConsumerViewModel.onFacebookSignInClick(
+                ConsumerLoginRequest(
+                    AUTH_TYPE.FACEBOOK.name,
+                    email,
+                    accessToken.token
+                )
+            )
         }
 
         val parameters = Bundle()
@@ -174,28 +206,31 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    override fun onBackPressed() {}
+
     /**
      * method to get successful/failure google login
      */
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            val idToken = account!!.idToken
-            val name = account.displayName
-            val mail = account.email
-            val id = account.id
-            val expired = account.isExpired
-            val url = account.photoUrl
-            // Signed in successfully, show authenticated UI.
-            Log.i(
-                TAG,
-                "signInResult:success token= $idToken , id= $id , displayName= $name , mail= $mail, expired= $expired, url= $url"
+            mConsumerViewModel.onGoogleSignInClick(
+                ConsumerLoginRequest(
+                    AUTH_TYPE.GOOGLE.name,
+                    account!!.email,
+                    account!!.idToken
+                )
             )
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i(TAG, """signInResult:failed code=${e.statusCode}""")
         }
+    }
+
+    fun onNavigateToSignInClick(view: View?) {
+        var intent = Intent(this@SignUpActivity, SignInActivity::class.java)
+        startActivity(intent)
     }
 
     @SuppressLint("NewApi")

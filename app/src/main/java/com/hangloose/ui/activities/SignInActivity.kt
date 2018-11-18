@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.facebook.AccessToken
@@ -31,7 +30,7 @@ import com.hangloose.viewmodel.ConsumerViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.Arrays
 
-class SignInActivity : AppCompatActivity(), View.OnClickListener {
+class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "SignInActivity"
     private var consumerViewModel: ConsumerViewModel = ConsumerViewModel()
@@ -43,21 +42,20 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        init()
-    }
-
-    private fun init() {
         initBinding()
-        btnFacebook.setOnClickListener(this)
-        btnGoogle.setOnClickListener(this)
         intializeGoogleSignInOptions()
         signInWithFacebook()
     }
 
-    private fun initBinding() {
-        activitySignInBinding = DataBindingUtil.setContentView<ActivitySignInBinding>(this, R.layout.activity_sign_in)
-        activitySignInBinding!!.consumerViewModel = consumerViewModel
+    override fun init() {
+        btnFacebook.setOnClickListener(this)
+        btnGoogle.setOnClickListener(this)
+    }
 
+    private fun initBinding() {
+        activitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
+        activitySignInBinding!!.consumerViewModel = consumerViewModel
+        activitySignInBinding!!.clickHandler = this
         consumerViewModel = ViewModelProviders.of(this).get(ConsumerViewModel::class.java)
 
         consumerViewModel.loginResponse()?.observe(this, Observer<ConsumerAuthDetailResponse> {
@@ -145,16 +143,13 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            val idToken = account!!.idToken
-            val name = account.displayName
-            val mail = account.email
-            val id = account.id
-            val expired = account.isExpired
-            val url = account.photoUrl
             // Signed in successfully, show authenticated UI.
-            Log.i(
-                TAG,
-                "signInResult:success token= $idToken , id= $id , displayName= $name , mail= $mail, expired= $expired, url= $url"
+            consumerViewModel.onGoogleSignInClick(
+                ConsumerLoginRequest(
+                    AUTH_TYPE.GOOGLE.name,
+                    account!!.email,
+                    account!!.idToken
+                )
             )
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
@@ -182,6 +177,11 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
         parameters.putString("fields", "email")
         dataRequest.parameters = parameters
         dataRequest.executeAsync()
+    }
+
+    fun onNavigateToSignUpClick(view: View?) {
+        var intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroy() {

@@ -18,8 +18,7 @@ class ConsumerViewModel : ViewModel() {
     private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
     private var consumerLoginRequest: ConsumerLoginRequest =
         ConsumerLoginRequest(AUTH_TYPE.MOBILE.name, "2531256372", "sajgdasd")
-    private var consumerRegisterRequest: ConsumerCreateRequest =
-        ConsumerCreateRequest(AUTH_TYPE.MOBILE.name, "2531256372", "sajgdasd")
+    private var consumerRegisterRequest: ConsumerCreateRequest? = null
     private var consumerAuthDetailResponse: MutableLiveData<ConsumerAuthDetailResponse>? = null
     private val TAG = "ConsumerViewModel"
 
@@ -34,6 +33,20 @@ class ConsumerViewModel : ViewModel() {
         verifySignIn()
     }
 
+    fun onGoogleSignInClick(googleLoginRequest: ConsumerLoginRequest) {
+        Log.i(TAG, "onGoogleSignInClick")
+        consumerLoginRequest = googleLoginRequest
+        verifySignIn()
+    }
+
+    fun onGoogleSignUpClick(googleCreateRequest: ConsumerCreateRequest) {
+        Log.i(TAG, "onGoogleSignUpClick")
+        consumerRegisterRequest = googleCreateRequest
+        registerUser()
+    }
+    /**
+     * method to call API to verify signIn credentials
+     */
     private fun verifySignIn() {
         val disposable = getApiService()!!.consumerLogin(consumerLoginRequest)
             .subscribeOn(subscribeScheduler())
@@ -43,6 +56,24 @@ class ConsumerViewModel : ViewModel() {
                 consumerAuthDetailResponse!!.value = response
             }, {
                 Log.i(TAG, "error login")
+            })
+
+        compositeDisposable!!.add(disposable)
+    }
+
+    /**
+     * method to call API for registering the user credentials
+     */
+    private fun registerUser() {
+        Log.i(TAG, "Register request" + consumerRegisterRequest.toString())
+        val disposable = getApiService()!!.consumerRegister(consumerRegisterRequest!!)
+            .subscribeOn(subscribeScheduler())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                Log.i(TAG, """success register$response""")
+                consumerAuthDetailResponse!!.value = response
+            }, {
+                Log.i(TAG, "error register$it")
             })
 
         compositeDisposable!!.add(disposable)

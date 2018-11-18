@@ -11,6 +11,6 @@ interface ApiInf {
     @POST("consumers/login")
     fun consumerLogin(@Body consumerLoginRequestBody: ConsumerLoginRequest): Observable<ConsumerAuthDetailResponse>
 
-    @POST("consumers/register")
+    @POST("consumers")
     fun consumerRegister(@Body consumerRegisterRequestBody: ConsumerCreateRequest): Observable<ConsumerAuthDetailResponse>
 }
