@@ -22,7 +22,10 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
     <string name="close">Close</string>
-    <string name="already_have_an_account">Already have an account?</string>
+    <string name="already_have_an_account">Already have an account? SignIn</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="get_started_with_social">Get Started with Social</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verification_msg">SMS verification code has been sent to:</string>
+    <string name="otp">OTP</string>
 </resources>

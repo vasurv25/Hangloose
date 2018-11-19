@@ -34,6 +34,11 @@
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <activity
+            android:name=".ui.activities.OTPActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

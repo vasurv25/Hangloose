@@ -57,22 +57,22 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up)
+        initBinding()
         intializeGoogleSignInOptions()
         signInWithFacebook()
-        initBinding()
         //setSpannableString()
     }
 
     override fun init() {
         btnGoogleSignIn.setOnClickListener(this)
         btnCustomSignInFB.setOnClickListener(this)
+        makeSignInClickable()
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
             btnGoogleSignIn.id -> signIn()
-            btnCustomSignInFB.id -> btnSignInFB.performClick()
+            btnCustomSignInFB.id -> btnSignUpFB.performClick()
         }
     }
 
@@ -81,6 +81,23 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
             handleSignInResult(it)
         }
+    }
+
+    private fun makeSignInClickable() {
+        val spannable = SpannableString(resources.getString(R.string.already_have_an_account))
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(view: View?) {
+                finish()
+            }
+
+            override fun updateDrawState(ds: TextPaint?) {
+                super.updateDrawState(ds)
+                ds!!.isUnderlineText = false
+            }
+        }
+        spannable.setSpan(clickableSpan, 25, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        tvSignUpClick.text = spannable
+        tvSignUpClick.movementMethod = LinkMovementMethod.getInstance()
     }
 
     /**
@@ -137,9 +154,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
         mFBCallbackManager = CallbackManager.Factory.create()
 
-        btnSignInFB.setReadPermissions(Arrays.asList("email", "public_profile"))
+        btnSignUpFB.setReadPermissions(Arrays.asList("email", "public_profile"))
 
-        btnSignInFB.registerCallback(mFBCallbackManager, object : FacebookCallback<LoginResult> {
+        btnSignUpFB.registerCallback(mFBCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult?) {
 
                 if (Profile.getCurrentProfile() == null) {
@@ -228,7 +245,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun onNavigateToSignInClick(view: View?) {
+    fun onNavigateToSignInClick() {
         var intent = Intent(this@SignUpActivity, SignInActivity::class.java)
         startActivity(intent)
     }
