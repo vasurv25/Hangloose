@@ -5,6 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import com.facebook.AccessToken
@@ -50,12 +54,24 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     override fun init() {
         btnFacebook.setOnClickListener(this)
         btnGoogle.setOnClickListener(this)
+        makeSignUpClickable()
+    }
+
+    private fun makeSignUpClickable() {
+        val spannable = SpannableString(resources.getString(R.string.dont_have_an_account))
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(view: View?) {
+                onNavigateToSignUpClick()
+            }
+        }
+        spannable.setSpan(clickableSpan, 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        textView4.text = spannable
+        textView4.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun initBinding() {
         activitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
         activitySignInBinding!!.consumerViewModel = consumerViewModel
-        activitySignInBinding!!.clickHandler = this
         consumerViewModel = ViewModelProviders.of(this).get(ConsumerViewModel::class.java)
 
         consumerViewModel.loginResponse()?.observe(this, Observer<ConsumerAuthDetailResponse> {
@@ -148,7 +164,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 ConsumerLoginRequest(
                     AUTH_TYPE.GOOGLE.name,
                     account!!.email,
-                    account!!.idToken
+                    account.idToken
                 )
             )
         } catch (e: ApiException) {
@@ -179,8 +195,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         dataRequest.executeAsync()
     }
 
-    fun onNavigateToSignUpClick(view: View?) {
-        var intent = Intent(this@SignInActivity, SignUpActivity::class.java)
+    fun onNavigateToSignUpClick() {
+        val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
         startActivity(intent)
     }
 

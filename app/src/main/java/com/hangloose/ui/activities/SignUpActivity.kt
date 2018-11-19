@@ -189,7 +189,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun signIn() {
-        var signInIntent = mGoogleSignInClient?.signInIntent
+        val signInIntent = mGoogleSignInClient?.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
@@ -199,7 +199,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-            var task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         } else {
             mFBCallbackManager!!.onActivityResult(requestCode, resultCode, data)

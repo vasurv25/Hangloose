@@ -2,6 +2,8 @@ package com.hangloose.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp.Companion.getApiService
@@ -17,10 +19,34 @@ class ConsumerViewModel : ViewModel() {
 
     private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
     private var consumerLoginRequest: ConsumerLoginRequest =
-        ConsumerLoginRequest(AUTH_TYPE.MOBILE.name, "2531256372", "sajgdasd")
+        ConsumerLoginRequest(AUTH_TYPE.MOBILE.name, null, null)
     private var consumerRegisterRequest: ConsumerCreateRequest? = null
     private var consumerAuthDetailResponse: MutableLiveData<ConsumerAuthDetailResponse>? = null
     private val TAG = "ConsumerViewModel"
+
+    val phoneWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(edit: Editable?) {
+            consumerLoginRequest.id = edit.toString()
+        }
+    }
+
+    val passwordWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun afterTextChanged(edit: Editable?) {
+            consumerLoginRequest.token = edit.toString()
+        }
+    }
 
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
@@ -44,21 +70,25 @@ class ConsumerViewModel : ViewModel() {
         consumerRegisterRequest = googleCreateRequest
         registerUser()
     }
+
     /**
      * method to call API to verify signIn credentials
      */
     private fun verifySignIn() {
-        val disposable = getApiService()!!.consumerLogin(consumerLoginRequest)
-            .subscribeOn(subscribeScheduler())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
-                Log.i(TAG, "success login")
-                consumerAuthDetailResponse!!.value = response
-            }, {
-                Log.i(TAG, "error login")
-            })
+        if (consumerLoginRequest.id != null && consumerLoginRequest.token != null) {
+            val disposable = getApiService()!!.consumerLogin(consumerLoginRequest)
+                .subscribeOn(subscribeScheduler())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    Log.i(TAG, "success login")
+                    consumerAuthDetailResponse!!.value = response
+                }, {
+                    Log.i(TAG, "error login")
+                })
 
-        compositeDisposable!!.add(disposable)
+            compositeDisposable!!.add(disposable)
+        } else {
+        }
     }
 
     /**
