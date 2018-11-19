@@ -89,11 +89,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun onClick(view: View?) {
                 finish()
             }
-
-            override fun updateDrawState(ds: TextPaint?) {
-                super.updateDrawState(ds)
-                ds!!.isUnderlineText = false
-            }
         }
         spannable.setSpan(clickableSpan, 25, 31, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         tvSignUpClick.text = spannable
