@@ -37,10 +37,9 @@ import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignUpBinding
 import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerCreateRequest
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.viewmodel.ConsumerViewModel
+import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.Arrays
 
@@ -52,7 +51,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var mFBCallbackManager: CallbackManager? = null
     private var mProfileTracker: ProfileTracker? = null
     private var mActivitySignUpBinding: ActivitySignUpBinding? = null
-    private var mConsumerViewModel: ConsumerViewModel = ConsumerViewModel()
+    private var mConsumerRegisterViewModel: ConsumerRegisterViewModel = ConsumerRegisterViewModel()
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,21 +95,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     /**
-     * method to perform click on signUp button after user enters mobile number and password
-     * @view view clicked
-     */
-    fun onSignUpClick(view: View) {
-        Log.d(TAG, """Phone : ${etPhone.text}--Password : ${etPassword.text}""")
-        mConsumerViewModel.onGoogleSignUpClick(
-            ConsumerCreateRequest(
-                etPhone.text.toString(),
-                AUTH_TYPE.MOBILE.name,
-                etPassword.text.toString()
-            )
-        )
-    }
-
-    /**
      * method to perform click on close button
      * @view view clicked
      */
@@ -124,9 +108,12 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun initBinding() {
         mActivitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
         mActivitySignUpBinding!!.clickHandler = this
-        mConsumerViewModel = ViewModelProviders.of(this).get(ConsumerViewModel::class.java)
-        mConsumerViewModel.loginResponse()
+        mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
+        mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
+        mConsumerRegisterViewModel.loginResponse()
             ?.observe(this, Observer<ConsumerAuthDetailResponse> { t ->
+                var consumerId = t!!.consumerAuths.id
+                var type = t!!.consumerAuths.type
                 Log.i(TAG, "onChanged")
             })
     }
@@ -185,7 +172,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         ) { jsonObject, response ->
             val email = jsonObject.getString("email")
 
-            mConsumerViewModel.onFacebookSignInClick(
+            mConsumerRegisterViewModel.onFacebookSignUpClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.FACEBOOK.name,
                     email,
@@ -226,7 +213,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            mConsumerViewModel.onGoogleSignInClick(
+            mConsumerRegisterViewModel.onGoogleSignUpClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.GOOGLE.name,
                     account!!.email,

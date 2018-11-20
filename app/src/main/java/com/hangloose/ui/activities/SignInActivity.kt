@@ -30,14 +30,14 @@ import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.viewmodel.ConsumerViewModel
+import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.Arrays
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "SignInActivity"
-    private var consumerViewModel: ConsumerViewModel = ConsumerViewModel()
+    private var consumerLoginViewModel: ConsumerLoginViewModel = ConsumerLoginViewModel()
     private var activitySignInBinding: ActivitySignInBinding? = null
     private var mFBCallbackManager: CallbackManager? = null
     var mProfileTracker: ProfileTracker? = null
@@ -71,10 +71,10 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private fun initBinding() {
         activitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
-        activitySignInBinding!!.consumerViewModel = consumerViewModel
-        consumerViewModel = ViewModelProviders.of(this).get(ConsumerViewModel::class.java)
+        activitySignInBinding!!.consumerLoginViewModel = consumerLoginViewModel
+        consumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
 
-        consumerViewModel.loginResponse()?.observe(this, Observer<ConsumerAuthDetailResponse> {
+        consumerLoginViewModel.loginResponse()?.observe(this, Observer<ConsumerAuthDetailResponse> {
             fun onChanged(t: ConsumerAuthDetailResponse?) {
                 if (t != null) {
                     Log.i(TAG, "onChanged")
@@ -160,7 +160,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            consumerViewModel.onGoogleSignInClick(
+            consumerLoginViewModel.onGoogleSignInClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.GOOGLE.name,
                     account!!.email,
@@ -180,7 +180,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         ) { jsonObject, response ->
             val email = jsonObject.getString("email")
 
-            consumerViewModel.onFacebookSignInClick(
+            consumerLoginViewModel.onFacebookSignInClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.FACEBOOK.name,
                     email,
@@ -202,6 +202,6 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        consumerViewModel.reset()
+        consumerLoginViewModel.reset()
     }
 }

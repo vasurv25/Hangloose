@@ -6,23 +6,24 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import com.hangloose.HanglooseApp.Companion.getApiService
-import com.hangloose.HanglooseApp.Companion.subscribeScheduler
+import com.hangloose.HanglooseApp
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerCreateRequest
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.activity_sign_up.*
 
-class ConsumerViewModel : ViewModel() {
+class ConsumerRegisterViewModel : ViewModel() {
 
-    private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
+    private val TAG = "ConsumerRegisterModel"
     private var consumerLoginRequest: ConsumerLoginRequest =
         ConsumerLoginRequest(AUTH_TYPE.MOBILE.name, null, null)
-    private var consumerRegisterRequest: ConsumerCreateRequest? = null
+    private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
+    private var consumerRegisterRequest: ConsumerCreateRequest? =
+        ConsumerCreateRequest(null, AUTH_TYPE.MOBILE.name, null)
     private var consumerAuthDetailResponse: MutableLiveData<ConsumerAuthDetailResponse>? = null
-    private val TAG = "ConsumerViewModel"
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -32,7 +33,7 @@ class ConsumerViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            consumerLoginRequest.id = edit.toString()
+            consumerRegisterRequest!!.authId = edit.toString()
         }
     }
 
@@ -44,40 +45,37 @@ class ConsumerViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            consumerLoginRequest.token = edit.toString()
+            consumerRegisterRequest!!.password = edit.toString()
         }
     }
 
-    fun onSignInClick(view: View) {
-        Log.i(TAG, "onSignInClick")
-        verifySignIn()
-    }
-
-    fun onFacebookSignInClick(fbLoginRequest: ConsumerLoginRequest) {
-        Log.i(TAG, "onFacebookSignInClick")
-        consumerLoginRequest = fbLoginRequest
-        verifySignIn()
-    }
-
-    fun onGoogleSignInClick(googleLoginRequest: ConsumerLoginRequest) {
-        Log.i(TAG, "onGoogleSignInClick")
-        consumerLoginRequest = googleLoginRequest
-        verifySignIn()
-    }
-
-    fun onGoogleSignUpClick(googleCreateRequest: ConsumerCreateRequest) {
-        Log.i(TAG, "onGoogleSignUpClick")
-        consumerRegisterRequest = googleCreateRequest
+    /**
+     * method to perform click on signUp button after user enters mobile number and password
+     * @view view clicked
+     */
+    fun onSignUpClick(view: View) {
+        Log.i(TAG, "onSignUpClick")
         registerUser()
     }
 
+    fun onFacebookSignUpClick(fbLoginRequest: ConsumerLoginRequest) {
+        Log.i(TAG, "onFacebookSignInClick")
+        consumerLoginRequest = fbLoginRequest
+        verifyGoogleFbSignUp()
+    }
+
+    fun onGoogleSignUpClick(googleLoginRequest: ConsumerLoginRequest) {
+        Log.i(TAG, "onGoogleSignInClick")
+        consumerLoginRequest = googleLoginRequest
+        verifyGoogleFbSignUp()
+    }
     /**
      * method to call API to verify signIn credentials
      */
-    private fun verifySignIn() {
+    private fun verifyGoogleFbSignUp() {
         if (consumerLoginRequest.id != null && consumerLoginRequest.token != null) {
-            val disposable = getApiService()!!.consumerLogin(consumerLoginRequest)
-                .subscribeOn(subscribeScheduler())
+            val disposable = HanglooseApp.getApiService()!!.consumerLogin(consumerLoginRequest)
+                .subscribeOn(HanglooseApp.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     Log.i(TAG, "success login")
@@ -96,8 +94,8 @@ class ConsumerViewModel : ViewModel() {
      */
     private fun registerUser() {
         Log.i(TAG, "Register request" + consumerRegisterRequest.toString())
-        val disposable = getApiService()!!.consumerRegister(consumerRegisterRequest!!)
-            .subscribeOn(subscribeScheduler())
+        val disposable = HanglooseApp.getApiService()!!.consumerRegister(consumerRegisterRequest!!)
+            .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
                 Log.i(TAG, """success register$response""")

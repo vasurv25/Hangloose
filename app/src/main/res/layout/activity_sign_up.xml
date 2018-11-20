@@ -8,8 +8,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="consumerViewModel"
-            type="com.hangloose.viewmodel.ConsumerViewModel" />
+            name="consumerRegisterViewModel"
+            type="com.hangloose.viewmodel.ConsumerRegisterViewModel" />
 
         <variable
             name="clickHandler"
@@ -137,6 +137,7 @@
                 android:ems="20"
                 android:hint="@string/your_phone"
                 android:imeOptions="actionDone"
+                android:addTextChangedListener="@{consumerRegisterViewModel.phoneWatcher}"
                 android:inputType="number"
                 android:maxLines="1"
                 android:text="9876543210"
@@ -180,6 +181,7 @@
                 android:layout_height="wrap_content"
                 android:ems="20"
                 android:hint="@string/password"
+                android:addTextChangedListener="@{consumerRegisterViewModel.passwordWatcher}"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLines="1"
@@ -213,14 +215,14 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/btSignIn"
+            android:id="@+id/btSignUp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/ic_button_sign_up"
             android:letterSpacing="0.02"
             android:lineSpacingExtra="-11.7sp"
-            android:onClick="@{clickHandler::onSignUpClick}"
+            android:onClick="@{consumerRegisterViewModel::onSignUpClick}"
             app:layout_constraintEnd_toEndOf="@+id/ilConfirmPassword"
             app:layout_constraintStart_toStartOf="@+id/ilConfirmPassword"
             app:layout_constraintTop_toBottomOf="@+id/ilConfirmPassword" />
@@ -242,8 +244,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btSignIn"
+            app:layout_constraintTop_toBottomOf="@+id/btSignUp"
             app:layout_constraintVertical_bias="0.3" />
-
     </android.support.constraint.ConstraintLayout>
 </layout>
