@@ -1,95 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvVerificationCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:gravity="center_horizontal"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="@string/verification_code"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/tvVerificationMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:letterSpacing="0.03"
-        android:lineSpacingExtra="-7.7sp"
-        android:text="@string/verification_msg"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvVerificationCode" />
+        <import type="android.view.View" />
 
-    <TextView
-        android:id="@+id/tvMobileNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="+91 9XXXXXXXX"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvVerificationMsg" />
+        <variable
+            name="consumerOTPViewModel"
+            type="com.hangloose.viewmodel.ConsumerOTPViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvOTP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:letterSpacing="0.02"
-        android:lineSpacingExtra="-11.7sp"
-        android:text="@string/otp"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/pvOTP"
-        app:layout_constraintTop_toBottomOf="@+id/tvMobileNumber" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
-    <com.chaos.view.PinView
-        android:id="@+id/pvOTP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:inputType="number"
-        android:textColor="@android:color/white"
-        app:itemCount="4"
-        app:itemSpacing="10dp"
-        app:itemWidth="68dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOTP"
-        app:viewType="line" />
+        <TextView
+            android:id="@+id/tvVerificationCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="@string/verification_code"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/pvOTP"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/pvOTP"
-        app:layout_constraintTop_toBottomOf="@+id/pvOTP"
-        app:layout_constraintVertical_bias="0.089" />
+        <TextView
+            android:id="@+id/tvVerificationMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.03"
+            android:lineSpacingExtra="-7.7sp"
+            android:text="@string/verification_msg"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvVerificationCode" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvMobileNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="+91 9XXXXXXXX"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvVerificationMsg" />
+
+        <TextView
+            android:id="@+id/tvOTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:text="@string/otp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/pvOTP"
+            app:layout_constraintTop_toBottomOf="@+id/tvMobileNumber" />
+
+        <com.chaos.view.PinView
+            android:id="@+id/pvOTP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:inputType="number"
+            android:textColor="@android:color/white"
+            app:itemCount="4"
+            app:itemSpacing="10dp"
+            app:itemWidth="68dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvOTP"
+            app:viewType="line" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_sign_in"
+            android:onClick="@{consumerOTPViewModel::onNextClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/pvOTP"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/pvOTP"
+            app:layout_constraintTop_toBottomOf="@+id/pvOTP"
+            app:layout_constraintVertical_bias="0.089" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

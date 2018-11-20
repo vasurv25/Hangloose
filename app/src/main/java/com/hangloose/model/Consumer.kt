@@ -42,3 +42,8 @@ data class ConsumerLoginRequest(
     @SerializedName("id") var id: String?,
     @SerializedName("token") var token: String?
 ) : BaseModel()
+
+data class ConsumerOTPRequest(
+    @SerializedName("id") var id: String?,
+    @SerializedName("token") var token: String?
+) : BaseModel()

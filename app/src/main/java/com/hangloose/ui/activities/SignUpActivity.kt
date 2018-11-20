@@ -41,6 +41,7 @@ import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import retrofit2.Response
 import java.util.Arrays
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
@@ -111,9 +112,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
         mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
         mConsumerRegisterViewModel.loginResponse()
-            ?.observe(this, Observer<ConsumerAuthDetailResponse> { t ->
-//                var consumerId = t!!.consumerAuths.id
-//                var type = t!!.consumerAuths.type
+            ?.observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
+                var consumerId = t!!.body()!!.consumer!!.id
+                var headers = t!!.headers()
                 Log.i(TAG, "onChanged")
             })
     }

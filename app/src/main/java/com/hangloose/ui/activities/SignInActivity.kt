@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Response
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
@@ -76,14 +77,10 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         activitySignInBinding!!.consumerLoginViewModel = consumerLoginViewModel
         consumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
 
-        consumerLoginViewModel.loginResponse()?.observe(this, Observer<ConsumerAuthDetailResponse> {
-            fun onChanged(t: ConsumerAuthDetailResponse?) {
-                Log.i(TAG, "onChanged null")
-                if (t != null) {
-                    Log.i(TAG, "onChanged")
-                }
-            }
-        })
+        consumerLoginViewModel.loginResponse()
+            ?.observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
+                Log.i(TAG, "onChanged")
+            })
     }
 
     private fun intializeGoogleSignInOptions() {

@@ -14,6 +14,7 @@ import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import retrofit2.Response
 
 class ConsumerLoginViewModel : ViewModel() {
 
@@ -21,7 +22,7 @@ class ConsumerLoginViewModel : ViewModel() {
     private var consumerLoginRequest: ConsumerLoginRequest =
         ConsumerLoginRequest(AUTH_TYPE.MOBILE.name, null, null)
     private var consumerRegisterRequest: ConsumerCreateRequest? = null
-    private var consumerAuthDetailResponse: MutableLiveData<ConsumerAuthDetailResponse>? = null
+    private var consumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>>? = null
     private val TAG = "ConsumerLoginViewModel"
 
     val phoneWatcher = object : TextWatcher {
@@ -85,7 +86,7 @@ class ConsumerLoginViewModel : ViewModel() {
         }
     }
 
-    fun loginResponse(): MutableLiveData<ConsumerAuthDetailResponse>? {
+    fun loginResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>>? {
         return consumerAuthDetailResponse
     }
 

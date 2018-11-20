@@ -13,7 +13,7 @@ import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import retrofit2.Response
 
 class ConsumerRegisterViewModel : ViewModel() {
 
@@ -23,7 +23,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
     private var consumerRegisterRequest: ConsumerCreateRequest? =
         ConsumerCreateRequest(null, AUTH_TYPE.MOBILE.name, null)
-    private var consumerAuthDetailResponse: MutableLiveData<ConsumerAuthDetailResponse>? = null
+    private var consumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>> = MutableLiveData()
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -69,6 +69,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         consumerLoginRequest = googleLoginRequest
         verifyGoogleFbSignUp()
     }
+
     /**
      * method to call API to verify signIn credentials
      */
@@ -79,7 +80,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     Log.i(TAG, "success login")
-                    consumerAuthDetailResponse!!.value = response
+                    consumerAuthDetailResponse.value = response
                 }, {
                     Log.i(TAG, "error login")
                 })
@@ -98,8 +99,10 @@ class ConsumerRegisterViewModel : ViewModel() {
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
-                Log.i(TAG, """success register$response""")
-                consumerAuthDetailResponse!!.value = response
+                consumerAuthDetailResponse.value = response
+                Log.i(TAG, """success register$consumerAuthDetailResponse""")
+                val header = response.headers()
+                Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
             }, {
                 Log.i(TAG, "error register$it")
             })
@@ -107,7 +110,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         compositeDisposable!!.add(disposable)
     }
 
-    fun loginResponse(): MutableLiveData<ConsumerAuthDetailResponse>? {
+    fun loginResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>>? {
         return consumerAuthDetailResponse
     }
 
