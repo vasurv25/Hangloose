@@ -67,6 +67,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         spannable.setSpan(clickableSpan, 23, 30, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         textView4.text = spannable
         textView4.movementMethod = LinkMovementMethod.getInstance()
+
+        textForgotPassword.setOnClickListener(this)
     }
 
     private fun initBinding() {
@@ -76,6 +78,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
         consumerLoginViewModel.loginResponse()?.observe(this, Observer<ConsumerAuthDetailResponse> {
             fun onChanged(t: ConsumerAuthDetailResponse?) {
+                Log.i(TAG, "onChanged null")
                 if (t != null) {
                     Log.i(TAG, "onChanged")
                 }
@@ -137,6 +140,10 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 val signInIntent = mGoogleSignInClient?.signInIntent
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }
+            textForgotPassword.id -> {
+                val intent = Intent(this@SignInActivity, ForgotPasswordActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -179,6 +186,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             accessToken
         ) { jsonObject, response ->
             val email = jsonObject.getString("email")
+            val id = jsonObject.getString("id")
 
             consumerLoginViewModel.onFacebookSignInClick(
                 ConsumerLoginRequest(

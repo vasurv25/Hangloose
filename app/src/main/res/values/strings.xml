@@ -28,4 +28,11 @@
     <string name="verification_code">Verification Code</string>
     <string name="verification_msg">SMS verification code has been sent to:</string>
     <string name="otp">OTP</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="new_password">New Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="forget_password">Forgot Password?</string>
+    <string name="enter_your_registered_number">Please, enter your registered phone number</string>
+    <string name="next">Next</string>
 </resources>

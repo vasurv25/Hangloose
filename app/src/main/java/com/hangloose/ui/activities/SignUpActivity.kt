@@ -112,8 +112,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
         mConsumerRegisterViewModel.loginResponse()
             ?.observe(this, Observer<ConsumerAuthDetailResponse> { t ->
-                var consumerId = t!!.consumerAuths.id
-                var type = t!!.consumerAuths.type
+//                var consumerId = t!!.consumerAuths.id
+//                var type = t!!.consumerAuths.type
                 Log.i(TAG, "onChanged")
             })
     }

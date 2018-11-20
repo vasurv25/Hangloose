@@ -1,10 +1,10 @@
 package com.hangloose.ui.activities
 
 import android.os.Bundle
-import com.hangloose.R
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import com.hangloose.R
 import kotlinx.android.synthetic.main.activity_otp.*
 
 class OTPActivity : BaseActivity() {
