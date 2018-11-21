@@ -1,6 +1,7 @@
-package com.hangloose.model
+package com.hangloose.network
 
 import com.google.gson.annotations.SerializedName
+import com.hangloose.model.BaseModel
 
 data class Consumer(
     @SerializedName("address") val address: String?,
@@ -44,6 +45,6 @@ data class ConsumerLoginRequest(
 ) : BaseModel()
 
 data class ConsumerOTPRequest(
-    @SerializedName("id") var id: String?,
-    @SerializedName("token") var token: String?
+    @SerializedName("id") var mobileNo: String?,
+    @SerializedName("token") var otp: String?
 ) : BaseModel()

@@ -28,8 +28,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
-import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.network.ConsumerAuthDetailResponse
+import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel

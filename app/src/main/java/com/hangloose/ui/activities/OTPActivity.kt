@@ -8,7 +8,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.hangloose.R
-import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerDetails
+import com.hangloose.network.ConsumerAuthDetailResponse
+import com.hangloose.network.ConsumerOTPRequest
 import com.hangloose.viewmodel.ConsumerOTPViewModel
 import kotlinx.android.synthetic.main.activity_otp.*
 
@@ -16,6 +18,8 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG: String = "OTPActivity"
     private var mConsumerOtpViewModel: ConsumerOTPViewModel = ConsumerOTPViewModel()
+    private var mConsumerOTPRequest: ConsumerOTPRequest =
+        ConsumerOTPRequest(null, null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,6 +118,9 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         ) {
             val otp = "${otpEdittext1.text}${otpEdittext2.text}${otpEdittext3.text}${otpEdittext4.text}".toInt()
             Log.i(TAG, "onNextClick$otp")
+            mConsumerOTPRequest.otp = otp.toString()
+            mConsumerOTPRequest.mobileNo = ConsumerDetails.consumerData!!.mobile
+            mConsumerOtpViewModel.verifyOTP(mConsumerOTPRequest)
         }
     }
 }

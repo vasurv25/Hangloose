@@ -1,9 +1,5 @@
 package com.hangloose.network
 
-import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerCreateRequest
-import com.hangloose.model.ConsumerLoginRequest
-import com.hangloose.model.ConsumerOTPRequest
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.Body

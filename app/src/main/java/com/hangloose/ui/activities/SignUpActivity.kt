@@ -36,8 +36,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignUpBinding
-import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.model.ConsumerData
+import com.hangloose.model.ConsumerDetails
+import com.hangloose.network.ConsumerAuthDetailResponse
+import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -112,9 +114,14 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
         mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
         mConsumerRegisterViewModel.registerResponse().observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
-            var consumerId = t!!.body()!!.consumer!!.id
+            var consumerDetails = t!!.body()!!.consumer!!
+            var consumerAuth = t!!.body()!!.consumerAuths!!
+            var typeList = consumerAuth.map { it.type }
+            var type = typeList.get(0)
             var headers = t.headers()
-            Log.i(TAG, "onChanged")
+            val consumerData = ConsumerData(headers.get("X-AUTH-TOKEN").toString(), consumerDetails.existing, consumerDetails.id, consumerDetails.mobile, type)
+            ConsumerDetails.consumerData = consumerData
+            Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
             onNavigateOTPScreen()
         })
     }

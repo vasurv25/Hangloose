@@ -7,9 +7,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp
-import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerCreateRequest
-import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.network.ConsumerAuthDetailResponse
+import com.hangloose.network.ConsumerCreateRequest
+import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

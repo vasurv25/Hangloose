@@ -8,8 +8,8 @@ import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp.Companion.getApiService
 import com.hangloose.HanglooseApp.Companion.subscribeScheduler
-import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.network.ConsumerAuthDetailResponse
+import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.MESSAGE_KEY
 import com.hangloose.utils.PHONE_PASSWORD_CANNOT_BE_EMPTY
