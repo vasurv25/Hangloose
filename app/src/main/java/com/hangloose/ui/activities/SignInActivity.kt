@@ -38,7 +38,7 @@ import java.util.Arrays
 class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "SignInActivity"
-    private var consumerLoginViewModel: ConsumerLoginViewModel = ConsumerLoginViewModel()
+    private lateinit var consumerLoginViewModel: ConsumerLoginViewModel
     private var activitySignInBinding: ActivitySignInBinding? = null
     private var mFBCallbackManager: CallbackManager? = null
     var mProfileTracker: ProfileTracker? = null
@@ -74,9 +74,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private fun initBinding() {
         activitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
-        activitySignInBinding!!.consumerLoginViewModel = consumerLoginViewModel
         consumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
-
+        activitySignInBinding!!.consumerLoginViewModel = consumerLoginViewModel
         consumerLoginViewModel.loginResponse()
             ?.observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")

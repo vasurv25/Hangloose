@@ -52,7 +52,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var mFBCallbackManager: CallbackManager? = null
     private var mProfileTracker: ProfileTracker? = null
     private var mActivitySignUpBinding: ActivitySignUpBinding? = null
-    private var mConsumerRegisterViewModel: ConsumerRegisterViewModel = ConsumerRegisterViewModel()
+    private lateinit var mConsumerRegisterViewModel: ConsumerRegisterViewModel
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,14 +109,14 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun initBinding() {
         mActivitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
         mActivitySignUpBinding!!.clickHandler = this
-        mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
         mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
-        mConsumerRegisterViewModel.loginResponse()
-            ?.observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
-                var consumerId = t!!.body()!!.consumer!!.id
-                var headers = t!!.headers()
-                Log.i(TAG, "onChanged")
-            })
+        mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
+        mConsumerRegisterViewModel.loginResponse().observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
+            var consumerId = t!!.body()!!.consumer!!.id
+            var headers = t!!.headers()
+            Log.i(TAG, "onChanged")
+            onNavigateOTPScreen()
+        })
     }
 
     /**
@@ -228,8 +228,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun onNavigateToSignInClick() {
-        var intent = Intent(this@SignUpActivity, SignInActivity::class.java)
+    fun onNavigateOTPScreen() {
+        var intent = Intent(this@SignUpActivity, OTPActivity::class.java)
         startActivity(intent)
     }
 

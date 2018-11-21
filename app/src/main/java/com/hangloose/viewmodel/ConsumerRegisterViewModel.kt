@@ -18,12 +18,12 @@ import retrofit2.Response
 class ConsumerRegisterViewModel : ViewModel() {
 
     private val TAG = "ConsumerRegisterModel"
-    private var consumerLoginRequest: ConsumerLoginRequest =
+    private var mConsumerLoginRequest: ConsumerLoginRequest =
         ConsumerLoginRequest(AUTH_TYPE.MOBILE.name, null, null)
-    private var compositeDisposable: CompositeDisposable? = CompositeDisposable()
-    private var consumerRegisterRequest: ConsumerCreateRequest? =
+    private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
+    private var mConsumerRegisterRequest: ConsumerCreateRequest? =
         ConsumerCreateRequest(null, AUTH_TYPE.MOBILE.name, null)
-    private var consumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>> = MutableLiveData()
+    private var mConsumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>> = MutableLiveData()
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -33,7 +33,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            consumerRegisterRequest!!.authId = edit.toString()
+            mConsumerRegisterRequest!!.authId = edit.toString()
         }
     }
 
@@ -45,7 +45,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            consumerRegisterRequest!!.password = edit.toString()
+            mConsumerRegisterRequest!!.password = edit.toString()
         }
     }
 
@@ -60,13 +60,13 @@ class ConsumerRegisterViewModel : ViewModel() {
 
     fun onFacebookSignUpClick(fbLoginRequest: ConsumerLoginRequest) {
         Log.i(TAG, "onFacebookSignInClick")
-        consumerLoginRequest = fbLoginRequest
+        mConsumerLoginRequest = fbLoginRequest
         verifyGoogleFbSignUp()
     }
 
     fun onGoogleSignUpClick(googleLoginRequest: ConsumerLoginRequest) {
         Log.i(TAG, "onGoogleSignInClick")
-        consumerLoginRequest = googleLoginRequest
+        mConsumerLoginRequest = googleLoginRequest
         verifyGoogleFbSignUp()
     }
 
@@ -74,18 +74,17 @@ class ConsumerRegisterViewModel : ViewModel() {
      * method to call API to verify signIn credentials
      */
     private fun verifyGoogleFbSignUp() {
-        if (consumerLoginRequest.id != null && consumerLoginRequest.token != null) {
-            val disposable = HanglooseApp.getApiService()!!.consumerLogin(consumerLoginRequest)
+        if (mConsumerLoginRequest.id != null && mConsumerLoginRequest.token != null) {
+            val disposable = HanglooseApp.getApiService()!!.consumerLogin(mConsumerLoginRequest)
                 .subscribeOn(HanglooseApp.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     Log.i(TAG, "success login")
-                    consumerAuthDetailResponse.value = response
+                    mConsumerAuthDetailResponse.value = response
                 }, {
                     Log.i(TAG, "error login")
                 })
-
-            compositeDisposable!!.add(disposable)
+            mCompositeDisposable!!.add(disposable)
         } else {
         }
     }
@@ -94,34 +93,35 @@ class ConsumerRegisterViewModel : ViewModel() {
      * method to call API for registering the user credentials
      */
     private fun registerUser() {
-        Log.i(TAG, "Register request" + consumerRegisterRequest.toString())
-        val disposable = HanglooseApp.getApiService()!!.consumerRegister(consumerRegisterRequest!!)
+        Log.i(TAG, "Register request" + mConsumerRegisterRequest.toString())
+        val disposable = HanglooseApp.getApiService()!!.consumerRegister(mConsumerRegisterRequest!!)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
-                consumerAuthDetailResponse.value = response
-                Log.i(TAG, """success register$consumerAuthDetailResponse""")
+                mConsumerAuthDetailResponse.value = response
+                Log.i(TAG, """success register$mConsumerAuthDetailResponse""")
                 val header = response.headers()
                 Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
             }, {
                 Log.i(TAG, "error register$it")
             })
 
-        compositeDisposable!!.add(disposable)
+        mCompositeDisposable!!.add(disposable)
     }
 
-    fun loginResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>>? {
-        return consumerAuthDetailResponse
+    fun loginResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>> {
+        Log.i(TAG, "Live Data")
+        return mConsumerAuthDetailResponse
     }
 
     private fun unSubscribeFromObservable() {
-        if (compositeDisposable != null && !compositeDisposable!!.isDisposed) {
-            compositeDisposable!!.dispose()
+        if (mCompositeDisposable != null && !mCompositeDisposable!!.isDisposed) {
+            mCompositeDisposable!!.dispose()
         }
     }
 
     fun reset() {
         unSubscribeFromObservable()
-        compositeDisposable = null
+        mCompositeDisposable = null
     }
 }
