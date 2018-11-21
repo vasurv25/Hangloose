@@ -109,7 +109,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         mCompositeDisposable!!.add(disposable)
     }
 
-    fun loginResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>> {
+    fun registerResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>> {
         Log.i(TAG, "Live Data")
         return mConsumerAuthDetailResponse
     }

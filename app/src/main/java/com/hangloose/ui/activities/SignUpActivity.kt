@@ -111,9 +111,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mActivitySignUpBinding!!.clickHandler = this
         mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
         mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
-        mConsumerRegisterViewModel.loginResponse().observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
+        mConsumerRegisterViewModel.registerResponse().observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
             var consumerId = t!!.body()!!.consumer!!.id
-            var headers = t!!.headers()
+            var headers = t.headers()
             Log.i(TAG, "onChanged")
             onNavigateOTPScreen()
         })

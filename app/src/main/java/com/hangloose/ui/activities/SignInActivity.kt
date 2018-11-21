@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -24,13 +25,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Response
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.Arrays
@@ -77,9 +78,17 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         consumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
         activitySignInBinding!!.consumerLoginViewModel = consumerLoginViewModel
         consumerLoginViewModel.loginResponse()
-            ?.observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
+            .observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
             })
+        consumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
+            showSnackBar(
+                ll_signin,
+                t.toString(),
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.red)
+            )
+        })
     }
 
     private fun intializeGoogleSignInOptions() {

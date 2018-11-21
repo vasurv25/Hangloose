@@ -7,3 +7,9 @@ enum class AUTH_TYPE(val type: Int) {
     FACEBOOK(4),
     LINKEDIN(5)
 }
+
+val STATUS_OK = 200
+val STATUS_FORBIDDEN = 403
+
+val MESSAGE_KEY = "message"
+val REASON_KEY = "reason"

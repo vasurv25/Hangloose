@@ -35,4 +35,5 @@
     <string name="forget_password">Forgot Password?</string>
     <string name="enter_your_registered_number">Please, enter your registered phone number</string>
     <string name="next">Next</string>
+    <string name="enter_phone_and_password">Phone number or passsword cannot be empty</string>
 </resources>

@@ -4,7 +4,7 @@ import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.TextView
 
-private fun snackBar(view: View, msg: String, color: Int, bgColor: Int) {
+fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
     val snackbar = Snackbar.make(
         view, msg,
         Snackbar.LENGTH_LONG
@@ -14,6 +14,6 @@ private fun snackBar(view: View, msg: String, color: Int, bgColor: Int) {
     val textView =
         snackbarView.findViewById(android.support.design.R.id.snackbar_text) as TextView
     textView.setTextColor(color)
-    textView.textSize = 28f
+    textView.textSize = 14f
     snackbar.show()
 }
