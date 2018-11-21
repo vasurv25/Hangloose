@@ -97,9 +97,13 @@ class ConsumerRegisterViewModel : ViewModel() {
         val disposable = HanglooseApp.getApiService()!!.consumerRegister(mConsumerRegisterRequest!!)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                it -> it.body()!!.consumer!!.authType = AUTH_TYPE.MOBILE.name
+                return@map it
+            }
             .subscribe({ response ->
                 mConsumerAuthDetailResponse.value = response
-                Log.i(TAG, """success register$mConsumerAuthDetailResponse""")
+                Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
                 val header = response.headers()
                 Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
             }, {

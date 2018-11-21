@@ -1,21 +1,35 @@
 package com.hangloose.network
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.hangloose.model.BaseModel
 
 data class Consumer(
-    @SerializedName("address") val address: String?,
-    @SerializedName("createdAt") val createdAt: String?,
-    @SerializedName("dob") val dob: String?,
-    @SerializedName("email") val email: String?,
-    @SerializedName("existing") val existing: Boolean?,
-    @SerializedName("firstName") val firstName: String?,
-    @SerializedName("gender") val gender: String?,
-    @SerializedName("id") val id: String?,
-    @SerializedName("lastName") val lastName: String?,
-    @SerializedName("mobile") val mobile: String?,
-    @SerializedName("photo") val photo: String?,
-    @SerializedName("updatedAt") val updatedAt: String?
+    @SerializedName("address")
+    @Expose val address: String?,
+    @SerializedName("createdAt")
+    @Expose val createdAt: String?,
+    @SerializedName("dob")
+    @Expose val dob: String?,
+    @SerializedName("email")
+    @Expose val email: String?,
+    @SerializedName("existing")
+    @Expose val existing: Boolean?,
+    @SerializedName("firstName")
+    @Expose val firstName: String?,
+    @SerializedName("gender")
+    @Expose val gender: String?,
+    @SerializedName("id")
+    @Expose val id: String?,
+    @SerializedName("lastName")
+    @Expose val lastName: String?,
+    @SerializedName("mobile")
+    @Expose val mobile: String?,
+    @SerializedName("photo")
+    @Expose val photo: String?,
+    @SerializedName("updatedAt")
+    @Expose val updatedAt: String?,
+    var authType: String?
 ) : BaseModel()
 
 data class ConsumerAuth(

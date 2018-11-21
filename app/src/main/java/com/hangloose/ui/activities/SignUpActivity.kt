@@ -115,11 +115,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
         mConsumerRegisterViewModel.registerResponse().observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
             var consumerDetails = t!!.body()!!.consumer!!
-            var consumerAuth = t!!.body()!!.consumerAuths!!
-            var typeList = consumerAuth.map { it.type }
-            var type = typeList.get(0)
             var headers = t.headers()
-            val consumerData = ConsumerData(headers.get("X-AUTH-TOKEN").toString(), consumerDetails.existing, consumerDetails.id, consumerDetails.mobile, type)
+            val consumerData = ConsumerData(headers.get("X-AUTH-TOKEN").toString(), consumerDetails.existing, consumerDetails.id, consumerDetails.mobile, consumerDetails.authType)
             ConsumerDetails.consumerData = consumerData
             Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
             onNavigateOTPScreen()
