@@ -8,8 +8,12 @@
         <import type="android.view.View"/>
 
         <variable
-                name="consumerLoginViewModel"
-                type="com.hangloose.viewmodel.ConsumerLoginViewModel"/>
+            name="consumerLoginViewModel"
+            type="com.hangloose.viewmodel.ConsumerLoginViewModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.hangloose.ui.activities.SignInActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout

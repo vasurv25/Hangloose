@@ -17,10 +17,11 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ll_signup"
-            android:background="@drawable/background">
+        android:id="@+id/ll_signup"
+        android:onClick="@{clickHandler::onOutsideTouch}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
         <ImageView
                 android:id="@+id/ivClose"
@@ -145,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:ems="20"
                     android:hint="@string/your_phone"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:maxLength="10"
@@ -194,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:ems="20"
                     android:hint="@string/password"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:addTextChangedListener="@{consumerRegisterViewModel.passwordWatcher}"

@@ -33,12 +33,17 @@ import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.network.ConsumerAuthDetailResponse
 import com.hangloose.network.ConsumerLoginRequest
-import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.utils.LOGIN_VALID_PASSWORD
-import com.hangloose.utils.VALID_PHONE
-import com.hangloose.utils.showSnackBar
+import com.hangloose.utils.*
 import com.hangloose.viewmodel.ConsumerLoginViewModel
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_sign_in.btnFacebook
+import kotlinx.android.synthetic.main.activity_sign_in.btnGoogle
+import kotlinx.android.synthetic.main.activity_sign_in.btnSignInFB
+import kotlinx.android.synthetic.main.activity_sign_in.editPhone
+import kotlinx.android.synthetic.main.activity_sign_in.ll_signin
+import kotlinx.android.synthetic.main.activity_sign_in.textForgotPassword
+import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPassword
+import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPhone
+import kotlinx.android.synthetic.main.activity_sign_in.textView4
 import java.util.Arrays
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
@@ -90,6 +95,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private fun initBinding() {
         mActivitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
+        mActivitySignInBinding!!.clickHandler = this
         mConsumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
         mActivitySignInBinding!!.consumerLoginViewModel = mConsumerLoginViewModel
         mConsumerLoginViewModel.loginResponse()
@@ -244,6 +250,13 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     fun onNavigateToSignUpClick() {
         val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
         startActivity(intent)
+    }
+
+    /**
+     * method to dismiss keyboard on outside touch
+     */
+    fun onOutsideTouch(view: View) {
+        hideSoftKeyboard(this)
     }
 
     override fun onDestroy() {

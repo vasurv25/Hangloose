@@ -20,6 +20,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import com.facebook.AccessToken
@@ -46,8 +47,16 @@ import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
 import com.hangloose.utils.VALID_PASSWORD
 import com.hangloose.utils.VALID_PHONE
+import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.activity_sign_up.btnCustomSignInFB
+import kotlinx.android.synthetic.main.activity_sign_up.btnGoogleSignIn
+import kotlinx.android.synthetic.main.activity_sign_up.btnSignUpFB
+import kotlinx.android.synthetic.main.activity_sign_up.etPhone
+import kotlinx.android.synthetic.main.activity_sign_up.ilConfirmPassword
+import kotlinx.android.synthetic.main.activity_sign_up.ilPassword
+import kotlinx.android.synthetic.main.activity_sign_up.ilPhone
+import kotlinx.android.synthetic.main.activity_sign_up.tvSignUpClick
 import retrofit2.Response
 import java.util.Arrays
 
@@ -272,9 +281,26 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun onNavigateOTPScreen() {
+    private fun onNavigateOTPScreen() {
         var intent = Intent(this@SignUpActivity, OTPActivity::class.java)
         startActivity(intent)
+    }
+
+    /**
+     * method to dismiss keyboard on outside touch
+     */
+    fun onOutsideTouch(view: View) {
+        hideSoftKeyboard(this)
+    }
+
+    private fun enableFullScreen() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+    }
+
+    private fun disableFullScreen() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
     @SuppressLint("NewApi")
