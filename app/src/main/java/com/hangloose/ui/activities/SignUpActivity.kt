@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.databinding.Observable
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.text.Editable
 import android.text.Selection
@@ -41,6 +43,9 @@ import com.hangloose.model.ConsumerDetails
 import com.hangloose.network.ConsumerAuthDetailResponse
 import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
+import com.hangloose.utils.VALID_PASSWORD
+import com.hangloose.utils.VALID_PHONE
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import retrofit2.Response
@@ -113,13 +118,48 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mActivitySignUpBinding!!.clickHandler = this
         mConsumerRegisterViewModel = ViewModelProviders.of(this).get(ConsumerRegisterViewModel::class.java)
         mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
-        mConsumerRegisterViewModel.registerResponse().observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
-            var consumerDetails = t!!.body()!!.consumer!!
-            var headers = t.headers()
-            val consumerData = ConsumerData(headers.get("X-AUTH-TOKEN").toString(), consumerDetails.existing, consumerDetails.id, consumerDetails.mobile, consumerDetails.authType)
-            ConsumerDetails.consumerData = consumerData
-            Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
-            onNavigateOTPScreen()
+        mConsumerRegisterViewModel.registerResponse()
+            .observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
+                var consumerDetails = t!!.body()!!.consumer!!
+                var headers = t.headers()
+                val consumerData = ConsumerData(
+                    headers.get("X-AUTH-TOKEN").toString(),
+                    consumerDetails.existing,
+                    consumerDetails.id,
+                    consumerDetails.mobile,
+                    consumerDetails.authType
+                )
+                ConsumerDetails.consumerData = consumerData
+                Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
+                onNavigateOTPScreen()
+            })
+
+        mConsumerRegisterViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                ilPhone.isErrorEnabled = !(sender as ObservableBoolean).get()
+                if (ilPhone.isErrorEnabled) {
+                    ilPhone.error = VALID_PHONE
+                }
+            }
+        })
+        mConsumerRegisterViewModel.isPasswordValid.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                ilPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
+                if (ilPassword.isErrorEnabled) {
+                    ilPassword.error = VALID_PASSWORD
+                }
+            }
+        })
+        mConsumerRegisterViewModel.isConfirmPasswordValid.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                ilConfirmPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
+                if (ilConfirmPassword.isErrorEnabled) {
+                    ilConfirmPassword.error = PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
+                }
+            }
         })
     }
 

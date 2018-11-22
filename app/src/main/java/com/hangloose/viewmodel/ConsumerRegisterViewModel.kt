@@ -2,6 +2,7 @@ package com.hangloose.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -24,16 +25,21 @@ class ConsumerRegisterViewModel : ViewModel() {
     private var mConsumerRegisterRequest: ConsumerCreateRequest? =
         ConsumerCreateRequest(null, AUTH_TYPE.MOBILE.name, null)
     private var mConsumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>> = MutableLiveData()
+    private var mConfirmPassword: String? = null
+    var isPhoneValid = ObservableBoolean()
+    var isPasswordValid = ObservableBoolean()
+    var isConfirmPasswordValid = ObservableBoolean()
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            mConsumerRegisterRequest!!.authId = edit.toString()
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            mConsumerRegisterRequest!!.authId = edit.toString()
+            phoneValidate()
         }
     }
 
@@ -41,11 +47,25 @@ class ConsumerRegisterViewModel : ViewModel() {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            mConsumerRegisterRequest!!.password = edit.toString()
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            mConsumerRegisterRequest!!.password = edit.toString()
+            passwordValidate()
+        }
+    }
+
+    val confirmPasswordWatcher = object : TextWatcher {
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        }
+
+        override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            mConfirmPassword = edit.toString()
+        }
+
+        override fun afterTextChanged(edit: Editable?) {
+            confirmPasswordValidate()
         }
     }
 
@@ -55,7 +75,39 @@ class ConsumerRegisterViewModel : ViewModel() {
      */
     fun onSignUpClick(view: View) {
         Log.i(TAG, "onSignUpClick")
-        registerUser()
+        if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
+            registerUser()
+        }
+    }
+
+    private fun phoneValidate(): Boolean {
+        var isValid = !mConsumerRegisterRequest!!.authId.isNullOrEmpty()
+        if (isValid) {
+            isValid = mConsumerRegisterRequest!!.authId!!.length == 10
+        }
+        isPhoneValid.set(isValid)
+        isPhoneValid.notifyChange()
+        return isValid
+    }
+
+    private fun passwordValidate(): Boolean {
+        var isValid = !mConsumerRegisterRequest!!.password.isNullOrEmpty()
+        if (isValid) {
+            isValid = mConsumerRegisterRequest!!.password!!.length >= 6
+        }
+        isPasswordValid.set(isValid)
+        isPasswordValid.notifyChange()
+        return isValid
+    }
+
+    private fun confirmPasswordValidate(): Boolean {
+        var isValid = !mConfirmPassword.isNullOrEmpty()
+        if (isValid) {
+            isValid = mConsumerRegisterRequest!!.password == mConfirmPassword
+        }
+        isConfirmPasswordValid.set(isValid)
+        isConfirmPasswordValid.notifyChange()
+        return isValid
     }
 
     fun onFacebookSignUpClick(fbLoginRequest: ConsumerLoginRequest) {
@@ -97,8 +149,8 @@ class ConsumerRegisterViewModel : ViewModel() {
         val disposable = HanglooseApp.getApiService()!!.consumerRegister(mConsumerRegisterRequest!!)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                it -> it.body()!!.consumer!!.authType = AUTH_TYPE.MOBILE.name
+            .map { it ->
+                it.body()!!.consumer!!.authType = AUTH_TYPE.MOBILE.name
                 return@map it
             }
             .subscribe({ response ->

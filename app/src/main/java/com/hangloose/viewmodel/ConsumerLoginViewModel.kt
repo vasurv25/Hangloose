@@ -2,6 +2,7 @@ package com.hangloose.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,7 +13,6 @@ import com.hangloose.network.ConsumerAuthDetailResponse
 import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.MESSAGE_KEY
-import com.hangloose.utils.PHONE_PASSWORD_CANNOT_BE_EMPTY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONObject
@@ -26,16 +26,19 @@ class ConsumerLoginViewModel : ViewModel() {
     private var mConsumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>> = MutableLiveData()
     private val TAG = "ConsumerLoginViewModel"
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
+    var isPhoneValid = ObservableBoolean()
+    var isPasswordValid = ObservableBoolean()
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            mConsumerLoginRequest.id = edit.toString()
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            mConsumerLoginRequest.id = edit.toString()
+            phoneValidate()
         }
     }
 
@@ -43,21 +46,37 @@ class ConsumerLoginViewModel : ViewModel() {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            mConsumerLoginRequest.token = edit.toString()
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            mConsumerLoginRequest.token = edit.toString()
+            passwordValidate()
         }
     }
 
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
-        if (mConsumerLoginRequest.id.isNullOrEmpty() || mConsumerLoginRequest.token.isNullOrEmpty()) {
-            mShowErrorSnackBar.value = PHONE_PASSWORD_CANNOT_BE_EMPTY
-        } else {
+        if (phoneValidate() && passwordValidate()) {
             verifySignIn()
         }
+    }
+
+    private fun phoneValidate(): Boolean {
+        var isValid = !mConsumerLoginRequest.id.isNullOrEmpty()
+        if (isValid) {
+            isValid = mConsumerLoginRequest.id!!.length == 10
+        }
+        isPhoneValid.set(isValid)
+        isPhoneValid.notifyChange()
+        return isValid
+    }
+
+    private fun passwordValidate(): Boolean {
+        val isValid = !mConsumerLoginRequest.token.isNullOrEmpty()
+        isPasswordValid.set(isValid)
+        isPasswordValid.notifyChange()
+        return isValid
     }
 
     fun onFacebookSignInClick(fbLoginRequest: ConsumerLoginRequest) {

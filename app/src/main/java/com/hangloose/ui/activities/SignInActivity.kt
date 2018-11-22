@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.databinding.Observable
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.SpannableString
@@ -11,6 +13,7 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -31,6 +34,8 @@ import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.network.ConsumerAuthDetailResponse
 import com.hangloose.network.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.utils.LOGIN_VALID_PASSWORD
+import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
@@ -39,8 +44,8 @@ import java.util.Arrays
 class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "SignInActivity"
-    private lateinit var consumerLoginViewModel: ConsumerLoginViewModel
-    private var activitySignInBinding: ActivitySignInBinding? = null
+    private lateinit var mConsumerLoginViewModel: ConsumerLoginViewModel
+    private var mActivitySignInBinding: ActivitySignInBinding? = null
     private var mFBCallbackManager: CallbackManager? = null
     var mProfileTracker: ProfileTracker? = null
     private var mGoogleSignInClient: GoogleSignInClient? = null
@@ -51,6 +56,16 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         initBinding()
         intializeGoogleSignInOptions()
         signInWithFacebook()
+        editPhone.setOnTouchListener(View.OnTouchListener { _, event ->
+            val DRAWABLE_END = 2
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (editPhone.right - editPhone.compoundDrawables[DRAWABLE_END].bounds.width())) {
+                    editPhone.text.clear()
+                    return@OnTouchListener true
+                }
+            }
+            false
+        })
     }
 
     override fun init() {
@@ -74,20 +89,38 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initBinding() {
-        activitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
-        consumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
-        activitySignInBinding!!.consumerLoginViewModel = consumerLoginViewModel
-        consumerLoginViewModel.loginResponse()
+        mActivitySignInBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
+        mConsumerLoginViewModel = ViewModelProviders.of(this).get(ConsumerLoginViewModel::class.java)
+        mActivitySignInBinding!!.consumerLoginViewModel = mConsumerLoginViewModel
+        mConsumerLoginViewModel.loginResponse()
             .observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
             })
-        consumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
+        mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
                 ll_signin,
                 t.toString(),
                 ContextCompat.getColor(this, R.color.white),
                 ContextCompat.getColor(this, R.color.red)
             )
+        })
+        mConsumerLoginViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                textLayoutPhone.isErrorEnabled = !(sender as ObservableBoolean).get()
+                if (textLayoutPhone.isErrorEnabled) {
+                    textLayoutPhone.error = VALID_PHONE
+                }
+            }
+        })
+        mConsumerLoginViewModel.isPasswordValid.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                textLayoutPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
+                if (textLayoutPassword.isErrorEnabled) {
+                    textLayoutPassword.error = LOGIN_VALID_PASSWORD
+                }
+            }
         })
     }
 
@@ -172,7 +205,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         try {
             val account = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            consumerLoginViewModel.onGoogleSignInClick(
+            mConsumerLoginViewModel.onGoogleSignInClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.GOOGLE.name,
                     account!!.email,
@@ -193,7 +226,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             val email = jsonObject.getString("email")
             val id = jsonObject.getString("id")
 
-            consumerLoginViewModel.onFacebookSignInClick(
+            mConsumerLoginViewModel.onFacebookSignInClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.FACEBOOK.name,
                     email,
@@ -215,6 +248,6 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        consumerLoginViewModel.reset()
+        mConsumerLoginViewModel.reset()
     }
 }
