@@ -1,7 +1,6 @@
-package com.hangloose.network
+package com.hangloose.model
 
 import com.google.gson.annotations.SerializedName
-import com.hangloose.model.BaseModel
 
 data class Consumer(
     @SerializedName("address") val address: String?,

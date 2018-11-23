@@ -1,5 +1,10 @@
 package com.hangloose.network
 
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerCreateRequest
+import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.model.ConsumerOTPRequest
+import com.hangloose.model.ForgotPassword
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,4 +22,7 @@ interface ApiInf {
 
     @PATCH("consumers/{id}/{authType}/verified")
     fun consumerRegisterOTP(@Header("X_AUTH_TOKEN") header: String, @Path("id") consumerId: String, @Path("authType") authType: String, @Body consumerOTPRequest: ConsumerOTPRequest): Observable<Response<ConsumerAuthDetailResponse>>
+
+    @POST("consumers/{id}/initiateRestPassword")
+    fun forgotPassword(@Body forgotPassword: ForgotPassword)
 }

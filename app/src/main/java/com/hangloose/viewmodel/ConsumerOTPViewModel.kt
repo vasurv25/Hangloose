@@ -4,9 +4,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
 import com.hangloose.HanglooseApp
-import com.hangloose.model.ConsumerDetails
-import com.hangloose.network.ConsumerAuthDetailResponse
-import com.hangloose.network.ConsumerOTPRequest
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerOTPRequest
+import com.hangloose.ui.model.ConsumerDetails
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Response

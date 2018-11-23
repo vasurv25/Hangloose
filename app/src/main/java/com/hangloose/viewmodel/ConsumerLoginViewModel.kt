@@ -9,8 +9,8 @@ import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp.Companion.getApiService
 import com.hangloose.HanglooseApp.Companion.subscribeScheduler
-import com.hangloose.network.ConsumerAuthDetailResponse
-import com.hangloose.network.ConsumerLoginRequest
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -28,6 +28,7 @@ class ConsumerLoginViewModel : ViewModel() {
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
+    var setVisibility: Int = View.GONE
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -38,7 +39,7 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            phoneValidate()
+//            phoneValidate()
         }
     }
 
@@ -51,14 +52,15 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            passwordValidate()
+//            passwordValidate()
         }
     }
 
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
         if (phoneValidate() && passwordValidate()) {
-            mConsumerLoginRequest!!.id = "+91" + mConsumerLoginRequest!!.id
+            mConsumerLoginRequest.id = "+91" + mConsumerLoginRequest.id
+            setVisibility = View.VISIBLE
             verifySignIn()
         }
     }
@@ -100,6 +102,7 @@ class ConsumerLoginViewModel : ViewModel() {
             .subscribeOn(subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { response ->
+                setVisibility = View.GONE
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
                 } else {

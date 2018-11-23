@@ -39,10 +39,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignUpBinding
-import com.hangloose.model.ConsumerData
-import com.hangloose.model.ConsumerDetails
-import com.hangloose.network.ConsumerAuthDetailResponse
-import com.hangloose.network.ConsumerLoginRequest
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.ui.model.ConsumerData
+import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
 import com.hangloose.utils.VALID_PASSWORD
@@ -129,8 +129,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mActivitySignUpBinding!!.consumerRegisterViewModel = mConsumerRegisterViewModel
         mConsumerRegisterViewModel.registerResponse()
             .observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
-                var consumerDetails = t!!.body()!!.consumer!!
-                var headers = t.headers()
+                val consumerDetails = t!!.body()!!.consumer!!
+                val headers = t.headers()
                 val consumerData = ConsumerData(
                     headers.get("X-AUTH-TOKEN").toString(),
                     consumerDetails.existing,

@@ -8,9 +8,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.hangloose.R
-import com.hangloose.model.ConsumerDetails
-import com.hangloose.network.ConsumerAuthDetailResponse
-import com.hangloose.network.ConsumerOTPRequest
+import com.hangloose.ui.model.ConsumerDetails
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerOTPRequest
 import com.hangloose.viewmodel.ConsumerOTPViewModel
 import kotlinx.android.synthetic.main.activity_otp.*
 
@@ -24,7 +24,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
-        tvMobileNumber.text = "+91 " + ConsumerDetails.consumerData!!.mobile
+        tvMobileNumber.text = "+91 ${ConsumerDetails.consumerData!!.mobile}"
         initBinding()
     }
 

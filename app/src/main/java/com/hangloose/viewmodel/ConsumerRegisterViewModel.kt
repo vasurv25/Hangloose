@@ -9,9 +9,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp
-import com.hangloose.network.ConsumerAuthDetailResponse
-import com.hangloose.network.ConsumerCreateRequest
-import com.hangloose.network.ConsumerLoginRequest
+import com.hangloose.model.ConsumerAuthDetailResponse
+import com.hangloose.model.ConsumerCreateRequest
+import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,7 +30,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
     var isConfirmPasswordValid = ObservableBoolean()
-    var registerProgress: Boolean = false
+    var setVisibility: Int = View.GONE
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -41,7 +41,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            phoneValidate()
+//            phoneValidate()
         }
     }
 
@@ -54,7 +54,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            passwordValidate()
+//            passwordValidate()
         }
     }
 
@@ -67,7 +67,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            confirmPasswordValidate()
+//            confirmPasswordValidate()
         }
     }
 
@@ -78,7 +78,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun onSignUpClick(view: View) {
         Log.i(TAG, "onSignUpClick")
         if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
-            registerProgress = true
+            setVisibility = View.VISIBLE
             mConsumerRegisterRequest!!.authId = "+91" + mConsumerRegisterRequest!!.authId
             registerUser()
         }
@@ -137,7 +137,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                 .subscribe({ response ->
                     Log.i(TAG, "success login")
                     mConsumerAuthDetailResponse.value = response
-                    registerProgress = (false)
+                    setVisibility = View.GONE
                 }, {
                     Log.i(TAG, "error login")
                 })
