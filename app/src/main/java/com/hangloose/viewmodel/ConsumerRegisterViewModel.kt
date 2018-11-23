@@ -2,7 +2,6 @@ package com.hangloose.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.BindingAdapter
 import android.databinding.ObservableBoolean
 import android.text.Editable
 import android.text.TextWatcher
@@ -31,17 +30,18 @@ class ConsumerRegisterViewModel : ViewModel() {
     var isPasswordValid = ObservableBoolean()
     var isConfirmPasswordValid = ObservableBoolean()
     var setVisibility: Int = View.GONE
+    private lateinit var mPhoneNumber: String
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
         override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            mConsumerRegisterRequest!!.authId = edit.toString()
+            mPhoneNumber = edit.toString()
         }
 
         override fun afterTextChanged(edit: Editable?) {
-//            phoneValidate()
+            phoneValidate()
         }
     }
 
@@ -54,7 +54,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-//            passwordValidate()
+            passwordValidate()
         }
     }
 
@@ -67,7 +67,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-//            confirmPasswordValidate()
+            confirmPasswordValidate()
         }
     }
 
@@ -79,15 +79,15 @@ class ConsumerRegisterViewModel : ViewModel() {
         Log.i(TAG, "onSignUpClick")
         if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
             setVisibility = View.VISIBLE
-            mConsumerRegisterRequest!!.authId = "+91" + mConsumerRegisterRequest!!.authId
+            mConsumerRegisterRequest!!.authId = "+91$mPhoneNumber"
             registerUser()
         }
     }
 
     private fun phoneValidate(): Boolean {
-        var isValid = !mConsumerRegisterRequest!!.authId.isNullOrEmpty()
+        var isValid = !mPhoneNumber.isNullOrEmpty()
         if (isValid) {
-            isValid = mConsumerRegisterRequest!!.authId!!.length == 10
+            isValid = mPhoneNumber.length == 10
         }
         isPhoneValid.set(isValid)
         isPhoneValid.notifyChange()
@@ -184,10 +184,5 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun reset() {
         unSubscribeFromObservable()
         mCompositeDisposable = null
-    }
-
-    @BindingAdapter("bind:visibility")
-    fun setVisibility(view: View, visible: Boolean) {
-        view.visibility = if (visible) View.INVISIBLE else View.VISIBLE
     }
 }

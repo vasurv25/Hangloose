@@ -29,17 +29,18 @@ class ConsumerLoginViewModel : ViewModel() {
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
     var setVisibility: Int = View.GONE
+    private lateinit var mPhoneNumber: String
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         }
 
         override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            mConsumerLoginRequest.id = edit.toString()
+            mPhoneNumber = edit.toString()
         }
 
         override fun afterTextChanged(edit: Editable?) {
-//            phoneValidate()
+            phoneValidate()
         }
     }
 
@@ -52,23 +53,23 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-//            passwordValidate()
+            passwordValidate()
         }
     }
 
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
         if (phoneValidate() && passwordValidate()) {
-            mConsumerLoginRequest.id = "+91" + mConsumerLoginRequest.id
+            mConsumerLoginRequest!!.id = "+91$mPhoneNumber"
             setVisibility = View.VISIBLE
             verifySignIn()
         }
     }
 
     private fun phoneValidate(): Boolean {
-        var isValid = !mConsumerLoginRequest.id.isNullOrEmpty()
+        var isValid = !mPhoneNumber.isNullOrEmpty()
         if (isValid) {
-            isValid = mConsumerLoginRequest.id!!.length == 10
+            isValid = mPhoneNumber!!.length == 10
         }
         isPhoneValid.set(isValid)
         isPhoneValid.notifyChange()
