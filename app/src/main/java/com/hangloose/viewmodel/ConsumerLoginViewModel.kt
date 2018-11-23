@@ -58,6 +58,7 @@ class ConsumerLoginViewModel : ViewModel() {
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
         if (phoneValidate() && passwordValidate()) {
+            mConsumerLoginRequest!!.id = "+91" + mConsumerLoginRequest!!.id
             verifySignIn()
         }
     }

@@ -2,6 +2,7 @@ package com.hangloose.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.BindingAdapter
 import android.databinding.ObservableBoolean
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,6 +30,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
     var isConfirmPasswordValid = ObservableBoolean()
+    var registerProgress: Boolean = false
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -76,6 +78,8 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun onSignUpClick(view: View) {
         Log.i(TAG, "onSignUpClick")
         if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
+            registerProgress = true
+            mConsumerRegisterRequest!!.authId = "+91" + mConsumerRegisterRequest!!.authId
             registerUser()
         }
     }
@@ -133,6 +137,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                 .subscribe({ response ->
                     Log.i(TAG, "success login")
                     mConsumerAuthDetailResponse.value = response
+                    registerProgress = (false)
                 }, {
                     Log.i(TAG, "error login")
                 })
@@ -179,5 +184,10 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun reset() {
         unSubscribeFromObservable()
         mCompositeDisposable = null
+    }
+
+    @BindingAdapter("bind:visibility")
+    fun setVisibility(view: View, visible: Boolean) {
+        view.visibility = if (visible) View.INVISIBLE else View.VISIBLE
     }
 }
