@@ -12,8 +12,10 @@ import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerCreateRequest
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.json.JSONObject
 import retrofit2.Response
 
 class ConsumerRegisterViewModel : ViewModel() {
@@ -30,7 +32,8 @@ class ConsumerRegisterViewModel : ViewModel() {
     var isPasswordValid = ObservableBoolean()
     var isConfirmPasswordValid = ObservableBoolean()
     var setVisibility: Int = View.GONE
-    private lateinit var mPhoneNumber: String
+    private var mPhoneNumber: String? = null
+    var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -41,7 +44,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            phoneValidate()
+            //phoneValidate()
         }
     }
 
@@ -54,7 +57,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            passwordValidate()
+            //passwordValidate()
         }
     }
 
@@ -67,7 +70,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            confirmPasswordValidate()
+            //confirmPasswordValidate()
         }
     }
 
@@ -87,7 +90,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     private fun phoneValidate(): Boolean {
         var isValid = !mPhoneNumber.isNullOrEmpty()
         if (isValid) {
-            isValid = mPhoneNumber.length == 10
+            isValid = mPhoneNumber!!.length == 10
         }
         isPhoneValid.set(isValid)
         isPhoneValid.notifyChange()
@@ -117,27 +120,39 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun onFacebookSignUpClick(fbLoginRequest: ConsumerLoginRequest) {
         Log.i(TAG, "onFacebookSignInClick")
         mConsumerLoginRequest = fbLoginRequest
-        verifyGoogleFbSignUp()
+        verifyGoogleFbSignUp(AUTH_TYPE.FACEBOOK.name)
     }
 
     fun onGoogleSignUpClick(googleLoginRequest: ConsumerLoginRequest) {
         Log.i(TAG, "onGoogleSignInClick")
         mConsumerLoginRequest = googleLoginRequest
-        verifyGoogleFbSignUp()
+        verifyGoogleFbSignUp(AUTH_TYPE.GOOGLE.name)
     }
 
     /**
      * method to call API to verify signIn credentials
      */
-    private fun verifyGoogleFbSignUp() {
+    private fun verifyGoogleFbSignUp(name: String) {
         if (mConsumerLoginRequest.id != null && mConsumerLoginRequest.token != null) {
             val disposable = HanglooseApp.getApiService()!!.consumerLogin(mConsumerLoginRequest)
                 .subscribeOn(HanglooseApp.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map { it ->
+                    it.body()!!.consumer!!.authType = name
+                    return@map it
+                }
                 .subscribe({ response ->
-                    Log.i(TAG, "success login")
-                    mConsumerAuthDetailResponse.value = response
                     setVisibility = View.GONE
+                    Log.i(TAG, "success login")
+                    if (response.isSuccessful) {
+                        mConsumerAuthDetailResponse.value = response
+                        Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
+                        val header = response.headers()
+                        Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
+                    } else {
+                        val jObjError = JSONObject(response.errorBody()!!.string())
+                        mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                    }
                 }, {
                     Log.i(TAG, "error login")
                 })
@@ -159,10 +174,16 @@ class ConsumerRegisterViewModel : ViewModel() {
                 return@map it
             }
             .subscribe({ response ->
-                mConsumerAuthDetailResponse.value = response
-                Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
-                val header = response.headers()
-                Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
+                Log.i(TAG, "success login")
+                if (response.isSuccessful) {
+                    mConsumerAuthDetailResponse.value = response
+                    Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
+                    val header = response.headers()
+                    Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
+                } else {
+                    val jObjError = JSONObject(response.errorBody()!!.string())
+                    mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                }
             }, {
                 Log.i(TAG, "error register$it")
             })

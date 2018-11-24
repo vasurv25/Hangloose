@@ -7,8 +7,10 @@ import com.hangloose.HanglooseApp
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerOTPRequest
 import com.hangloose.ui.model.ConsumerDetails
+import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.json.JSONObject
 import retrofit2.Response
 
 class ConsumerOTPViewModel : ViewModel() {
@@ -16,6 +18,7 @@ class ConsumerOTPViewModel : ViewModel() {
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
     private var mConsumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>>? = MutableLiveData()
     private val TAG = "ConsumerOTPViewModel"
+    var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
 
     /**
      * method to call API to verify OTP
@@ -32,8 +35,13 @@ class ConsumerOTPViewModel : ViewModel() {
                 .subscribeOn(HanglooseApp.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
-                    Log.i(TAG, "success login")
-                    mConsumerAuthDetailResponse!!.value = response
+                    if (response.isSuccessful) {
+                        mConsumerAuthDetailResponse!!.value = response
+                        Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
+                    } else {
+                        val jObjError = JSONObject(response.errorBody()!!.string())
+                        mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                    }
                 }, {
                     Log.i(TAG, "error login")
                 })

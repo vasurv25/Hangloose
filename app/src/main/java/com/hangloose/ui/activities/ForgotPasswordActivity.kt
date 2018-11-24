@@ -10,6 +10,7 @@ import android.view.View
 import com.hangloose.R
 import com.hangloose.databinding.ActivityForgotPasswordBinding
 import com.hangloose.utils.VALID_PHONE
+import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.viewmodel.ForgotPasswordViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
@@ -41,5 +42,12 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     fun onCloseClick(view: View) {
         this@ForgotPasswordActivity.finish()
+    }
+
+    /**
+     * method to dismiss keyboard on outside touch
+     */
+    fun onOutsideTouch(view: View) {
+        hideSoftKeyboard(this)
     }
 }

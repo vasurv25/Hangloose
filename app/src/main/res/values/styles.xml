@@ -25,8 +25,8 @@
     </style>
 
     <style name="errorStyle">
-        <item name="android:textColor">@color/red</item>
-        <item name="android:textColorHint">@color/red</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
     </style>
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">

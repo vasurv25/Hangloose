@@ -3,9 +3,24 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="consumerLoginViewModel"
+            type="com.hangloose.viewmodel.ConsumerOTPViewModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.hangloose.ui.activities.OTPActivity" />
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/llOTP"
+        android:onClick="@{clickHandler::onOutsideTouch}"
         android:background="@drawable/background">
 
         <TextView

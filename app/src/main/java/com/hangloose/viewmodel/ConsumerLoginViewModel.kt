@@ -29,7 +29,7 @@ class ConsumerLoginViewModel : ViewModel() {
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
     var setVisibility: Int = View.GONE
-    private lateinit var mPhoneNumber: String
+    private var mPhoneNumber: String? = null
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -40,7 +40,7 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            phoneValidate()
+            //phoneValidate()
         }
     }
 
@@ -53,7 +53,7 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            passwordValidate()
+            //passwordValidate()
         }
     }
 

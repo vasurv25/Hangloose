@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.Selection
 import android.text.SpannableString
@@ -19,6 +20,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -48,6 +50,7 @@ import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
 import com.hangloose.utils.VALID_PASSWORD
 import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.btnCustomSignInFB
 import kotlinx.android.synthetic.main.activity_sign_up.btnGoogleSignIn
@@ -56,6 +59,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.etPhone
 import kotlinx.android.synthetic.main.activity_sign_up.ilConfirmPassword
 import kotlinx.android.synthetic.main.activity_sign_up.ilPassword
 import kotlinx.android.synthetic.main.activity_sign_up.ilPhone
+import kotlinx.android.synthetic.main.activity_sign_up.ll_signup
 import kotlinx.android.synthetic.main.activity_sign_up.tvSignUpClick
 import retrofit2.Response
 import java.util.Arrays
@@ -77,6 +81,16 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         intializeGoogleSignInOptions()
         signInWithFacebook()
         //setSpannableString()
+        etPhone.setOnTouchListener(View.OnTouchListener { _, event ->
+            val DRAWABLE_END = 2
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (etPhone.right - etPhone.compoundDrawables[DRAWABLE_END].bounds.width())) {
+                    etPhone.text.clear()
+                    return@OnTouchListener true
+                }
+            }
+            false
+        })
     }
 
     override fun init() {
@@ -142,6 +156,15 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
                 onNavigateOTPScreen()
             })
+
+        mConsumerRegisterViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
+            showSnackBar(
+                ll_signup,
+                t.toString(),
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.colorPrimary)
+            )
+        })
 
         mConsumerRegisterViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {

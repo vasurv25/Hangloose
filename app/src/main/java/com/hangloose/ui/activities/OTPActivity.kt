@@ -2,6 +2,7 @@ package com.hangloose.ui.activities
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,9 +12,9 @@ import com.hangloose.R
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerOTPRequest
+import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.viewmodel.ConsumerOTPViewModel
 import kotlinx.android.synthetic.main.activity_otp.*
-
 class OTPActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG: String = "OTPActivity"
@@ -24,7 +25,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
-        tvMobileNumber.text = "+91 ${ConsumerDetails.consumerData!!.mobile}"
+        tvMobileNumber.text = ConsumerDetails.consumerData!!.mobile
         initBinding()
     }
 
@@ -110,6 +111,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         mConsumerOtpViewModel.otpResponse()
             ?.observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
+                onNavigateLocationScreen()
             })
     }
 
@@ -123,5 +125,17 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             mConsumerOTPRequest.mobileNo = ConsumerDetails.consumerData!!.mobile
             mConsumerOtpViewModel.verifyOTP(mConsumerOTPRequest)
         }
+    }
+
+    private fun onNavigateLocationScreen() {
+        var intent = Intent(this@OTPActivity, EnableLocationActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * method to dismiss keyboard on outside touch
+     */
+    fun onOutsideTouch(view: View) {
+        hideSoftKeyboard(this)
     }
 }

@@ -39,15 +39,7 @@ import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.viewmodel.ConsumerLoginViewModel
-import kotlinx.android.synthetic.main.activity_sign_in.btnFacebook
-import kotlinx.android.synthetic.main.activity_sign_in.btnGoogle
-import kotlinx.android.synthetic.main.activity_sign_in.btnSignInFB
-import kotlinx.android.synthetic.main.activity_sign_in.editPhone
-import kotlinx.android.synthetic.main.activity_sign_in.ll_signin
-import kotlinx.android.synthetic.main.activity_sign_in.textForgotPassword
-import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPassword
-import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPhone
-import kotlinx.android.synthetic.main.activity_sign_in.textView4
+import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.Arrays
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
@@ -105,13 +97,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         mConsumerLoginViewModel.loginResponse()
             .observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
+                onNavigateLocationScreen()
             })
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
                 ll_signin,
                 t.toString(),
                 ContextCompat.getColor(this, R.color.white),
-                ContextCompat.getColor(this, R.color.red)
+                ContextCompat.getColor(this, R.color.colorPrimary)
             )
         })
         mConsumerLoginViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
@@ -261,6 +254,11 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
      */
     fun onOutsideTouch(view: View) {
         hideSoftKeyboard(this)
+    }
+
+    private fun onNavigateLocationScreen() {
+        var intent = Intent(this@SignInActivity, EnableLocationActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroy() {
