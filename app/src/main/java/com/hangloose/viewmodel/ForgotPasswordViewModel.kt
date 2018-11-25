@@ -1,5 +1,6 @@
 package com.hangloose.viewmodel
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.text.Editable
@@ -14,6 +15,7 @@ class ForgotPasswordViewModel : ViewModel() {
     val mForgotPasswordRequest = ForgotPassword(AUTH_TYPE.MOBILE.name, "")
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
     var isPhoneValid = ObservableBoolean()
+    var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

@@ -1,18 +1,22 @@
 package com.hangloose.ui.activities
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.hangloose.R
 import com.hangloose.databinding.ActivityForgotPasswordBinding
 import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ForgotPasswordViewModel
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_forgot_password.llForgotPass
+import kotlinx.android.synthetic.main.activity_forgot_password.textLayoutPhone
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
@@ -37,6 +41,14 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     textLayoutPhone.error = VALID_PHONE
                 }
             }
+        })
+        mForgotPasswordViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
+            showSnackBar(
+                llForgotPass,
+                t.toString(),
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.colorPrimary)
+            )
         })
     }
 

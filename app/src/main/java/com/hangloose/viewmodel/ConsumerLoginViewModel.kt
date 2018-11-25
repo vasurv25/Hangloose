@@ -102,7 +102,7 @@ class ConsumerLoginViewModel : ViewModel() {
         val disposable = getApiService()!!.consumerLogin(mConsumerLoginRequest)
             .subscribeOn(subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { response ->
+            .subscribe({ response ->
                 setVisibility = View.GONE
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
@@ -110,7 +110,10 @@ class ConsumerLoginViewModel : ViewModel() {
                     val jObjError = JSONObject(response.errorBody()!!.string())
                     mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
                 }
-            }
+            }, {
+                Log.i(TAG, "error login")
+                mShowErrorSnackBar.value = it.localizedMessage
+            })
         mCompositeDisposable!!.add(disposable)
     }
 

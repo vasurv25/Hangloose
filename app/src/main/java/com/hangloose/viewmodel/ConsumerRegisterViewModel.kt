@@ -155,6 +155,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                     }
                 }, {
                     Log.i(TAG, "error login")
+                    mShowErrorSnackBar.value = it.localizedMessage
                 })
             mCompositeDisposable!!.add(disposable)
         } else {
@@ -174,7 +175,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                 return@map it
             }
             .subscribe({ response ->
-                Log.i(TAG, "success login")
+                setVisibility = View.GONE
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
                     Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
@@ -186,6 +187,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                 }
             }, {
                 Log.i(TAG, "error register$it")
+                mShowErrorSnackBar.value = it.localizedMessage
             })
 
         mCompositeDisposable!!.add(disposable)

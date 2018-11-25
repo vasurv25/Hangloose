@@ -44,6 +44,7 @@ class ConsumerOTPViewModel : ViewModel() {
                     }
                 }, {
                     Log.i(TAG, "error login")
+                    mShowErrorSnackBar.value = it.localizedMessage
                 })
 
             mCompositeDisposable!!.add(disposable)
