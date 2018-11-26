@@ -28,10 +28,11 @@ class ConsumerRegisterViewModel : ViewModel() {
         ConsumerCreateRequest(null, AUTH_TYPE.MOBILE.name, null)
     private var mConsumerAuthDetailResponse: MutableLiveData<Response<ConsumerAuthDetailResponse>> = MutableLiveData()
     private var mConfirmPassword: String? = null
+    var isVisible = ObservableBoolean()
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
     var isConfirmPasswordValid = ObservableBoolean()
-    var setVisibility: Int = View.GONE
+
     private var mPhoneNumber: String? = null
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
 
@@ -81,7 +82,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun onSignUpClick(view: View) {
         Log.i(TAG, "onSignUpClick")
         if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
-            setVisibility = View.VISIBLE
+            isVisible.set(true)
             mConsumerRegisterRequest!!.authId = "+91$mPhoneNumber"
             registerUser()
         }
@@ -142,7 +143,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                     return@map it
                 }
                 .subscribe({ response ->
-                    setVisibility = View.GONE
+                    isVisible.set(false)
                     Log.i(TAG, "success login")
                     if (response.isSuccessful) {
                         mConsumerAuthDetailResponse.value = response
@@ -175,7 +176,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                 return@map it
             }
             .subscribe({ response ->
-                setVisibility = View.GONE
+                isVisible.set(false)
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
                     Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")

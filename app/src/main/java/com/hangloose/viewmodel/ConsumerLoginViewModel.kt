@@ -28,7 +28,7 @@ class ConsumerLoginViewModel : ViewModel() {
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
-    var setVisibility: Int = View.GONE
+    var isVisible = ObservableBoolean()
     private var mPhoneNumber: String? = null
 
     val phoneWatcher = object : TextWatcher {
@@ -60,8 +60,8 @@ class ConsumerLoginViewModel : ViewModel() {
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
         if (phoneValidate() && passwordValidate()) {
-            mConsumerLoginRequest!!.id = "+91$mPhoneNumber"
-            setVisibility = View.VISIBLE
+            mConsumerLoginRequest.id = "+91$mPhoneNumber"
+            isVisible.set(true)
             verifySignIn()
         }
     }
@@ -103,7 +103,7 @@ class ConsumerLoginViewModel : ViewModel() {
             .subscribeOn(subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
-                setVisibility = View.GONE
+                isVisible.set(false)
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
                 } else {
