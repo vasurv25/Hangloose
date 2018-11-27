@@ -33,13 +33,21 @@ import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
-import com.hangloose.utils.showSnackBar
+import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.LOGIN_VALID_PASSWORD
 import com.hangloose.utils.VALID_PHONE
-import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_sign_in.btnFacebook
+import kotlinx.android.synthetic.main.activity_sign_in.btnGoogle
+import kotlinx.android.synthetic.main.activity_sign_in.btnSignInFB
+import kotlinx.android.synthetic.main.activity_sign_in.editPhone
+import kotlinx.android.synthetic.main.activity_sign_in.ll_signin
+import kotlinx.android.synthetic.main.activity_sign_in.textForgotPassword
+import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPassword
+import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPhone
+import kotlinx.android.synthetic.main.activity_sign_in.textView4
 import java.util.Arrays
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
@@ -211,7 +219,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             mConsumerLoginViewModel.onGoogleSignInClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.GOOGLE.name,
-                    account!!.email,
+                    account!!.id,
                     account.idToken
                 )
             )
@@ -232,7 +240,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             mConsumerLoginViewModel.onFacebookSignInClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.FACEBOOK.name,
-                    email,
+                    accessToken.userId,
                     accessToken.token
                 )
             )

@@ -248,11 +248,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             accessToken
         ) { jsonObject, response ->
             val email = jsonObject.getString("email")
-
+            Log.i(TAG, """onFacebook success : ${accessToken.userId}""")
             mConsumerRegisterViewModel.onFacebookSignUpClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.FACEBOOK.name,
-                    email,
+                    accessToken.userId,
                     accessToken.token
                 )
             )
@@ -290,10 +290,11 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+            Log.i(TAG, """signInResult: ${account!!.id}""")
             mConsumerRegisterViewModel.onGoogleSignUpClick(
                 ConsumerLoginRequest(
                     AUTH_TYPE.GOOGLE.name,
-                    account!!.email,
+                    account!!.id,
                     account!!.idToken
                 )
             )

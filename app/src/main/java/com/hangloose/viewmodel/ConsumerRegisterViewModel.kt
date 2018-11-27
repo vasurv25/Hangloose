@@ -82,7 +82,6 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun onSignUpClick(view: View) {
         Log.i(TAG, "onSignUpClick")
         if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
-            isVisible.set(true)
             mConsumerRegisterRequest!!.authId = "+91$mPhoneNumber"
             registerUser()
         }
@@ -142,8 +141,13 @@ class ConsumerRegisterViewModel : ViewModel() {
                     it.body()!!.consumer!!.authType = name
                     return@map it
                 }
-                .subscribe({ response ->
+                .doOnSubscribe {
+                    isVisible.set(true)
+                }
+                .doFinally {
                     isVisible.set(false)
+                }
+                .subscribe({ response ->
                     Log.i(TAG, "success login")
                     if (response.isSuccessful) {
                         mConsumerAuthDetailResponse.value = response
@@ -175,8 +179,13 @@ class ConsumerRegisterViewModel : ViewModel() {
                 it.body()!!.consumer!!.authType = AUTH_TYPE.MOBILE.name
                 return@map it
             }
-            .subscribe({ response ->
+            .doOnSubscribe {
+                isVisible.set(true)
+            }
+            .doFinally {
                 isVisible.set(false)
+            }
+            .subscribe({ response ->
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
                     Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")

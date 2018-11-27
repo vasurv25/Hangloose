@@ -61,7 +61,6 @@ class ConsumerLoginViewModel : ViewModel() {
         Log.i(TAG, "onSignInClick")
         if (phoneValidate() && passwordValidate()) {
             mConsumerLoginRequest.id = "+91$mPhoneNumber"
-            isVisible.set(true)
             verifySignIn()
         }
     }
@@ -102,8 +101,13 @@ class ConsumerLoginViewModel : ViewModel() {
         val disposable = getApiService()!!.consumerLogin(mConsumerLoginRequest)
             .subscribeOn(subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ response ->
+            .doOnSubscribe {
+                isVisible.set(true)
+            }
+            .doFinally {
                 isVisible.set(false)
+            }
+            .subscribe({ response ->
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
                 } else {
