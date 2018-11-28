@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import com.hangloose.model.ForgotPassword
 import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.utils.validatePhoneNumber
 import io.reactivex.disposables.CompositeDisposable
 
 class ForgotPasswordViewModel : ViewModel() {
@@ -26,22 +27,18 @@ class ForgotPasswordViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-//            phoneValidate()
+            if (validatePhoneNumber(edit.toString())) {
+                isPhoneValid.set(true)
+                isPhoneValid.notifyChange()
+            }
         }
-    }
-
-    private fun phoneValidate(): Boolean {
-        var isValid = !mForgotPasswordRequest.id.isNullOrEmpty()
-        if (isValid) {
-            isValid = mForgotPasswordRequest.id!!.length == 10
-        }
-        isPhoneValid.set(isValid)
-        isPhoneValid.notifyChange()
-        return isValid
     }
 
     fun onNextClick(view: View) {
-        if (phoneValidate()) {
+        val validPhone = validatePhoneNumber(mForgotPasswordRequest.id)
+        isPhoneValid.set(validPhone)
+        isPhoneValid.notifyChange()
+        if (validPhone) {
             //action
         }
     }

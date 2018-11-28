@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.hangloose.model.ResetPassword
+import com.hangloose.utils.validatePassword
 
 class ResetPasswordViewModel : ViewModel() {
 
@@ -22,6 +23,10 @@ class ResetPasswordViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
+            if (validatePassword(edit.toString())) {
+                isPasswordValid.set(true)
+                isPasswordValid.notifyChange()
+            }
         }
     }
 
@@ -33,32 +38,23 @@ class ResetPasswordViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
+//            if (validateConfirmPassword(edit.toString())) {
+//                isConfirmPasswordValid.set(true)
+//                isConfirmPasswordValid.notifyChange()
+//            }
         }
     }
 
     fun onResetClick(view: View) {
-        if (passwordValidate() && confirmPasswordValidate()) {
-            //action
-        }
-    }
-
-    private fun passwordValidate(): Boolean {
-        var isValid = !mResetPasswordRequest!!.newPassword.isNullOrEmpty()
-        if (isValid) {
-            isValid = mResetPasswordRequest!!.newPassword!!.length >= 6
-        }
-        isPasswordValid.set(isValid)
-        isPasswordValid.notifyChange()
-        return isValid
-    }
-
-    private fun confirmPasswordValidate(): Boolean {
-        var isValid = !mResetPasswordRequest!!.newPassword.isNullOrEmpty()
-        if (isValid) {
-            isValid = mResetPasswordRequest!!.newPassword == mConfirmPassword
-        }
-        isConfirmPasswordValid.set(isValid)
-        isConfirmPasswordValid.notifyChange()
-        return isValid
+//        val validPassword = validatePassword()
+//        isPasswordValid.set(validPassword)
+//        isPasswordValid.notifyChange()
+//
+//        val validConfirmPassword = validateConfirmPassword()
+//        isConfirmPasswordValid.set(validConfirmPassword)
+//        isConfirmPasswordValid.notifyChange()
+//        if (validPassword && validConfirmPassword) {
+//            //action
+//        }
     }
 }

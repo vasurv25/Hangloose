@@ -13,6 +13,7 @@ import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.MESSAGE_KEY
+import com.hangloose.utils.validatePhoneNumber
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONObject
@@ -40,7 +41,10 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            //phoneValidate()
+            if (validatePhoneNumber(edit.toString())) {
+                isPhoneValid.set(true)
+                isPhoneValid.notifyChange()
+            }
         }
     }
 
@@ -53,26 +57,22 @@ class ConsumerLoginViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            //passwordValidate()
+            if (!edit.isNullOrEmpty()) {
+                isPasswordValid.set(true)
+                isPasswordValid.notifyChange()
+            }
         }
     }
 
     fun onSignInClick(view: View) {
         Log.i(TAG, "onSignInClick")
-        if (phoneValidate() && passwordValidate()) {
+        val validPhone = validatePhoneNumber(mPhoneNumber)
+        isPhoneValid.set(validPhone)
+        isPhoneValid.notifyChange()
+        if (validPhone && passwordValidate()) {
             mConsumerLoginRequest.id = "+91$mPhoneNumber"
             verifySignIn()
         }
-    }
-
-    private fun phoneValidate(): Boolean {
-        var isValid = !mPhoneNumber.isNullOrEmpty()
-        if (isValid) {
-            isValid = mPhoneNumber!!.length == 10
-        }
-        isPhoneValid.set(isValid)
-        isPhoneValid.notifyChange()
-        return isValid
     }
 
     private fun passwordValidate(): Boolean {

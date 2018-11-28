@@ -13,6 +13,9 @@ import com.hangloose.model.ConsumerCreateRequest
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.MESSAGE_KEY
+import com.hangloose.utils.validateConfirmPassword
+import com.hangloose.utils.validatePassword
+import com.hangloose.utils.validatePhoneNumber
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONObject
@@ -45,7 +48,10 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            //phoneValidate()
+            if (validatePhoneNumber(edit.toString())) {
+                isPhoneValid.set(true)
+                isPhoneValid.notifyChange()
+            }
         }
     }
 
@@ -58,7 +64,10 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            //passwordValidate()
+            if (validatePassword(edit.toString())) {
+                isPasswordValid.set(true)
+                isPasswordValid.notifyChange()
+            }
         }
     }
 
@@ -71,7 +80,10 @@ class ConsumerRegisterViewModel : ViewModel() {
         }
 
         override fun afterTextChanged(edit: Editable?) {
-            //confirmPasswordValidate()
+            if (validateConfirmPassword(mConsumerRegisterRequest!!.password, edit.toString())) {
+                isConfirmPasswordValid.set(true)
+                isConfirmPasswordValid.notifyChange()
+            }
         }
     }
 
@@ -81,40 +93,23 @@ class ConsumerRegisterViewModel : ViewModel() {
      */
     fun onSignUpClick(view: View) {
         Log.i(TAG, "onSignUpClick")
-        if (phoneValidate() && passwordValidate() && confirmPasswordValidate()) {
+
+        val validPhone = validatePhoneNumber(mPhoneNumber)
+        isPhoneValid.set(validPhone)
+        isPhoneValid.notifyChange()
+
+        val validPassword = validatePassword(mConsumerRegisterRequest!!.password)
+        isPasswordValid.set(validPhone)
+        isPasswordValid.notifyChange()
+
+        val validConfirmPassword = validateConfirmPassword(mConsumerRegisterRequest!!.password, mConfirmPassword)
+        isConfirmPasswordValid.set(validConfirmPassword)
+        isConfirmPasswordValid.notifyChange()
+
+        if (validPhone && validPassword && validConfirmPassword) {
             mConsumerRegisterRequest!!.authId = "+91$mPhoneNumber"
             registerUser()
         }
-    }
-
-    private fun phoneValidate(): Boolean {
-        var isValid = !mPhoneNumber.isNullOrEmpty()
-        if (isValid) {
-            isValid = mPhoneNumber!!.length == 10
-        }
-        isPhoneValid.set(isValid)
-        isPhoneValid.notifyChange()
-        return isValid
-    }
-
-    private fun passwordValidate(): Boolean {
-        var isValid = !mConsumerRegisterRequest!!.password.isNullOrEmpty()
-        if (isValid) {
-            isValid = mConsumerRegisterRequest!!.password!!.length >= 6
-        }
-        isPasswordValid.set(isValid)
-        isPasswordValid.notifyChange()
-        return isValid
-    }
-
-    private fun confirmPasswordValidate(): Boolean {
-        var isValid = !mConfirmPassword.isNullOrEmpty()
-        if (isValid) {
-            isValid = mConsumerRegisterRequest!!.password == mConfirmPassword
-        }
-        isConfirmPasswordValid.set(isValid)
-        isConfirmPasswordValid.notifyChange()
-        return isValid
     }
 
     fun onFacebookSignUpClick(fbLoginRequest: ConsumerLoginRequest) {

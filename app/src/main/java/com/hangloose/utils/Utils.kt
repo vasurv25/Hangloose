@@ -22,5 +22,29 @@ fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
 
 fun hideSoftKeyboard(activity: Activity) {
     val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager!!.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+    inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+}
+
+fun validatePhoneNumber(phoneNumber: String?): Boolean {
+    var isValid = !phoneNumber.isNullOrEmpty()
+    if (isValid) {
+        isValid = phoneNumber!!.length == 10
+    }
+    return isValid
+}
+
+fun validatePassword(password: String?): Boolean {
+    var isValid = !password.isNullOrEmpty()
+    if (isValid) {
+        isValid = password!!.length >= 6
+    }
+    return isValid
+}
+
+fun validateConfirmPassword(password: String?, confirmPassword: String?): Boolean {
+    var isValid = !confirmPassword.isNullOrEmpty()
+    if (isValid) {
+        isValid = password == confirmPassword
+    }
+    return isValid
 }
