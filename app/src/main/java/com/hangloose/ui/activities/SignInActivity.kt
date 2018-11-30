@@ -118,18 +118,20 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         mConsumerLoginViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                textLayoutPhone.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (textLayoutPhone.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     textLayoutPhone.error = VALID_PHONE
+                } else {
+                    textLayoutPhone.error = null
                 }
             }
         })
         mConsumerLoginViewModel.isPasswordValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                textLayoutPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (textLayoutPassword.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     textLayoutPassword.error = LOGIN_VALID_PASSWORD
+                } else {
+                    textLayoutPassword.error = null
                 }
             }
         })

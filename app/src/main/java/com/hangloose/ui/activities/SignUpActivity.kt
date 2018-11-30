@@ -169,27 +169,30 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         mConsumerRegisterViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                ilPhone.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (ilPhone.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     ilPhone.error = VALID_PHONE
+                } else {
+                    ilPhone.error = null
                 }
             }
         })
         mConsumerRegisterViewModel.isPasswordValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                ilPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (ilPassword.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     ilPassword.error = VALID_PASSWORD
+                } else {
+                    ilPassword.error = null
                 }
             }
         })
         mConsumerRegisterViewModel.isConfirmPasswordValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                ilConfirmPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (ilConfirmPassword.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     ilConfirmPassword.error = PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
+                } else {
+                    ilConfirmPassword.error = null
                 }
             }
         })

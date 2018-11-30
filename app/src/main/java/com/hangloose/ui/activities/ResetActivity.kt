@@ -13,7 +13,7 @@ import com.hangloose.databinding.ActivityResetBinding
 import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
 import com.hangloose.utils.VALID_PASSWORD
 import com.hangloose.viewmodel.ResetPasswordViewModel
-import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.activity_reset.*
 
 class ResetActivity : AppCompatActivity() {
 
@@ -33,18 +33,20 @@ class ResetActivity : AppCompatActivity() {
         mResetPasswordViewModel.isPasswordValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                ilPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (ilPassword.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     ilPassword.error = VALID_PASSWORD
+                } else {
+                    ilPassword.error = null
                 }
             }
         })
         mResetPasswordViewModel.isConfirmPasswordValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                ilConfirmPassword.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (ilConfirmPassword.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     ilConfirmPassword.error = PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
+                } else {
+                    ilConfirmPassword.error = null
                 }
             }
         })

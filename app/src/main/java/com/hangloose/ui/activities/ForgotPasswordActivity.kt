@@ -36,9 +36,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
         mForgotPasswordViewModel.isPhoneValid.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                textLayoutPhone.isErrorEnabled = !(sender as ObservableBoolean).get()
-                if (textLayoutPhone.isErrorEnabled) {
+                if (!(sender as ObservableBoolean).get()) {
                     textLayoutPhone.error = VALID_PHONE
+                } else {
+                    textLayoutPhone.error = null
                 }
             }
         })
