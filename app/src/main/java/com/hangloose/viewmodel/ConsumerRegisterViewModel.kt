@@ -115,27 +115,23 @@ class ConsumerRegisterViewModel : ViewModel() {
     fun onFacebookSignUpClick(fbLoginRequest: ConsumerLoginRequest) {
         Log.i(TAG, "onFacebookSignInClick")
         mConsumerLoginRequest = fbLoginRequest
-        verifyGoogleFbSignUp(AUTH_TYPE.FACEBOOK.name)
+        verifyGoogleFbSignUp()
     }
 
     fun onGoogleSignUpClick(googleLoginRequest: ConsumerLoginRequest) {
         Log.i(TAG, "onGoogleSignInClick")
         mConsumerLoginRequest = googleLoginRequest
-        verifyGoogleFbSignUp(AUTH_TYPE.GOOGLE.name)
+        verifyGoogleFbSignUp()
     }
 
     /**
      * method to call API to verify signIn credentials
      */
-    private fun verifyGoogleFbSignUp(name: String) {
+    private fun verifyGoogleFbSignUp() {
         if (mConsumerLoginRequest.id != null && mConsumerLoginRequest.token != null) {
             val disposable = HanglooseApp.getApiService()!!.consumerLogin(mConsumerLoginRequest)
                 .subscribeOn(HanglooseApp.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { it ->
-                    it.body()!!.consumer!!.authType = name
-                    return@map it
-                }
                 .doOnSubscribe {
                     isVisible.set(true)
                 }
@@ -146,7 +142,7 @@ class ConsumerRegisterViewModel : ViewModel() {
                     Log.i(TAG, "success login")
                     if (response.isSuccessful) {
                         mConsumerAuthDetailResponse.value = response
-                        Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
+                        Log.i(TAG, """success register${response.body()!!.consumer!!}""")
                         val header = response.headers()
                         Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
                     } else {
@@ -170,10 +166,6 @@ class ConsumerRegisterViewModel : ViewModel() {
         val disposable = HanglooseApp.getApiService()!!.consumerRegister(mConsumerRegisterRequest!!)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { it ->
-                it.body()!!.consumer!!.authType = AUTH_TYPE.MOBILE.name
-                return@map it
-            }
             .doOnSubscribe {
                 isVisible.set(true)
             }
@@ -183,7 +175,7 @@ class ConsumerRegisterViewModel : ViewModel() {
             .subscribe({ response ->
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
-                    Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
+                    Log.i(TAG, """success register${response.body()!!.consumer!!}""")
                     val header = response.headers()
                     Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
                 } else {

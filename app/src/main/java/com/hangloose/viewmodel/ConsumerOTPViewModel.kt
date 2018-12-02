@@ -6,6 +6,7 @@ import android.util.Log
 import com.hangloose.HanglooseApp
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerOTPRequest
+import com.hangloose.model.ConsumerOtpVerifyRequest
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,12 +24,12 @@ class ConsumerOTPViewModel : ViewModel() {
     /**
      * method to call API to verify OTP
      */
-    fun verifyOTP(consumerOTPRequest: ConsumerOTPRequest) {
+    fun verifyOtpForRegistration(consumerOTPRequest: ConsumerOTPRequest) {
         if (consumerOTPRequest.otp != null && consumerOTPRequest.mobileNo != null) {
             Log.i(TAG, "Consumer Details : ${ConsumerDetails.consumerData}")
             val disposable = HanglooseApp.getApiService()!!.consumerRegisterOTP(
                 ConsumerDetails.consumerData!!.headers!!,
-                ConsumerDetails.consumerData!!.id!!,
+                ConsumerDetails.consumerData!!.consumerId!!,
                 ConsumerDetails.consumerData!!.authType!!,
                 consumerOTPRequest
             )
@@ -37,7 +38,7 @@ class ConsumerOTPViewModel : ViewModel() {
                 .subscribe({ response ->
                     if (response.isSuccessful) {
                         mConsumerAuthDetailResponse!!.value = response
-                        Log.i(TAG, """success register${response.body()!!.consumer!!.authType}""")
+                        Log.i(TAG, """success register${response.body()!!.consumer!!}""")
                     } else {
                         val jObjError = JSONObject(response.errorBody()!!.string())
                         mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
@@ -47,6 +48,28 @@ class ConsumerOTPViewModel : ViewModel() {
                     mShowErrorSnackBar.value = it.localizedMessage
                 })
 
+            mCompositeDisposable!!.add(disposable)
+        } else {
+        }
+    }
+
+    fun verfiyOtpForResetPass(consumerVerifyOTPRequest: ConsumerOtpVerifyRequest) {
+        if (consumerVerifyOTPRequest.otp != null && consumerVerifyOTPRequest.id != null) {
+            val disposable = HanglooseApp.getApiService()!!.otpVerifyForgotPassword(consumerVerifyOTPRequest)
+                .subscribeOn(HanglooseApp.subscribeScheduler())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (response.isSuccessful) {
+                        mConsumerAuthDetailResponse!!.value = response
+                        Log.i(TAG, """success register${response.body()!!.consumer!!}""")
+                    } else {
+                        val jObjError = JSONObject(response.errorBody()!!.string())
+                        mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                    }
+                }, {
+                    Log.i(TAG, "error login")
+                    mShowErrorSnackBar.value = it.localizedMessage
+                })
             mCompositeDisposable!!.add(disposable)
         } else {
         }

@@ -15,6 +15,7 @@ import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -105,7 +106,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         mConsumerLoginViewModel.loginResponse()
             .observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
-                onNavigateLocationScreen()
+                //onNavigateLocationScreen()
+                Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
             })
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(

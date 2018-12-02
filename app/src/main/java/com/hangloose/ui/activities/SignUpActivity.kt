@@ -46,6 +46,7 @@ import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.ui.model.ConsumerData
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.AUTH_TYPE
+import com.hangloose.utils.OTP_RECOGNIZE
 import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
 import com.hangloose.utils.VALID_PASSWORD
 import com.hangloose.utils.VALID_PHONE
@@ -108,9 +109,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
+        /*mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
             handleSignInResult(it)
-        }
+        }*/
     }
 
     private fun makeSignInClickable() {
@@ -145,16 +146,22 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             .observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
                 val consumerDetails = t!!.body()!!.consumer!!
                 val headers = t.headers()
+                var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
+                var type = typeList.get(0)
                 val consumerData = ConsumerData(
                     headers.get("X-AUTH-TOKEN").toString(),
                     consumerDetails.existing,
                     consumerDetails.id,
                     consumerDetails.mobile,
-                    consumerDetails.authType
+                    type
                 )
                 ConsumerDetails.consumerData = consumerData
                 Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
-                onNavigateOTPScreen()
+                if (type.equals(AUTH_TYPE.MOBILE.name)) {
+                    onNavigateOTPScreen()
+                } else {
+                    Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
+                }
             })
 
         mConsumerRegisterViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
@@ -310,6 +317,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
     private fun onNavigateOTPScreen() {
         var intent = Intent(this@SignUpActivity, OTPActivity::class.java)
+        intent.putExtra(getString(R.string.key_otp_recognize), OTP_RECOGNIZE.REGISTER_OTP.name)
         startActivity(intent)
     }
 

@@ -3,43 +3,66 @@ package com.hangloose.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import com.hangloose.model.ForgotPassword
-import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.utils.validatePhoneNumber
+import android.util.Log
+import com.hangloose.HanglooseApp
+import com.hangloose.model.ConsumerResendOtpRequest
+import com.hangloose.utils.MESSAGE_KEY
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.json.JSONObject
+import retrofit2.Response
 
 class ForgotPasswordViewModel : ViewModel() {
 
-    val mForgotPasswordRequest = ForgotPassword(AUTH_TYPE.MOBILE.name, "")
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
-    var isPhoneValid = ObservableBoolean()
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
+    var isVisible = ObservableBoolean()
+    private var mConsumerResendOTPResponse: MutableLiveData<Response<Int>> = MutableLiveData()
+    private val TAG = "ForgotPasswordViewModel"
 
-    val phoneWatcher = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        }
-
-        override fun onTextChanged(edit: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            mForgotPasswordRequest.id = edit.toString()
-        }
-
-        override fun afterTextChanged(edit: Editable?) {
-            if (validatePhoneNumber(edit.toString())) {
-                isPhoneValid.set(true)
-                isPhoneValid.notifyChange()
+    /**
+     * method to call API for registering the user credentials
+     */
+    fun initiateForgotPassword(consumerResendOtpRequest: ConsumerResendOtpRequest) {
+        Log.i(TAG, "Initiate Forgot Password request" + consumerResendOtpRequest.toString())
+        val disposable = HanglooseApp.getApiService()!!.initiateForgotPassword(consumerResendOtpRequest!!)
+            .subscribeOn(HanglooseApp.subscribeScheduler())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                isVisible.set(true)
             }
+            .doFinally {
+                isVisible.set(false)
+            }
+            .subscribe({
+                if (it.code() == 200 || it.code() == 201 || it.code() == 204) {
+                    Log.i(TAG, "success register${it.code()}")
+                    mConsumerResendOTPResponse.value = it
+                } else {
+                    val jObjError = JSONObject(it.errorBody()!!.string())
+                    mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                }
+            }, {
+                Log.i(TAG, "error register$it")
+                mShowErrorSnackBar.value = it.localizedMessage
+            })
+
+        mCompositeDisposable!!.add(disposable)
+    }
+
+    fun initiateOTPResponse(): MutableLiveData<Response<Int>> {
+        Log.i(TAG, "Live Data")
+        return mConsumerResendOTPResponse
+    }
+
+    private fun unSubscribeFromObservable() {
+        if (mCompositeDisposable != null && !mCompositeDisposable!!.isDisposed) {
+            mCompositeDisposable!!.dispose()
         }
     }
 
-    fun onNextClick(view: View) {
-        val validPhone = validatePhoneNumber(mForgotPasswordRequest.id)
-        isPhoneValid.set(validPhone)
-        isPhoneValid.notifyChange()
-        if (validPhone) {
-            //action
-        }
+    fun reset() {
+        unSubscribeFromObservable()
+        mCompositeDisposable = null
     }
 }

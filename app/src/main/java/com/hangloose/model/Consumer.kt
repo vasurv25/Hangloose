@@ -15,9 +15,7 @@ data class Consumer(
     @SerializedName("mobile") val mobile: String?,
     @SerializedName("photo") val photo: String?,
     @SerializedName("updatedAt") val updatedAt: String?
-) : BaseModel() {
-    var authType: String? = null
-}
+) : BaseModel()
 
 data class ConsumerAuth(
     @SerializedName("consumerAuthStatus") val consumerAuthStatus: String?,
@@ -48,4 +46,22 @@ data class ConsumerLoginRequest(
 data class ConsumerOTPRequest(
     @SerializedName("id") var mobileNo: String?,
     @SerializedName("token") var otp: String?
+) : BaseModel()
+
+data class ConsumerResendOtpRequest(
+    @SerializedName("authType") var authType: String?,
+    @SerializedName("id") var id: String?,
+    @SerializedName("otpRequestReason") var otpRequestReason: String?
+) : BaseModel()
+
+data class ConsumerOtpVerifyRequest(
+    @SerializedName("id") var id: String?,
+    @SerializedName("otp") var otp: String?,
+    @SerializedName("otpRequestReason") var otpRequestReason: String?
+) : BaseModel()
+
+data class ConsumerOtpChangePasswordRequest(
+    @SerializedName("authType") var authType: String?,
+    @SerializedName("id") var id: String?,
+    @SerializedName("newPassword") var newPassword: String?
 ) : BaseModel()

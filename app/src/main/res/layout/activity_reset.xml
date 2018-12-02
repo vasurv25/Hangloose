@@ -10,15 +10,20 @@
         <variable
             name="resetPasswordViewModel"
             type="com.hangloose.viewmodel.ResetPasswordViewModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.hangloose.ui.activities.ResetActivity" />
     </data>
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/ll_Reset_Pass"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:onClick="@{clickHandler::onOutsideTouch}"
         android:background="@drawable/img_background"
         tools:context="com.hangloose.ui.activities.ResetActivity">
-
 
         <TextView
             android:id="@+id/textView"
@@ -26,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="8dp"
             android:text="@string/reset_password"
             android:textColor="@android:color/white"
@@ -64,12 +69,12 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="40dp"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/white"
             android:textColorHint="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ilPassword">
+            app:layout_constraintTop_toBottomOf="@+id/ilPassword"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/white">
 
             <EditText
                 android:layout_width="match_parent"
@@ -84,8 +89,9 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
@@ -94,15 +100,16 @@
             android:text="@string/cancel"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/button3"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ilConfirmPassword" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginEnd="40dp"
             android:background="#b51f1f"
             android:onClick="@{resetPasswordViewModel::onResetClick}"
             android:text="@string/reset"
@@ -110,6 +117,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button2"
             app:layout_constraintTop_toBottomOf="@+id/ilConfirmPassword" />
+
+        <include
+            android:id="@+id/pbLayout"
+            layout="@layout/activity_progress_overlay"
+            android:visibility="@{resetPasswordViewModel.isVisible? View.VISIBLE : View.GONE}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

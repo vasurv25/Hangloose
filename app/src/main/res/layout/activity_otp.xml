@@ -8,7 +8,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="consumerLoginViewModel"
+            name="consumerOTPViewModel"
             type="com.hangloose.viewmodel.ConsumerOTPViewModel" />
 
         <variable

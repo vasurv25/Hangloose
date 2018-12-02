@@ -4,28 +4,45 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.hangloose.R
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerOTPRequest
+import com.hangloose.model.ConsumerOtpVerifyRequest
+import com.hangloose.ui.model.ConsumerData
+import com.hangloose.utils.OTP_RECOGNIZE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerOTPViewModel
 import kotlinx.android.synthetic.main.activity_otp.*
+
 class OTPActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG: String = "OTPActivity"
     private var mConsumerOtpViewModel: ConsumerOTPViewModel = ConsumerOTPViewModel()
     private var mConsumerOTPRequest: ConsumerOTPRequest =
         ConsumerOTPRequest(null, null)
+    private var mConsumerVerifyOTPRequest: ConsumerOtpVerifyRequest =
+        ConsumerOtpVerifyRequest(null, null, "VERIFY_MOBILE")
+    private var mOtpNavigation: String? = null
+    private var mPhoneNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
-        tvMobileNumber.text = ConsumerDetails.consumerData!!.mobile
+        mOtpNavigation = intent.getStringExtra(getString(R.string.key_otp_recognize))
+        mPhoneNumber = intent.getStringExtra(getString(R.string.key_mobile_no))
+        if (mOtpNavigation!!.equals(OTP_RECOGNIZE.REGISTER_OTP)) {
+            tvMobileNumber.text = ConsumerDetails.consumerData!!.mobile
+        } else {
+            tvMobileNumber.text = mPhoneNumber
+        }
         initBinding()
     }
 
@@ -111,24 +128,66 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         mConsumerOtpViewModel.otpResponse()
             ?.observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
-                onNavigateLocationScreen()
+                if (mOtpNavigation.equals(OTP_RECOGNIZE.RESET_OTP.name)) {
+                    val consumerDetails = t!!.body()!!.consumer!!
+                    val headers = t.headers()
+                    var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
+                    var type = typeList.get(0)
+                    val consumerData = ConsumerData(
+                        headers.get("X-AUTH-TOKEN").toString(),
+                        null,
+                        consumerDetails.id,
+                        consumerDetails.mobile,
+                        type)
+                    ConsumerDetails.consumerData = consumerData
+                    Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
+                    onNavigateResetPasswordScreen()
+                } else {
+                    Toast.makeText(this, getString(R.string.user_registration_msg), Toast.LENGTH_LONG).show()
+                    onNavigateLocationScreen()
+                }
             })
+
+        mConsumerOtpViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
+            showSnackBar(
+                llOTP,
+                t.toString(),
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.colorPrimary)
+            )
+        })
     }
 
     private fun onNextClick() {
+        hideSoftKeyboard(this)
         if (otpEdittext1.text.isNotEmpty() && otpEdittext2.text.isNotEmpty() &&
             otpEdittext3.text.isNotEmpty() && otpEdittext4.text.isNotEmpty()
         ) {
             val otp = "${otpEdittext1.text}${otpEdittext2.text}${otpEdittext3.text}${otpEdittext4.text}".toInt()
             Log.i(TAG, "onNextClick$otp")
-            mConsumerOTPRequest.otp = otp.toString()
-            mConsumerOTPRequest.mobileNo = ConsumerDetails.consumerData!!.mobile
-            mConsumerOtpViewModel.verifyOTP(mConsumerOTPRequest)
+            if (mOtpNavigation!!.equals(OTP_RECOGNIZE.REGISTER_OTP.name)) {
+                mConsumerOTPRequest.otp = otp.toString()
+                Log.i(TAG, "Register OTP")
+                mConsumerOTPRequest.mobileNo = ConsumerDetails.consumerData!!.mobile
+                mConsumerOtpViewModel.verifyOtpForRegistration(mConsumerOTPRequest)
+            } else {
+                mConsumerVerifyOTPRequest.id = mPhoneNumber
+                Log.i(TAG, "mobileNo ${mConsumerVerifyOTPRequest.id}")
+                mConsumerVerifyOTPRequest.otp = otp.toString()
+                mConsumerVerifyOTPRequest.otpRequestReason = "VERIFY_MOBILE"
+                mConsumerOtpViewModel.verfiyOtpForResetPass(mConsumerVerifyOTPRequest)
+            }
         }
     }
 
     private fun onNavigateLocationScreen() {
-        var intent = Intent(this@OTPActivity, EnableLocationActivity::class.java)
+        var intent = Intent(this@OTPActivity, SignInActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    private fun onNavigateResetPasswordScreen() {
+        var intent = Intent(this@OTPActivity, ResetActivity::class.java)
         startActivity(intent)
     }
 
