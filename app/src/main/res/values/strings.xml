@@ -36,9 +36,11 @@
     <string name="enter_your_registered_number">Please, enter your registered phone number</string>
     <string name="next">Next</string>
     <string name="enter_phone_and_password">Phone number or passsword cannot be empty</string>
+    <string name="country_code">+91</string>
     <string name="key_otp_recognize">KEY_OTP_RECOGNIZE</string>
     <string name="key_mobile_no">KEY_MOBILE_NO</string>
     <string name="user_registration_msg">User registration successful</string>
     <string name="user_login_msg">User login successful</string>
-
+    <string name="permission">Permission</string>
+    <string name="enable">ENABLE</string>
 </resources>

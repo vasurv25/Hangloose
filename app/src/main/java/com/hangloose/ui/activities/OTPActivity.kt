@@ -2,25 +2,37 @@ package com.hangloose.ui.activities
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.hangloose.R
-import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerOTPRequest
 import com.hangloose.model.ConsumerOtpVerifyRequest
 import com.hangloose.ui.model.ConsumerData
+import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.OTP_RECOGNIZE
+import com.hangloose.utils.OTP_REQUEST_REASON
+import com.hangloose.utils.checkAndRequestPermissions
 import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerOTPViewModel
-import kotlinx.android.synthetic.main.activity_otp.*
+import kotlinx.android.synthetic.main.activity_otp.btnNext
+import kotlinx.android.synthetic.main.activity_otp.llOTP
+import kotlinx.android.synthetic.main.activity_otp.otpEdittext1
+import kotlinx.android.synthetic.main.activity_otp.otpEdittext2
+import kotlinx.android.synthetic.main.activity_otp.otpEdittext3
+import kotlinx.android.synthetic.main.activity_otp.otpEdittext4
+import kotlinx.android.synthetic.main.activity_otp.tvMobileNumber
 
 class OTPActivity : BaseActivity(), View.OnClickListener {
 
@@ -29,9 +41,19 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
     private var mConsumerOTPRequest: ConsumerOTPRequest =
         ConsumerOTPRequest(null, null)
     private var mConsumerVerifyOTPRequest: ConsumerOtpVerifyRequest =
-        ConsumerOtpVerifyRequest(null, null, "VERIFY_MOBILE")
+        ConsumerOtpVerifyRequest(null, null, OTP_REQUEST_REASON)
     private var mOtpNavigation: String? = null
     private var mPhoneNumber: String? = null
+    private var mSmsOtpMessage: String? = null
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action!!.equals("otp", ignoreCase = true)) {
+                mSmsOtpMessage = intent.getStringExtra("message")
+                Log.i(TAG, "Otp msg : $mSmsOtpMessage")
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +65,17 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         } else {
             tvMobileNumber.text = mPhoneNumber
         }
-        initBinding()
+        checkPermissionForSMS()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter("otp"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
     }
 
     private fun addTextWatcher() {
@@ -58,6 +90,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                otpEdittext1.setText(mSmsOtpMessage!![0].toString())
             }
         })
         otpEdittext2.addTextChangedListener(object : TextWatcher {
@@ -74,6 +107,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                otpEdittext2.setText(mSmsOtpMessage!![1].toString())
             }
         })
         otpEdittext3.addTextChangedListener(object : TextWatcher {
@@ -90,6 +124,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                otpEdittext3.setText(mSmsOtpMessage!![2].toString())
             }
         })
         otpEdittext4.addTextChangedListener(object : TextWatcher {
@@ -103,6 +138,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                otpEdittext4.setText(mSmsOtpMessage!![3].toString())
             }
         })
     }
@@ -138,7 +174,8 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
                         null,
                         consumerDetails.id,
                         consumerDetails.mobile,
-                        type)
+                        type
+                    )
                     ConsumerDetails.consumerData = consumerData
                     Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
                     onNavigateResetPasswordScreen()
@@ -196,5 +233,11 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
      */
     fun onOutsideTouch(view: View) {
         hideSoftKeyboard(this)
+    }
+
+    private fun checkPermissionForSMS() {
+        if (checkAndRequestPermissions(this)) {
+            initBinding()
+        }
     }
 }

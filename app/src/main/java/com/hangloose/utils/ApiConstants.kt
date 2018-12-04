@@ -18,3 +18,5 @@ enum class OTP_RECOGNIZE(val type: Int) {
     REGISTER_OTP(1),
     RESET_OTP(2)
 }
+
+val OTP_REQUEST_REASON = "VERIFY_MOBILE"
