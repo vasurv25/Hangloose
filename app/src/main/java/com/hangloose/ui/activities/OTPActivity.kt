@@ -1,11 +1,13 @@
 package com.hangloose.ui.activities
 
+import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
@@ -22,6 +24,7 @@ import com.hangloose.ui.model.ConsumerData
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.OTP_RECOGNIZE
 import com.hangloose.utils.OTP_REQUEST_REASON
+import com.hangloose.utils.REQUEST_ID_MULTIPLE_PERMISSIONS
 import com.hangloose.utils.checkAndRequestPermissions
 import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.utils.showSnackBar
@@ -65,6 +68,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         } else {
             tvMobileNumber.text = mPhoneNumber
         }
+        initBinding()
         checkPermissionForSMS()
     }
 
@@ -156,6 +160,23 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
+        when (requestCode) {
+            REQUEST_ID_MULTIPLE_PERMISSIONS -> {
+                for (i in 0 until permissions.size) {
+                    var permission = permissions[i]
+                    var grantResult = grantResults[i]
+                    if (permission.equals(Manifest.permission.SEND_SMS) && grantResult == PackageManager.PERMISSION_GRANTED) {
+                        Log.i(TAG, "onRequestPermissionsResult")
+                    }
+                }
+                return
+            }
+        }
+    }
+
     /**
      * method to intialize data binding with view
      */
@@ -236,8 +257,13 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkPermissionForSMS() {
-        if (checkAndRequestPermissions(this)) {
-            initBinding()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission_group.SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Log.i(TAG, "Permission not granted")
+            checkAndRequestPermissions(this)
         }
     }
 }

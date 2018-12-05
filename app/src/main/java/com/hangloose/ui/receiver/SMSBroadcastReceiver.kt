@@ -14,7 +14,7 @@ class SMSBroadcastReceiver : BroadcastReceiver() {
     val sms = SmsManager.getDefault()
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        val bundle = intent!!.getExtras()
+        val bundle = intent!!.extras
 
         try {
 
