@@ -1,11 +1,8 @@
 package com.hangloose.utils
 
-import android.Manifest
 import android.app.Activity
-import android.content.pm.PackageManager
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -53,30 +50,10 @@ fun validateConfirmPassword(password: String?, confirmPassword: String?): Boolea
     return isValid
 }
 
-fun checkAndRequestPermissions(activity: Activity): Boolean {
-    val permissionSendMessage = ContextCompat.checkSelfPermission(
+fun requestPermissionForOtp(activity: Activity) {
+    ActivityCompat.requestPermissions(
         activity,
-        Manifest.permission.SEND_SMS
+        arrayOf(android.Manifest.permission.RECEIVE_SMS),
+        REQUEST_PERMISSIONS
     )
-    val receiveSMS = ContextCompat.checkSelfPermission(activity, Manifest.permission.RECEIVE_SMS)
-    val readSMS = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_SMS)
-    val listPermissionsNeeded = ArrayList<String>()
-    if (receiveSMS != PackageManager.PERMISSION_GRANTED) {
-        listPermissionsNeeded.add(Manifest.permission.RECEIVE_MMS)
-    }
-    if (readSMS != PackageManager.PERMISSION_GRANTED) {
-        listPermissionsNeeded.add(Manifest.permission.READ_SMS)
-    }
-    if (permissionSendMessage != PackageManager.PERMISSION_GRANTED) {
-        listPermissionsNeeded.add(Manifest.permission.SEND_SMS)
-    }
-    if (!listPermissionsNeeded.isEmpty()) {
-        ActivityCompat.requestPermissions(
-            activity,
-            listPermissionsNeeded.toTypedArray(),
-            REQUEST_ID_MULTIPLE_PERMISSIONS
-        )
-        return false
-    }
-    return true
 }

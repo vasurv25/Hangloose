@@ -48,9 +48,11 @@ import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.OTP_RECOGNIZE
 import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
+import com.hangloose.utils.REQUEST_PERMISSIONS
 import com.hangloose.utils.VALID_PASSWORD
 import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.requestPermissionForOtp
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.btnCustomSignInFB
@@ -114,6 +116,16 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }*/
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
+        when (requestCode) {
+            REQUEST_PERMISSIONS -> {
+                onNavigateOTPScreen()
+            }
+        }
+    }
+
     private fun makeSignInClickable() {
         val spannable = SpannableString(resources.getString(R.string.already_have_an_account))
         val clickableSpan = object : ClickableSpan() {
@@ -158,7 +170,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 ConsumerDetails.consumerData = consumerData
                 Log.i(TAG, """onChanged : ${ConsumerDetails.consumerData}""")
                 if (type.equals(AUTH_TYPE.MOBILE.name)) {
-                    onNavigateOTPScreen()
+                    requestPermissionForOtp(this)
                 } else {
                     Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
                 }

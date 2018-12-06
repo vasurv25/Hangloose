@@ -1,13 +1,11 @@
 package com.hangloose.ui.activities
 
-import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
@@ -15,6 +13,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.hangloose.R
 import com.hangloose.model.ConsumerAuthDetailResponse
@@ -24,8 +23,6 @@ import com.hangloose.ui.model.ConsumerData
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.OTP_RECOGNIZE
 import com.hangloose.utils.OTP_REQUEST_REASON
-import com.hangloose.utils.REQUEST_ID_MULTIPLE_PERMISSIONS
-import com.hangloose.utils.checkAndRequestPermissions
 import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerOTPViewModel
@@ -53,10 +50,18 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action!!.equals("otp", ignoreCase = true)) {
                 mSmsOtpMessage = intent.getStringExtra("message")
+                val charArray = mSmsOtpMessage!!.toCharArray()
+                for (i in charArray.indices) {
+                    mEditTextArray[i].setText(charArray[i].toString())
+                    mEditTextArray[i].setSelection(mEditTextArray[i].length())
+                }
+                onNextClick()
                 Log.i(TAG, "Otp msg : $mSmsOtpMessage")
             }
         }
     }
+
+    private val mEditTextArray = ArrayList<EditText>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +74,11 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             tvMobileNumber.text = mPhoneNumber
         }
         initBinding()
-        checkPermissionForSMS()
+
+        mEditTextArray.add(otpEdittext1)
+        mEditTextArray.add(otpEdittext2)
+        mEditTextArray.add(otpEdittext3)
+        mEditTextArray.add(otpEdittext4)
     }
 
     override fun onResume() {
@@ -94,7 +103,6 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                otpEdittext1.setText(mSmsOtpMessage!![0].toString())
             }
         })
         otpEdittext2.addTextChangedListener(object : TextWatcher {
@@ -111,7 +119,6 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                otpEdittext2.setText(mSmsOtpMessage!![1].toString())
             }
         })
         otpEdittext3.addTextChangedListener(object : TextWatcher {
@@ -128,7 +135,6 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                otpEdittext3.setText(mSmsOtpMessage!![2].toString())
             }
         })
         otpEdittext4.addTextChangedListener(object : TextWatcher {
@@ -142,7 +148,6 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                otpEdittext4.setText(mSmsOtpMessage!![3].toString())
             }
         })
     }
@@ -160,23 +165,6 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
-        when (requestCode) {
-            REQUEST_ID_MULTIPLE_PERMISSIONS -> {
-                for (i in 0 until permissions.size) {
-                    var permission = permissions[i]
-                    var grantResult = grantResults[i]
-                    if (permission.equals(Manifest.permission.SEND_SMS) && grantResult == PackageManager.PERMISSION_GRANTED) {
-                        Log.i(TAG, "onRequestPermissionsResult")
-                    }
-                }
-                return
-            }
-        }
-    }
-
     /**
      * method to intialize data binding with view
      */
@@ -188,7 +176,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
                 if (mOtpNavigation.equals(OTP_RECOGNIZE.RESET_OTP.name)) {
                     val consumerDetails = t!!.body()!!.consumer!!
                     val headers = t.headers()
-                    var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
+                    var typeList = t.body()!!.consumerAuths!!.map { it.type }
                     var type = typeList.get(0)
                     val consumerData = ConsumerData(
                         headers.get("X-AUTH-TOKEN").toString(),
@@ -223,7 +211,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         ) {
             val otp = "${otpEdittext1.text}${otpEdittext2.text}${otpEdittext3.text}${otpEdittext4.text}".toInt()
             Log.i(TAG, "onNextClick$otp")
-            if (mOtpNavigation!!.equals(OTP_RECOGNIZE.REGISTER_OTP.name)) {
+            if (mOtpNavigation!! == OTP_RECOGNIZE.REGISTER_OTP.name) {
                 mConsumerOTPRequest.otp = otp.toString()
                 Log.i(TAG, "Register OTP")
                 mConsumerOTPRequest.mobileNo = ConsumerDetails.consumerData!!.mobile
@@ -254,16 +242,5 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
      */
     fun onOutsideTouch(view: View) {
         hideSoftKeyboard(this)
-    }
-
-    private fun checkPermissionForSMS() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission_group.SMS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.i(TAG, "Permission not granted")
-            checkAndRequestPermissions(this)
-        }
     }
 }

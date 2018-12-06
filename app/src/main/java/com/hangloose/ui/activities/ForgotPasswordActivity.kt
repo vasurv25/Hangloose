@@ -11,14 +11,17 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import com.hangloose.R
 import com.hangloose.databinding.ActivityForgotPasswordBinding
 import com.hangloose.model.ConsumerResendOtpRequest
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.OTP_RECOGNIZE
+import com.hangloose.utils.REQUEST_PERMISSIONS
 import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.requestPermissionForOtp
 import com.hangloose.utils.showSnackBar
 import com.hangloose.utils.validatePhoneNumber
 import com.hangloose.viewmodel.ForgotPasswordViewModel
@@ -28,6 +31,7 @@ import retrofit2.Response
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
+    private val TAG: String = "ForgotPasswordActivity"
     private var mActivityForgotPasswordBinding: ActivityForgotPasswordBinding? = null
     private lateinit var mForgotPasswordViewModel: ForgotPasswordViewModel
     private var mPhoneNumber: String? = null
@@ -40,6 +44,16 @@ class ForgotPasswordActivity : AppCompatActivity() {
         initBinding()
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
+        when (requestCode) {
+            REQUEST_PERMISSIONS -> {
+                onNavigateOTPScreen()
+            }
+        }
+    }
+
     private fun initBinding() {
         mActivityForgotPasswordBinding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password)
         mActivityForgotPasswordBinding!!.clickHandler = this
@@ -47,7 +61,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         mActivityForgotPasswordBinding!!.forgotPasswordViewModel = mForgotPasswordViewModel
         mForgotPasswordViewModel.initiateOTPResponse()
             .observe(this, Observer<Response<Int>> {
-                onNavigateOTPScreen()
+                requestPermissionForOtp(this)
             })
 
         isPhoneValid.addOnPropertyChangedCallback(object :
