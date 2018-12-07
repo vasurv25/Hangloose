@@ -106,7 +106,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         mConsumerLoginViewModel.loginResponse()
             .observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
-                //onNavigateLocationScreen()
+                onNavigateAdventuresScreen()
                 Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
             })
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
@@ -268,8 +268,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         hideSoftKeyboard(this)
     }
 
-    private fun onNavigateLocationScreen() {
-        var intent = Intent(this@SignInActivity, EnableLocationActivity::class.java)
+    private fun onNavigateAdventuresScreen() {
+        var intent = Intent(this@SignInActivity, SelectionActivity::class.java)
         startActivity(intent)
     }
 

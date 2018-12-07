@@ -72,7 +72,9 @@ dependencies {
     ktlint "com.github.shyiko:ktlint:0.15.0"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     // retrofit library for network call
     implementation "com.squareup.retrofit2:retrofit:$retrofitLibraryVersion"
@@ -90,6 +92,8 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    // Page indicator for ViewPager
+    implementation 'me.relex:circleindicator:1.2.2@aar'
 }
 
 task ktlint(type: JavaExec, group: "verification") {
