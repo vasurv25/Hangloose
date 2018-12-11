@@ -11,14 +11,40 @@ import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
 import com.hangloose.ui.adapter.AdventuresAdapter
+import com.hangloose.ui.model.ActivitiesState
 
 class AdventuresFragment : Fragment() {
 
     private var TAG = "AdventuresFragment"
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
+    private var mContentList: ArrayList<ActivitiesState> = ArrayList()
 
-    private val mContentList = arrayOf(
+    private val mList = arrayOf(
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
+        R.drawable.morning_meal,
         R.drawable.morning_meal,
         R.drawable.morning_meal,
         R.drawable.morning_meal,
@@ -52,7 +78,14 @@ class AdventuresFragment : Fragment() {
         Log.i(TAG, "initRecyclerView")
         val layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView!!.layoutManager = layoutManager
-        var adapter = AdventuresAdapter(mContext, mContentList)
+        var adapter = AdventuresAdapter(mContext, getData())
         mRecyclerView!!.adapter = adapter
+    }
+
+    private fun getData(): ArrayList<ActivitiesState> {
+        for (i in 0 until mList.size) {
+            mContentList.add(ActivitiesState(R.drawable.morning_meal))
+        }
+        return mContentList
     }
 }

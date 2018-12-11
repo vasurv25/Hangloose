@@ -11,14 +11,47 @@ import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
 import com.hangloose.ui.adapter.ActivitiesAdapter
+import com.hangloose.ui.model.ActivitiesState
 
 class ActivitiesFragment : Fragment() {
 
     private var TAG = "ActivitiesFragment"
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
-
-    private val mContentList = arrayOf(
+    private var mContentList: ArrayList<ActivitiesState> = ArrayList()
+    private var mList = arrayOf(
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
+        R.drawable.boys_day_out,
         R.drawable.boys_day_out,
         R.drawable.boys_day_out,
         R.drawable.boys_day_out,
@@ -45,6 +78,8 @@ class ActivitiesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_activities, null)
         mRecyclerView = rootView.findViewById(R.id.recyclerView) as RecyclerView
+        mRecyclerView!!.isNestedScrollingEnabled = false
+        mRecyclerView!!.setHasFixedSize(false)
         initRecyclerView()
         return rootView
     }
@@ -60,7 +95,14 @@ class ActivitiesFragment : Fragment() {
         Log.i(TAG, "initRecyclerView")
         val layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView!!.layoutManager = layoutManager
-        var adapter = ActivitiesAdapter(mContext, mContentList)
+        var adapter = ActivitiesAdapter(mContext, getData())
         mRecyclerView!!.adapter = adapter
+    }
+
+    private fun getData(): ArrayList<ActivitiesState> {
+        for (i in 0 until mList.size) {
+            mContentList.add(ActivitiesState(R.drawable.boys_day_out))
+        }
+        return mContentList
     }
 }

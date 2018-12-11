@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.ui.model.ActivitiesState
+import kotlinx.android.synthetic.main.activities_recylcer_item.view.cbSelector
 import kotlinx.android.synthetic.main.activities_recylcer_item.view.ivActivities
-import kotlinx.android.synthetic.main.activities_recylcer_item.view.ivSelector
 
-class ActivitiesAdapter(val context: Context, val contentList: Array<Int>) :
+class ActivitiesAdapter(val context: Context, val contentList: ArrayList<ActivitiesState>) :
     RecyclerView.Adapter<ActivitiesAdapter.ActivitiesViewHolder>() {
 
     private var TAG = "ActivitiesAdapter"
@@ -27,11 +28,24 @@ class ActivitiesAdapter(val context: Context, val contentList: Array<Int>) :
 
     override fun onBindViewHolder(holder: ActivitiesViewHolder?, position: Int) {
         Log.i(TAG, "onBindViewHolder")
-        holder!!.backgroundImage.setImageResource(contentList.get(position))
+        holder!!.bindActivitiesView(contentList[position])
     }
 
     inner class ActivitiesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val backgroundImage = itemView.ivActivities
-        val selector = itemView.ivSelector
+        fun bindActivitiesView(contentItem: ActivitiesState) {
+            itemView.ivActivities.setImageResource(contentItem.image!!)
+
+            itemView.ivActivities.setOnClickListener {
+                itemView.cbSelector.isChecked = !contentItem.checked
+            }
+
+            itemView.cbSelector.setOnCheckedChangeListener { _, isChecked ->
+                contentItem.checked = isChecked
+                Log.i(TAG, "Checked : $isChecked")
+            }
+
+            itemView.cbSelector.isChecked = contentItem.checked
+            Log.i(TAG, "Checked : ${contentItem.checked}")
+        }
     }
 }
