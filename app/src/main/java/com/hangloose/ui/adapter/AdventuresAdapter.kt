@@ -1,6 +1,5 @@
 package com.hangloose.ui.adapter
 
-import android.content.ClipData
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -8,12 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
-import com.hangloose.ui.model.ActivitiesState
+import com.hangloose.ui.model.AdventuresState
 import kotlinx.android.synthetic.main.activities_recylcer_item.view.cbSelector
 import kotlinx.android.synthetic.main.adventures_recycler_item.view.ivAdventure
-import java.util.ArrayList
 
-class AdventuresAdapter(val context: Context, val contentList: ArrayList<ActivitiesState>) :
+class AdventuresAdapter(val context: Context, var contentList: ArrayList<AdventuresState>) :
     RecyclerView.Adapter<AdventuresAdapter.AdventuresViewHolder>() {
 
     private var TAG = "AdventuresAdapter"
@@ -34,12 +32,15 @@ class AdventuresAdapter(val context: Context, val contentList: ArrayList<Activit
     }
 
     inner class AdventuresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindAdventuresView(contentItem: ActivitiesState) {
+        fun bindAdventuresView(contentItem: AdventuresState) {
             itemView.ivAdventure.setImageResource(contentItem.image!!)
 
             itemView.cbSelector.setOnCheckedChangeListener { _, isChecked ->
                 contentItem.checked = isChecked
                 Log.i(TAG, "Checked : $isChecked")
+                if (isChecked) {
+                    removeItem(adapterPosition)
+                }
             }
 
             itemView.cbSelector.isChecked = contentItem.checked
@@ -48,16 +49,19 @@ class AdventuresAdapter(val context: Context, val contentList: ArrayList<Activit
     }
 
     fun removeItem(position: Int) {
-        contentList.removeAt(position)
-        // notify the item removed by position
-        // to perform recycler view delete animations
-        // NOTE: don't call notifyDataSetChanged()
-        notifyItemRemoved(position)
+        if (contentList.size > 1) {
+            contentList.removeAt(position)
+            // notify the item removed by position
+            // to perform recycler view delete animations
+            // NOTE: don't call notifyDataSetChanged()
+            notifyItemRemoved(position)
+        }
     }
 
-    fun restoreItem(item: ClipData.Item, position: Int) {
+    fun restoreList(refreshList: ArrayList<AdventuresState>) {
         //contentList.add(position, item)
         // notify item added by position
-        notifyItemInserted(position)
+        contentList = refreshList
+        notifyDataSetChanged()
     }
 }

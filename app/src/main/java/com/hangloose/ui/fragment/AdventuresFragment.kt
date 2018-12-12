@@ -10,39 +10,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.ui.activities.SelectionActivity
 import com.hangloose.ui.adapter.AdventuresAdapter
-import com.hangloose.ui.model.ActivitiesState
+import com.hangloose.ui.model.AdventuresState
 
 class AdventuresFragment : Fragment() {
 
     private var TAG = "AdventuresFragment"
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
-    private var mContentList: ArrayList<ActivitiesState> = ArrayList()
+    private var mContentList: ArrayList<AdventuresState> = ArrayList()
 
     private val mList = arrayOf(
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
         R.drawable.morning_meal,
         R.drawable.morning_meal,
         R.drawable.morning_meal,
@@ -63,6 +42,8 @@ class AdventuresFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_adventures, null)
         mRecyclerView = rootView.findViewById(R.id.recyclerView) as RecyclerView
+        mRecyclerView!!.isNestedScrollingEnabled = false
+        mRecyclerView!!.setHasFixedSize(false)
         initRecyclerView()
         return rootView
     }
@@ -80,11 +61,17 @@ class AdventuresFragment : Fragment() {
         mRecyclerView!!.layoutManager = layoutManager
         var adapter = AdventuresAdapter(mContext, getData())
         mRecyclerView!!.adapter = adapter
+
+        (activity as SelectionActivity).let {
+            it?.didClickStartButton = {
+                adapter.restoreList(getData())
+            }
+        }
     }
 
-    private fun getData(): ArrayList<ActivitiesState> {
+    private fun getData(): ArrayList<AdventuresState> {
         for (i in 0 until mList.size) {
-            mContentList.add(ActivitiesState(R.drawable.morning_meal))
+            mContentList.add(AdventuresState(R.drawable.morning_meal))
         }
         return mContentList
     }
