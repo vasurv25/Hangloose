@@ -49,7 +49,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
         Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
         when (requestCode) {
             REQUEST_PERMISSIONS -> {
-                onNavigateOTPScreen()
+                val validPhone = validatePhoneNumber(mPhoneNumber)
+                isPhoneValid.set(validPhone)
+                isPhoneValid.notifyChange()
+                if (validPhone) {
+                    mConsumerResendOtpRequest!!.id = "+91$mPhoneNumber"
+                    mForgotPasswordViewModel.initiateForgotPassword(mConsumerResendOtpRequest!!)
+                }
             }
         }
     }
@@ -61,7 +67,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         mActivityForgotPasswordBinding!!.forgotPasswordViewModel = mForgotPasswordViewModel
         mForgotPasswordViewModel.initiateOTPResponse()
             .observe(this, Observer<Response<Int>> {
-                requestPermissionForOtp(this)
+                onNavigateOTPScreen()
             })
 
         isPhoneValid.addOnPropertyChangedCallback(object :
@@ -102,13 +108,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     fun onNextClick(view: View) {
         hideSoftKeyboard(this)
-        val validPhone = validatePhoneNumber(mPhoneNumber)
-        isPhoneValid.set(validPhone)
-        isPhoneValid.notifyChange()
-        if (validPhone) {
-            mConsumerResendOtpRequest!!.id = "+91$mPhoneNumber"
-            mForgotPasswordViewModel.initiateForgotPassword(mConsumerResendOtpRequest!!)
-        }
+        requestPermissionForOtp(this)
     }
 
     fun onCloseClick(view: View) {
