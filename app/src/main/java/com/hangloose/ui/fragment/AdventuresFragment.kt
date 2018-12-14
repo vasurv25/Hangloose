@@ -12,31 +12,27 @@ import android.view.ViewGroup
 import com.hangloose.R
 import com.hangloose.ui.activities.SelectionActivity
 import com.hangloose.ui.adapter.AdventuresAdapter
-import com.hangloose.ui.model.AdventuresState
+import com.hangloose.ui.model.AdventuresDetails
+import com.hangloose.utils.KEY_ADVENTURES_LIST
 
 class AdventuresFragment : Fragment() {
 
     private var TAG = "AdventuresFragment"
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
-    private var mContentList: ArrayList<AdventuresState> = ArrayList()
-
-    private val mList = arrayOf(
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal,
-        R.drawable.morning_meal
-    )
+    private var mContentList: ArrayList<AdventuresDetails> = ArrayList()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mContext = context!!
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments != null) {
+            mContentList = arguments!!.getParcelableArrayList(KEY_ADVENTURES_LIST)
+            Log.i(TAG, "ActivitiesList : $mContentList")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,9 +45,13 @@ class AdventuresFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): Fragment {
+        fun newInstance(adventuresList: ArrayList<AdventuresDetails>): Fragment {
             Log.i("Tag", "init")
-            return AdventuresFragment()
+            val fragment = AdventuresFragment()
+            val args = Bundle()
+            args.putParcelableArrayList(KEY_ADVENTURES_LIST, adventuresList)
+            fragment.arguments = args
+            return fragment
         }
     }
 
@@ -59,20 +59,13 @@ class AdventuresFragment : Fragment() {
         Log.i(TAG, "initRecyclerView")
         val layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView!!.layoutManager = layoutManager
-        var adapter = AdventuresAdapter(mContext, getData())
+        var adapter = AdventuresAdapter(mContext, mContentList)
         mRecyclerView!!.adapter = adapter
 
         (activity as SelectionActivity).let {
-            it?.didClickStartButton = {
-                adapter.restoreList(getData())
+            it.didClickStartButton = {
+                adapter.restoreList(mContentList)
             }
         }
-    }
-
-    private fun getData(): ArrayList<AdventuresState> {
-        for (i in 0 until mList.size) {
-            mContentList.add(AdventuresState(R.drawable.morning_meal))
-        }
-        return mContentList
     }
 }

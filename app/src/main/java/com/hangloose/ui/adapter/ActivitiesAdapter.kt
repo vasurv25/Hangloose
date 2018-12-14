@@ -7,11 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
-import com.hangloose.ui.model.ActivitiesState
+import com.hangloose.ui.model.ActivitiesDetails
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activities_recylcer_item.view.cbSelector
 import kotlinx.android.synthetic.main.activities_recylcer_item.view.ivActivities
 
-class ActivitiesAdapter(val context: Context, val contentList: ArrayList<ActivitiesState>) :
+class ActivitiesAdapter(val context: Context, val contentList: ArrayList<ActivitiesDetails>) :
     RecyclerView.Adapter<ActivitiesAdapter.ActivitiesViewHolder>() {
 
     private var TAG = "ActivitiesAdapter"
@@ -32,8 +33,9 @@ class ActivitiesAdapter(val context: Context, val contentList: ArrayList<Activit
     }
 
     inner class ActivitiesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindActivitiesView(contentItem: ActivitiesState) {
-            itemView.ivActivities.setImageResource(contentItem.image!!)
+        fun bindActivitiesView(contentItem: ActivitiesDetails) {
+            Log.i(TAG, """Image : ${contentItem.image!!}""")
+            Picasso.with(context).load(contentItem.image!!).into(itemView.ivActivities)
 
             itemView.ivActivities.setOnClickListener {
                 itemView.cbSelector.isChecked = !contentItem.checked

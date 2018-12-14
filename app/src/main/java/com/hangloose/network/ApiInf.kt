@@ -1,15 +1,18 @@
 package com.hangloose.network
 
+import com.hangloose.model.Activities
+import com.hangloose.model.Adventures
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerCreateRequest
-import com.hangloose.model.ConsumerResendOtpRequest
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.model.ConsumerOTPRequest
 import com.hangloose.model.ConsumerOtpChangePasswordRequest
 import com.hangloose.model.ConsumerOtpVerifyRequest
+import com.hangloose.model.ConsumerResendOtpRequest
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -33,4 +36,10 @@ interface ApiInf {
 
     @PATCH("consumers/{consumerId}/setPassword")
     fun consumerChangePassword(@Header("X_AUTH_TOKEN") header: String, @Path("consumerId") consumerId: String, @Body consumerOTPChangePassRequest: ConsumerOtpChangePasswordRequest): Observable<Response<Int>>
+
+    @GET("/activities")
+    fun getActivities(@Header("X_AUTH_TOKEN") header: String): Observable<Response<List<Activities>>>
+
+    @GET("/adventures")
+    fun getAdventures(@Header("X_AUTH_TOKEN") header: String): Observable<Response<List<Adventures>>>
 }

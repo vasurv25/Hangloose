@@ -34,10 +34,14 @@ import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.ui.model.ConsumerData
+import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.LOGIN_VALID_PASSWORD
+import com.hangloose.utils.REQUEST_PERMISSIONS
 import com.hangloose.utils.VALID_PHONE
 import com.hangloose.utils.hideSoftKeyboard
+import com.hangloose.utils.requestPermissionForOtp
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.btnFacebook
@@ -66,6 +70,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         initBinding()
         intializeGoogleSignInOptions()
         signInWithFacebook()
+        requestPermissionForOtp(this)
         editPhone.setOnTouchListener(View.OnTouchListener { _, event ->
             val DRAWABLE_END = 2
             if (event.action == MotionEvent.ACTION_UP) {
@@ -106,7 +111,19 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         mConsumerLoginViewModel.loginResponse()
             .observe(this, Observer<retrofit2.Response<ConsumerAuthDetailResponse>> { t ->
                 Log.i(TAG, "onChanged")
-                onNavigateAdventuresScreen()
+                val consumerDetails = t!!.body()!!.consumer!!
+                val headers = t.headers()
+                var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
+                var type = typeList.get(0)
+                val consumerData = ConsumerData(
+                    headers.get("X-AUTH-TOKEN").toString(),
+                    consumerDetails.existing,
+                    consumerDetails.id,
+                    consumerDetails.mobile,
+                    type
+                )
+                ConsumerDetails.consumerData = consumerData
+                onNavigateSelectionScreen()
                 Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
             })
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
@@ -213,6 +230,16 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
+        when (requestCode) {
+            REQUEST_PERMISSIONS -> {
+                //onNavigateOTPScreen()
+            }
+        }
+    }
+
     /**
      * method to get successful/failure google login
      */
@@ -268,7 +295,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         hideSoftKeyboard(this)
     }
 
-    private fun onNavigateAdventuresScreen() {
+    private fun onNavigateSelectionScreen() {
         var intent = Intent(this@SignInActivity, SelectionActivity::class.java)
         startActivity(intent)
     }

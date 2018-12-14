@@ -65,3 +65,19 @@ data class ConsumerOtpChangePasswordRequest(
     @SerializedName("id") var id: String?,
     @SerializedName("newPassword") var newPassword: String?
 ) : BaseModel()
+
+data class Activities(
+    @SerializedName("createdAt") var createdAt: String?,
+    @SerializedName("updatedAt") var updatedAt: String?,
+    @SerializedName("id") var id: String?,
+    @SerializedName("name") var name: String?,
+    @SerializedName("image") var image: String?
+) : BaseModel()
+
+data class Adventures(
+    @SerializedName("createdAt") var createdAt: String?,
+    @SerializedName("updatedAt") var updatedAt: String?,
+    @SerializedName("id") var id: String?,
+    @SerializedName("name") var name: String?,
+    @SerializedName("image") var image: String?
+) : BaseModel()

@@ -11,68 +11,27 @@ import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
 import com.hangloose.ui.adapter.ActivitiesAdapter
-import com.hangloose.ui.model.ActivitiesState
+import com.hangloose.ui.model.ActivitiesDetails
+import com.hangloose.utils.KEY_ACTIVITIES_LIST
 
 class ActivitiesFragment : Fragment() {
 
     private var TAG = "ActivitiesFragment"
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
-    private var mContentList: ArrayList<ActivitiesState> = ArrayList()
-    private var mList = arrayOf(
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out,
-        R.drawable.boys_day_out
-    )
+    private var mContentList: ArrayList<ActivitiesDetails> = ArrayList()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mContext = context!!
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (arguments != null) {
+            mContentList = arguments!!.getParcelableArrayList(KEY_ACTIVITIES_LIST)
+            Log.i(TAG, "ActivitiesList : $mContentList")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,9 +44,13 @@ class ActivitiesFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): Fragment {
-            Log.i("Tag", "init")
-            return ActivitiesFragment()
+        fun newInstance(activitiesList: ArrayList<ActivitiesDetails>): Fragment {
+            Log.i("Activities Instance", "init : $activitiesList")
+            val fragment = ActivitiesFragment()
+            val args = Bundle()
+            args.putParcelableArrayList(KEY_ACTIVITIES_LIST, activitiesList)
+            fragment.arguments = args
+            return fragment
         }
     }
 
@@ -95,14 +58,14 @@ class ActivitiesFragment : Fragment() {
         Log.i(TAG, "initRecyclerView")
         val layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView!!.layoutManager = layoutManager
-        var adapter = ActivitiesAdapter(mContext, getData())
+        var adapter = ActivitiesAdapter(mContext, mContentList)
         mRecyclerView!!.adapter = adapter
     }
 
-    private fun getData(): ArrayList<ActivitiesState> {
-        for (i in 0 until mList.size) {
-            mContentList.add(ActivitiesState(R.drawable.boys_day_out))
-        }
-        return mContentList
-    }
+//    private fun getData(): ArrayList<ActivitiesState> {
+//        for (i in 0 until mList.size) {
+//            mContentList.add(ActivitiesState(R.drawable.boys_day_out))
+//        }
+//        return mContentList
+//    }
 }
