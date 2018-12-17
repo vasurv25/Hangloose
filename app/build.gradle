@@ -100,6 +100,12 @@ dependencies {
     implementation 'me.relex:circleindicator:1.2.2@aar'
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    //Segmented buttons
+    implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+    //Swipeable cards
+    implementation 'com.mindorks:placeholderview:0.7.3'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 }
 
 task ktlint(type: JavaExec, group: "verification") {

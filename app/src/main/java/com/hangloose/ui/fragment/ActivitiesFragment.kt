@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.ui.activities.SelectionActivity
 import com.hangloose.ui.adapter.ActivitiesAdapter
 import com.hangloose.ui.model.ActivitiesDetails
 import com.hangloose.utils.KEY_ACTIVITIES_LIST
@@ -20,6 +21,7 @@ class ActivitiesFragment : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
     private var mContentList: ArrayList<ActivitiesDetails> = ArrayList()
+    var mAdapter : ActivitiesAdapter? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -44,7 +46,7 @@ class ActivitiesFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(activitiesList: ArrayList<ActivitiesDetails>): Fragment {
+        fun newInstance(activitiesList: ArrayList<ActivitiesDetails>): ActivitiesFragment {
             Log.i("Activities Instance", "init : $activitiesList")
             val fragment = ActivitiesFragment()
             val args = Bundle()
@@ -58,8 +60,18 @@ class ActivitiesFragment : Fragment() {
         Log.i(TAG, "initRecyclerView")
         val layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView!!.layoutManager = layoutManager
-        var adapter = ActivitiesAdapter(mContext, mContentList)
-        mRecyclerView!!.adapter = adapter
+        mAdapter = ActivitiesAdapter(mContext, mContentList)
+        mRecyclerView!!.adapter = mAdapter
+
+        (activity as SelectionActivity).let {
+            it.didClickNextButton = {
+                //mCallBack!!.transferData(mAdapter!!.getActivitiesList(), 1)
+            }
+        }
+    }
+
+    fun getSelectedActivities() : ArrayList<String> {
+        return mAdapter!!.getActivitiesList()
     }
 
 //    private fun getData(): ArrayList<ActivitiesState> {

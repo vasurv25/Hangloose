@@ -9,6 +9,7 @@ import com.hangloose.model.ConsumerOTPRequest
 import com.hangloose.model.ConsumerOtpChangePasswordRequest
 import com.hangloose.model.ConsumerOtpVerifyRequest
 import com.hangloose.model.ConsumerResendOtpRequest
+import com.hangloose.model.RestaurantList
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.Body
@@ -17,6 +18,7 @@ import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiInf {
     @POST("consumers/login")
@@ -42,4 +44,7 @@ interface ApiInf {
 
     @GET("/adventures")
     fun getAdventures(@Header("X_AUTH_TOKEN") header: String): Observable<Response<List<Adventures>>>
+
+    @GET("/restaurants")
+    fun getRestaurants(@Query("activityIds") activityIds: ArrayList<String>, @Query("adventureIds") adventureIds: ArrayList<String>): Observable<Response<List<RestaurantList>>>
 }

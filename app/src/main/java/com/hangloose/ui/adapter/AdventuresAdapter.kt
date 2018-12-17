@@ -16,6 +16,7 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
     RecyclerView.Adapter<AdventuresAdapter.AdventuresViewHolder>() {
 
     private var TAG = "AdventuresAdapter"
+    private var mAdventuresList : ArrayList<String>? = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AdventuresViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(R.layout.adventures_recycler_item, parent, false)
@@ -36,12 +37,13 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
         fun bindAdventuresView(contentItem: AdventuresDetails) {
             Log.i(TAG, """Image : ${contentItem.image!!}""")
             Picasso.with(context).load(contentItem.image!!).into(itemView.ivAdventure)
-
+            mAdventuresList!!.add(contentItem.id)
             itemView.cbSelector.setOnCheckedChangeListener { _, isChecked ->
                 contentItem.checked = isChecked
                 Log.i(TAG, "Checked : $isChecked")
                 if (isChecked) {
                     removeItem(adapterPosition)
+                    mAdventuresList!!.remove(contentItem.id)
                 }
             }
 
@@ -65,5 +67,9 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
         // notify item added by position
         contentList = refreshList
         notifyDataSetChanged()
+    }
+
+    fun getAdventuresList(): ArrayList<String> {
+        return mAdventuresList!!
     }
 }

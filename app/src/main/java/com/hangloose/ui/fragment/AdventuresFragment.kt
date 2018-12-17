@@ -14,6 +14,7 @@ import com.hangloose.ui.activities.SelectionActivity
 import com.hangloose.ui.adapter.AdventuresAdapter
 import com.hangloose.ui.model.AdventuresDetails
 import com.hangloose.utils.KEY_ADVENTURES_LIST
+import java.lang.ClassCastException
 
 class AdventuresFragment : Fragment() {
 
@@ -21,6 +22,7 @@ class AdventuresFragment : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
     private var mContentList: ArrayList<AdventuresDetails> = ArrayList()
+    var mAdapter : AdventuresAdapter? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -45,7 +47,7 @@ class AdventuresFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(adventuresList: ArrayList<AdventuresDetails>): Fragment {
+        fun newInstance(adventuresList: ArrayList<AdventuresDetails>): AdventuresFragment {
             Log.i("Tag", "init")
             val fragment = AdventuresFragment()
             val args = Bundle()
@@ -59,13 +61,16 @@ class AdventuresFragment : Fragment() {
         Log.i(TAG, "initRecyclerView")
         val layoutManager = GridLayoutManager(mContext, 2)
         mRecyclerView!!.layoutManager = layoutManager
-        var adapter = AdventuresAdapter(mContext, mContentList)
-        mRecyclerView!!.adapter = adapter
+        mAdapter = AdventuresAdapter(mContext, mContentList)
+        mRecyclerView!!.adapter = mAdapter
 
         (activity as SelectionActivity).let {
-            it.didClickStartButton = {
-                adapter.restoreList(mContentList)
+            it.didClickNextButton = {
+                //mCallBack!!.transferData(mAdapter.getAdventuresList(), 2)
             }
         }
+    }
+    fun getSelectedAdventures() : ArrayList<String> {
+        return mAdapter!!.getAdventuresList()
     }
 }

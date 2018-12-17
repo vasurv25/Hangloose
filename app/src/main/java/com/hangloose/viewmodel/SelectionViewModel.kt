@@ -6,12 +6,15 @@ import android.util.Log
 import com.hangloose.HanglooseApp
 import com.hangloose.model.Activities
 import com.hangloose.model.Adventures
+import com.hangloose.model.RestaurantList
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.ui.model.SelectionList
+import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import org.json.JSONObject
 import retrofit2.Response
 
 class SelectionViewModel : ViewModel() {
@@ -20,6 +23,7 @@ class SelectionViewModel : ViewModel() {
     private var mSelectionList: MutableLiveData<SelectionList> = MutableLiveData()
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
+    private var mRestaurantListResponse: MutableLiveData<Response<List<RestaurantList>>> = MutableLiveData()
 
     fun selectionListApiRequest() {
         Log.i(TAG, """X_AUTH_TOKEN : ${ConsumerDetails.consumerData!!.headers!!}""")
@@ -47,6 +51,29 @@ class SelectionViewModel : ViewModel() {
         mCompositeDisposable!!.add(disposable)
     }
 
+    fun restaurantListApiRequest(
+        activitiesSelectedList: ArrayList<String>,
+        adventuresSelectedList: ArrayList<String>
+    ) {
+        Log.i(TAG, "Actvities List : $activitiesSelectedList")
+        Log.i(TAG, "Adeventures List : $adventuresSelectedList")
+        val disposable = HanglooseApp.getApiService()!!.getRestaurants(activitiesSelectedList, adventuresSelectedList)
+            .subscribeOn(HanglooseApp.subscribeScheduler())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ response ->
+                if (response.isSuccessful) {
+                    mRestaurantListResponse.value = response
+                } else {
+                    val jObjError = JSONObject(response.errorBody()!!.string())
+                    mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                }
+            }, {
+                Log.i(TAG, "error login")
+                mShowErrorSnackBar.value = it.localizedMessage
+            })
+        mCompositeDisposable!!.add(disposable)
+    }
+
     private fun unSubscribeFromObservable() {
         if (mCompositeDisposable != null && !mCompositeDisposable!!.isDisposed) {
             mCompositeDisposable!!.dispose()
@@ -55,6 +82,10 @@ class SelectionViewModel : ViewModel() {
 
     fun getSelectionList(): MutableLiveData<SelectionList> {
         return mSelectionList
+    }
+
+    fun getRestaurantList() : MutableLiveData<Response<List<RestaurantList>>> {
+        return mRestaurantListResponse
     }
 
     fun reset() {

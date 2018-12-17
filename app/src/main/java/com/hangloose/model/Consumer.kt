@@ -81,3 +81,24 @@ data class Adventures(
     @SerializedName("name") var name: String?,
     @SerializedName("image") var image: String?
 ) : BaseModel()
+
+data class RestuarantListRequest(
+    @SerializedName("address") var activityIds: List<String>?,
+    @SerializedName("createdAt") var adventureIds: List<String>?
+) : BaseModel()
+
+data class RestaurantList(
+    @SerializedName("address") var address: String?,
+    @SerializedName("createdAt") var createdAt: String?,
+    @SerializedName("discount") var discount: String?,
+    @SerializedName("id") var id: String?,
+    @SerializedName("images") var images: List<String>?,
+    @SerializedName("latitude") var latitude: String?,
+    @SerializedName("longitude") var longitude: String?,
+    @SerializedName("name") var name: String?,
+    @SerializedName("offer") var offer: String?,
+    @SerializedName("priceFortwo") var priceFortwo: String?,
+    @SerializedName("ratings") var ratings: String?,
+    @SerializedName("restaurantType") var restaurantType: String?,
+    @SerializedName("updatedAt") var updatedAt: String?
+) : BaseModel()
