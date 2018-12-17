@@ -1,5 +1,8 @@
 package com.hangloose.ui.activities
 
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -25,10 +28,14 @@ class TabsActivity : BaseActivity() {
         replaceFragment(RestaurantFragment())
     }
 
+    @SuppressLint("NewApi")
     override fun init() {
-        tabLayout.addTab(tabLayout.newTab().setText("1"))
-        tabLayout.addTab(tabLayout.newTab().setText("2"))
-        tabLayout.addTab(tabLayout.newTab().setText("3"))
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home))
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.search))
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.profile))
+
+        tabLayout.setTabTextColors(Color.parseColor("#cccccc"), Color.parseColor("#b72125"))
+        tabLayout.getTabAt(0)!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
 
         tabLayout.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
@@ -36,19 +43,27 @@ class TabsActivity : BaseActivity() {
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    tab!!.icon!!.setColorFilter(Color.parseColor("#cccccc"), PorterDuff.Mode.SRC_IN)
                 }
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if (tabLayout.selectedTabPosition == 0) {
-                        replaceFragment(RestaurantFragment())
-                        Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
-                            .show()
-                    } else if (tabLayout.selectedTabPosition == 1) {
-                        Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
-                            .show()
-                    } else if (tabLayout.selectedTabPosition == 2) {
-                        Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
-                            .show()
+                    when {
+                        tabLayout.selectedTabPosition == 0 -> {
+                            tab!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
+                            //replaceFragment(RestaurantFragment())
+                            Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        tabLayout.selectedTabPosition == 1 -> {
+                            tab!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
+                            Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        tabLayout.selectedTabPosition == 2 -> {
+                            tab!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
+                            Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
+                                .show()
+                        }
                     }
                 }
             })

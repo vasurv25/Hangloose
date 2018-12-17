@@ -1,9 +1,14 @@
 package com.hangloose.utils
 
 import android.app.Activity
+import android.content.res.Resources
+import android.graphics.Point
+import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.util.DisplayMetrics
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 
@@ -56,4 +61,24 @@ fun requestPermissionForOtp(activity: Activity) {
         arrayOf(android.Manifest.permission.RECEIVE_SMS),
         REQUEST_PERMISSIONS
     )
+}
+
+fun getDisplaySize(windowManager: WindowManager): Point {
+    try {
+        if (Build.VERSION.SDK_INT > 16) {
+            val display = windowManager.defaultDisplay
+            val displayMetrics = DisplayMetrics()
+            display.getMetrics(displayMetrics)
+            return Point(displayMetrics.widthPixels, displayMetrics.heightPixels)
+        } else {
+            return Point(0, 0)
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return Point(0, 0)
+    }
+}
+
+fun dpToPx(dp: Int): Int {
+    return (dp * Resources.getSystem().displayMetrics.density).toInt()
 }

@@ -24,7 +24,7 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
 
     @Resolve
     private fun onResolved() {
-        Glide.with(context).load(R.drawable.boys_day_out).into(image)
+        Glide.with(context).load(data.images!![0]).into(image)
         //nameAgeTxt.setText(mProfile.getName() + ", " + mProfile.getAge())
         //locationNameTxt.setText(mProfile.getLocation())
     }
