@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_weight="1"
-            app:sb_text="Button 1"
+            app:sb_text="Vegetarian"
             app:sb_textColor="@color/black"
             app:sb_textColor_onSelection="@color/white" />
 
@@ -43,7 +43,7 @@
             android:layout_height="25dp"
             android:layout_weight="1"
             android:background="@color/white"
-            app:sb_text="Button 2"
+            app:sb_text="Non-Vegetarian"
             app:sb_textColor="@color/black"
             app:sb_textColor_onSelection="@color/white"
             tools:layout_editor_absoluteX="130dp" />
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_weight="1"
-            app:sb_text="Button 3"
+            app:sb_text="Bar"
             app:sb_textColor="@color/black"
             app:sb_textColor_onSelection="@color/white" />
 

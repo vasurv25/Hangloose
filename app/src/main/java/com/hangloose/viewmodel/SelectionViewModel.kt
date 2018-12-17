@@ -84,7 +84,7 @@ class SelectionViewModel : ViewModel() {
         return mSelectionList
     }
 
-    fun getRestaurantList() : MutableLiveData<Response<List<RestaurantList>>> {
+    fun getRestaurantList(): MutableLiveData<Response<List<RestaurantList>>> {
         return mRestaurantListResponse
     }
 

@@ -14,7 +14,6 @@ import com.hangloose.ui.activities.SelectionActivity
 import com.hangloose.ui.adapter.AdventuresAdapter
 import com.hangloose.ui.model.AdventuresDetails
 import com.hangloose.utils.KEY_ADVENTURES_LIST
-import java.lang.ClassCastException
 
 class AdventuresFragment : Fragment() {
 
@@ -22,7 +21,7 @@ class AdventuresFragment : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
     private var mContentList: ArrayList<AdventuresDetails> = ArrayList()
-    var mAdapter : AdventuresAdapter? = null
+    var mAdapter: AdventuresAdapter? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -70,7 +69,8 @@ class AdventuresFragment : Fragment() {
             }
         }
     }
-    fun getSelectedAdventures() : ArrayList<String> {
+
+    fun getSelectedAdventures(): ArrayList<String> {
         return mAdapter!!.getAdventuresList()
     }
 }

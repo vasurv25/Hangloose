@@ -16,7 +16,7 @@ class ActivitiesAdapter(val context: Context, val contentList: ArrayList<Activit
     RecyclerView.Adapter<ActivitiesAdapter.ActivitiesViewHolder>() {
 
     private var TAG = "ActivitiesAdapter"
-    private var mActivitiesList : ArrayList<String>? = ArrayList()
+    private var mActivitiesList: ArrayList<String>? = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ActivitiesViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(R.layout.activities_recylcer_item, parent, false)

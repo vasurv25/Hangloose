@@ -16,7 +16,7 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
     RecyclerView.Adapter<AdventuresAdapter.AdventuresViewHolder>() {
 
     private var TAG = "AdventuresAdapter"
-    private var mAdventuresList : ArrayList<String>? = ArrayList()
+    private var mAdventuresList: ArrayList<String>? = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): AdventuresViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(R.layout.adventures_recycler_item, parent, false)

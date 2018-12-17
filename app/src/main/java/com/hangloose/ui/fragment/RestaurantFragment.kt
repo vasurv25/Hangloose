@@ -2,20 +2,28 @@ package com.hangloose.ui.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.ui.activities.SwipeableCardView
+import com.hangloose.ui.model.RestaurantData
+import com.hangloose.utils.KEY_DATA
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
-import kotlinx.android.synthetic.main.fragment_restaurant.swipeView
-
 
 class RestaurantFragment : Fragment() {
-
+    private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
+    private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
+        Log.i(TAG, "Restaurant data : $mRestaurantData")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.fragment_restaurant, null)
@@ -33,8 +41,8 @@ class RestaurantFragment : Fragment() {
                     .setRelativeScale(0.01f)
             )
 
-        /*for (profile in Utils.loadProfiles(this.applicationContext)) {
-            mSwipePlaceHolderView!!.addView(TinderCard(mContext, profile, mSwipeView))
-        }*/
+        for (data in mRestaurantData!!) {
+            mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+        }
     }
 }

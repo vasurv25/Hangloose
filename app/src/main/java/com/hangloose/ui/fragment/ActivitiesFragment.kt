@@ -21,7 +21,7 @@ class ActivitiesFragment : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
     private var mContentList: ArrayList<ActivitiesDetails> = ArrayList()
-    var mAdapter : ActivitiesAdapter? = null
+    var mAdapter: ActivitiesAdapter? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -70,7 +70,7 @@ class ActivitiesFragment : Fragment() {
         }
     }
 
-    fun getSelectedActivities() : ArrayList<String> {
+    fun getSelectedActivities(): ArrayList<String> {
         return mAdapter!!.getActivitiesList()
     }
 

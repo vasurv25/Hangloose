@@ -12,3 +12,5 @@ const val PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH = "Your Password and Confirm 
 const val REQUEST_PERMISSIONS = 1
 const val KEY_ACTIVITIES_LIST = "key_activities"
 const val KEY_ADVENTURES_LIST = "key_adventures"
+const val KEY_RESTAURANT_DATA = "key_restaurant_data"
+const val KEY_DATA = "key_data"

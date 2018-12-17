@@ -49,6 +49,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:background="@drawable/next_blue"
+            android:enabled="false"
             android:onClick="@{clickHandler::oNextClick}"
             app:layout_constraintBottom_toTopOf="@+id/indicator"
             app:layout_constraintEnd_toEndOf="parent"

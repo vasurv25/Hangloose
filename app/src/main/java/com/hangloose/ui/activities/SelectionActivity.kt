@@ -12,18 +12,23 @@ import android.util.Log
 import android.view.View
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySelectionBinding
+import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.ViewPagerAdapter
 import com.hangloose.ui.fragment.ActivitiesFragment
 import com.hangloose.ui.fragment.AdventuresFragment
 import com.hangloose.ui.model.ActivitiesDetails
 import com.hangloose.ui.model.AdventuresDetails
+import com.hangloose.ui.model.RestaurantData
 import com.hangloose.ui.model.SelectionList
+import com.hangloose.utils.KEY_RESTAURANT_DATA
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.SelectionViewModel
+import kotlinx.android.synthetic.main.activity_selection.btNextSelection
 import kotlinx.android.synthetic.main.activity_selection.indicator
 import kotlinx.android.synthetic.main.activity_selection.tvSelectionHeading
 import kotlinx.android.synthetic.main.activity_selection.viewPager
 import kotlinx.android.synthetic.main.activity_sign_up.ll_signup
+import retrofit2.Response
 
 class SelectionActivity : BaseActivity() {
 
@@ -37,6 +42,7 @@ class SelectionActivity : BaseActivity() {
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mActivitiesFragment: ActivitiesFragment? = null
     private var mAdventuresFragment: AdventuresFragment? = null
+    private var mRestaurantData = ArrayList<RestaurantData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +60,7 @@ class SelectionActivity : BaseActivity() {
         mAdventuresFragment = AdventuresFragment.newInstance(mAdventuresList)
         listOfFragment.add(mActivitiesFragment!!)
         listOfFragment.add(mAdventuresFragment!!)
-        var viewPagerAdapter = ViewPagerAdapter(applicationContext, supportFragmentManager, listOfFragment)
+        val viewPagerAdapter = ViewPagerAdapter(applicationContext, supportFragmentManager, listOfFragment)
         viewPager.adapter = viewPagerAdapter
         indicator.setViewPager(viewPager)
         viewPager.currentItem = 0
@@ -64,9 +70,11 @@ class SelectionActivity : BaseActivity() {
                 if (viewPager.currentItem == 0) {
                     tvSelectionHeading.text = getString(R.string.select_your_activities)
                     //btRefresh.visibility = View.GONE
+                    enableNextButton()
                 } else {
                     tvSelectionHeading.text = getString(R.string.select_your_adventure)
                     //btRefresh.visibility = View.VISIBLE
+                    enableNextButton()
                 }
             }
 
@@ -86,7 +94,7 @@ class SelectionActivity : BaseActivity() {
         mSelectionViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
             Log.i(TAG, "onChanged")
             (0 until t!!.activities.size).forEach { i ->
-                var list = t!!.activities
+                val list = t.activities
                 mActivitiesList.add(
                     ActivitiesDetails(
                         list[i].createdAt!!,
@@ -97,8 +105,8 @@ class SelectionActivity : BaseActivity() {
                     )
                 )
             }
-            (0 until t!!.adventures.size).forEach { i ->
-                var list = t!!.adventures
+            (0 until t.adventures.size).forEach { i ->
+                val list = t.adventures
                 mAdventuresList.add(
                     AdventuresDetails(
                         list[i].createdAt!!,
@@ -110,6 +118,30 @@ class SelectionActivity : BaseActivity() {
                 )
             }
             setFragments()
+        })
+
+        mSelectionViewModel.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
+            val data = t!!.body()
+            (0 until data!!.size).forEach { i ->
+                mRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt
+                    )
+                )
+            }
+            onNavigateToTabsScreen(mRestaurantData)
         })
 
         mSelectionViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
@@ -126,13 +158,20 @@ class SelectionActivity : BaseActivity() {
         //didClickNextButton?.invoke()
         mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
         mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
-        if (mActivitiesSelectedList != null && mAdventuresSelectedList != null) {
+        if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
             mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
         }
-        var intent = Intent(this, TabsActivity::class.java)
-        intent.putStringArrayListExtra("123", mActivitiesSelectedList)
-        intent.putStringArrayListExtra("456", mAdventuresSelectedList)
+    }
+
+    private fun onNavigateToTabsScreen(restaurantData: ArrayList<RestaurantData>) {
+        val intent = Intent(this, TabsActivity::class.java)
+        intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, restaurantData)
         startActivity(intent)
     }
 
+    private fun enableNextButton() {
+        if (mActivitiesFragment!!.getSelectedActivities().size > 0 && mAdventuresFragment!!.getSelectedAdventures().size > 0) {
+            btNextSelection.isEnabled = true
+        }
+    }
 }
