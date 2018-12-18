@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import co.ceryle.segmentedbutton.SegmentedButtonGroup
+import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.hangloose.R
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
@@ -24,7 +24,7 @@ class RestaurantFragment : Fragment() {
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
     private var mBtSearch: Button? = null
-    private var mBtSegmentedGroup: SegmentedButtonGroup? = null
+    private var mBtRadioRealGroup: RadioRealButtonGroup? = null
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,14 +37,14 @@ class RestaurantFragment : Fragment() {
         val rootView = inflater!!.inflate(R.layout.fragment_restaurant, null)
         mSwipePlaceHolderView = rootView!!.findViewById(R.id.swipeView) as SwipePlaceHolderView
         mBtSearch = rootView.findViewById(R.id.btSearch) as Button
-        mBtSegmentedGroup = rootView.findViewById(R.id.segmentedButtonGroup) as SegmentedButtonGroup
+        mBtRadioRealGroup = rootView.findViewById(R.id.segmentedButtonGroup) as RadioRealButtonGroup
         setSwipeableView()
         return rootView
     }
 
     private fun setSwipeableView() {
         val sideMargin = dpToPx(220)
-        val bottomMargin = dpToPx(200)
+        val bottomMargin = dpToPx(180)
         val windowSize = getDisplaySize(activity!!.windowManager)
         Log.i(TAG, "Window Size : $windowSize")
         Log.i(TAG, "Bottom Margin : $bottomMargin")
@@ -60,7 +60,7 @@ class RestaurantFragment : Fragment() {
                     .setRelativeScale(0.01f)
                     .setSwipeMaxChangeAngle(2f)
             )
-
+        mSwipePlaceHolderView!!.removeAllViews()
         for (data in mRestaurantData!!) {
             if (data.restaurantType.equals("VEGETERIAN")) {
                 mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
@@ -69,8 +69,8 @@ class RestaurantFragment : Fragment() {
 
         mBtSearch!!.setOnClickListener { (activity as TabsActivity).replaceFragment(SearchFragment()) }
 
-        mBtSegmentedGroup!!.setOnClickedButtonListener {
-            when (it) {
+        mBtRadioRealGroup!!.setOnPositionChangedListener { button, currentPosition, lastPosition ->
+            when (currentPosition) {
                 0 -> {
                     var one = mRestaurantData!!.map { it.restaurantType }.filter { it.equals("VEGETARIAN") }
                     Log.i(TAG, "VEG : $one")
@@ -101,3 +101,34 @@ class RestaurantFragment : Fragment() {
         }
     }
 }
+
+/*mBtSegmentedGroup!!.setOnClickedButtonListener {
+    when (it) {
+        0 -> {
+            var one = mRestaurantData!!.map { it.restaurantType }.filter { it.equals("VEGETARIAN") }
+            Log.i(TAG, "VEG : $one")
+            mSwipePlaceHolderView!!.removeAllViews()
+            for (data in mRestaurantData!!) {
+                if (data.restaurantType.equals("VEGETERIAN")) {
+                    mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+                }
+            }
+        }
+        1 -> {
+            mSwipePlaceHolderView!!.removeAllViews()
+            for (data in mRestaurantData!!) {
+                if (data.restaurantType.equals("NON_VEGETERIAN")) {
+                    mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+                }
+            }
+        }
+        else -> {
+            mSwipePlaceHolderView!!.removeAllViews()
+            for (data in mRestaurantData!!) {
+                if (data.restaurantType.equals("BAR")) {
+                    mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+                }
+            }
+        }
+    }
+}*/

@@ -103,8 +103,7 @@ dependencies {
     implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     //Swipeable cards
-    implementation 'com.mindorks:placeholderview:0.7.3'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.ceryle:RadioRealButton:v2.1.1'
     //Play Services
     implementation 'com.google.android.gms:play-services-location:' + google_play_services
     implementation 'com.google.android.gms:play-services-maps:' + google_play_services

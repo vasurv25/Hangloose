@@ -47,6 +47,8 @@ class ActivitiesAdapter(val context: Context, val contentList: ArrayList<Activit
                 Log.i(TAG, "Checked : $isChecked")
                 if (isChecked) {
                     mActivitiesList!!.add(contentItem.id)
+                } else {
+                    mActivitiesList!!.remove(contentItem.id)
                 }
             }
 

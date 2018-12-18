@@ -5,62 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <co.ceryle.segmentedbutton.SegmentedButtonGroup
+    <co.ceryle.radiorealbutton.RadioRealButtonGroup
         android:id="@+id/segmentedButtonGroup"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:sbg_backgroundColor="@color/white"
-        app:sbg_borderColor="@color/colorPrimary"
-        app:sbg_borderSize="1dp"
-        app:sbg_dividerColor="@color/colorPrimary"
-        app:sbg_dividerSize="1dp"
-        app:sbg_position="0"
-        app:sbg_ripple="true"
-        app:sbg_rippleColor="@color/colorPrimary"
-        app:sbg_selectorColor="@color/colorPrimary">
+        app:rrbg_dividerColor="@color/colorPrimary"
+        app:rrbg_dividerSize="1dp"
+        app:rrbg_dividerPadding="0dp"
+        app:rrbg_borderColor="@color/colorPrimary"
+        app:rrbg_borderSize="1dp"
+        app:rrbg_radius="5dp"
+        app:rrbg_checkedPosition="0"
+        app:rrbg_selectorRadius="0dp"
+        app:rrbg_selectorSize="8dp"
+        app:rrbg_selectorFullSize="true"
+        app:rrbg_selectorColor="@color/colorPrimary">
 
-        <co.ceryle.segmentedbutton.SegmentedButton
+        <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="5dp"
-            app:sb_text="Vegetarian"
-            app:sb_textColor="@color/black"
-            app:sb_textColor_onSelection="@color/white" />
+            app:rrb_ripple="true"
+            app:rrb_selectorColor="@color/colorPrimary"
+            app:rrb_rippleColor="@color/colorPrimary"
+            app:rrb_text="Vegetarian"
+            app:rrb_textColorTo="@color/white"
+            app:rrb_textColor="@color/black" />
 
-        <co.ceryle.segmentedbutton.SegmentedButton
+        <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="5dp"
-            app:sb_text="Non-Vegetarian"
-            app:sb_textColor="@color/black"
-            app:sb_textColor_onSelection="@color/white" />
+            app:rrb_ripple="true"
+            app:rrb_rippleColor="@color/colorPrimary"
+            app:rrb_text="Non-Vegetarian"
+            app:rrb_textColor="@color/black"
+            app:rrb_textColorTo="@color/white"/>
 
-        <co.ceryle.segmentedbutton.SegmentedButton
+        <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="5dp"
-            app:sb_text="Bar"
-            app:sb_textColor="@color/black"
-            app:sb_textColor_onSelection="@color/white" />
+            app:rrb_ripple="true"
+            app:rrb_rippleColor="@color/colorPrimary"
+            app:rrb_text="Bar"
+            app:rrb_textColorTo="@color/white"
+            app:rrb_textColor="@color/black" />
 
-    </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+    </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
     <com.mindorks.placeholderview.SwipePlaceHolderView
         android:id="@+id/swipeView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/background"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
