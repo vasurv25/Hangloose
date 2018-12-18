@@ -8,6 +8,7 @@ buildscript {
         retrofitLibraryVersion = '2.3.0'
         compiler_version = '3.2.1'
         kotlin_version = '1.2.71'
+        google_play_services = '16.0.0'
     }
     repositories {
         google()

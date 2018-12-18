@@ -9,6 +9,7 @@
 
     <string name="Web_client_id">430634342873-unvagf3q4qkttp8jgoksj8vnj2gv2kh3.apps.googleusercontent.com</string>
     <string name="your_phone">Your Phone</string>
+    <string name="your_location">Your Location</string>
     <string name="btn_logout_from_google">Sign Out</string>
     <string name="no_network_connectivity">No network available. Please try again!</string>
     <string name="hangloose">Hang Loose</string>
@@ -47,4 +48,5 @@
     <string name="explore">Explore</string>
     <string name="select_your_adventure">Select Your Adventure</string>
     <string name="filter">Filters</string>
+    <string name="title_activity_location_maps">Map</string>
 </resources>

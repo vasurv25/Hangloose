@@ -99,7 +99,7 @@ class ConsumerRegisterViewModel : ViewModel() {
         isPhoneValid.notifyChange()
 
         val validPassword = validatePassword(mConsumerRegisterRequest!!.password)
-        isPasswordValid.set(validPhone)
+        isPasswordValid.set(validPassword)
         isPasswordValid.notifyChange()
 
         val validConfirmPassword = validateConfirmPassword(mConsumerRegisterRequest!!.password, mConfirmPassword)

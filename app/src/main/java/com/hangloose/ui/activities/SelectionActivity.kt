@@ -23,11 +23,7 @@ import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.SelectionViewModel
-import kotlinx.android.synthetic.main.activity_selection.btNextSelection
-import kotlinx.android.synthetic.main.activity_selection.indicator
-import kotlinx.android.synthetic.main.activity_selection.tvSelectionHeading
-import kotlinx.android.synthetic.main.activity_selection.viewPager
-import kotlinx.android.synthetic.main.activity_sign_up.ll_signup
+import kotlinx.android.synthetic.main.activity_selection.*
 import retrofit2.Response
 
 class SelectionActivity : BaseActivity() {
@@ -47,7 +43,6 @@ class SelectionActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
-        Log.i(TAG, "onCreate")
     }
 
     override fun init() {}
@@ -146,7 +141,7 @@ class SelectionActivity : BaseActivity() {
 
         mSelectionViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
-                ll_signup,
+                ll_selection,
                 t.toString(),
                 ContextCompat.getColor(this, R.color.white),
                 ContextCompat.getColor(this, R.color.colorPrimary)
