@@ -3,6 +3,7 @@ package com.hangloose.ui.activities
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.hangloose.R
 import com.hangloose.ui.model.RestaurantData
@@ -22,11 +23,24 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
     @View(R.id.ivRestaurant)
     private val image: ImageView? = null
 
+    @View(R.id.tvRestaurantName)
+    private val textRestaurantName: TextView? = null
+
+    @View(R.id.tvRestoAddress)
+    private val textRestoAddress: TextView? = null
+
+    @View(R.id.tvRestoType)
+    private val textestoType: TextView? = null
+
+    @View(R.id.tvRestoDesp)
+    private val textRestoDesp: TextView? = null
+
     @Resolve
     private fun onResolved() {
         Glide.with(context).load(data.images!![0]).into(image)
-        //nameAgeTxt.setText(mProfile.getName() + ", " + mProfile.getAge())
-        //locationNameTxt.setText(mProfile.getLocation())
+        textRestaurantName!!.text = data.name
+        textRestoAddress!!.text = data.address
+        textestoType!!.text = data.restaurantType
     }
 
     @SwipeOut

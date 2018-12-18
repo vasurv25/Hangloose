@@ -36,7 +36,7 @@ class RestaurantFragment : Fragment() {
     }
 
     private fun setSwipeableView() {
-        val bottomMargin = dpToPx(160)
+        val bottomMargin = dpToPx(220)
         val windowSize = getDisplaySize(activity!!.windowManager)
         Log.i(TAG, "Window Size : $windowSize")
         Log.i(TAG, "Bottom Margin : $bottomMargin")
@@ -46,7 +46,7 @@ class RestaurantFragment : Fragment() {
             .setWidthSwipeDistFactor(5f)
             .setSwipeDecor(
                 SwipeDecor()
-                    .setViewWidth(windowSize.x)
+                    .setViewWidth(windowSize.x - bottomMargin / 4)
                     .setViewHeight(windowSize.y - bottomMargin)
                     .setViewGravity(Gravity.CENTER)
                     .setRelativeScale(0.01f)
