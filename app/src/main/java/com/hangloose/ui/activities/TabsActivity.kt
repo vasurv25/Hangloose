@@ -1,11 +1,11 @@
 package com.hangloose.ui.activities
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.location.Geocoder
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -15,15 +15,17 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.hangloose.R
+import com.hangloose.ui.fragment.ProfileFragment
 import com.hangloose.ui.fragment.RestaurantFragment
+import com.hangloose.ui.fragment.SearchFragment
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.KEY_RESTAURANT_DATA
-import kotlinx.android.synthetic.main.activity_tab.*
+import kotlinx.android.synthetic.main.activity_tab.editLocation
+import kotlinx.android.synthetic.main.activity_tab.tabLayout
 
 class TabsActivity : BaseActivity() {
 
@@ -124,30 +126,30 @@ class TabsActivity : BaseActivity() {
                     when {
                         tabLayout.selectedTabPosition == 0 -> {
                             tab!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
-                            //replaceFragment(RestaurantFragment())
-                            Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
-                                .show()
+                            replaceFragment(RestaurantFragment())
                         }
                         tabLayout.selectedTabPosition == 1 -> {
                             tab!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
-                            Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
-                                .show()
+                            replaceFragment(SearchFragment())
                         }
                         tabLayout.selectedTabPosition == 2 -> {
                             tab!!.icon!!.setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
-                            Toast.makeText(this@TabsActivity, "Tab " + tabLayout.selectedTabPosition, Toast.LENGTH_LONG)
-                                .show()
+                            replaceFragment(ProfileFragment())
                         }
                     }
                 }
             })
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    fun replaceFragment(fragment: Fragment) {
         Log.i(TAG, "Restaurant data : $mRestaurantData")
-        val args = Bundle()
-        args.putParcelableArrayList(KEY_DATA, mRestaurantData)
-        fragment.arguments = args
+        if (fragment is RestaurantFragment) {
+            val args = Bundle()
+            args.putParcelableArrayList(KEY_DATA, mRestaurantData)
+            fragment.arguments = args
+        } else if (fragment is SearchFragment) {
+            tabLayout.getTabAt(1)!!.select()
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()

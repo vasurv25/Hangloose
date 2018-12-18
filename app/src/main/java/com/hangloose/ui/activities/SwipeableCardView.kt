@@ -29,18 +29,11 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
     @View(R.id.tvRestoAddress)
     private val textRestoAddress: TextView? = null
 
-    @View(R.id.tvRestoType)
-    private val textestoType: TextView? = null
-
-    @View(R.id.tvRestoDesp)
-    private val textRestoDesp: TextView? = null
-
     @Resolve
     private fun onResolved() {
         Glide.with(context).load(data.images!![0]).into(image)
         textRestaurantName!!.text = data.name
-        textRestoAddress!!.text = data.address
-        textestoType!!.text = data.restaurantType
+        textRestoAddress!!.text = data.address + " . " + data.restaurantType
     }
 
     @SwipeOut

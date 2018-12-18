@@ -23,7 +23,10 @@ import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.SelectionViewModel
-import kotlinx.android.synthetic.main.activity_selection.*
+import kotlinx.android.synthetic.main.activity_selection.indicator
+import kotlinx.android.synthetic.main.activity_selection.ll_selection
+import kotlinx.android.synthetic.main.activity_selection.tvSelectionHeading
+import kotlinx.android.synthetic.main.activity_selection.viewPager
 import retrofit2.Response
 
 class SelectionActivity : BaseActivity() {
@@ -65,11 +68,9 @@ class SelectionActivity : BaseActivity() {
                 if (viewPager.currentItem == 0) {
                     tvSelectionHeading.text = getString(R.string.select_your_activities)
                     //btRefresh.visibility = View.GONE
-                    enableNextButton()
                 } else {
                     tvSelectionHeading.text = getString(R.string.select_your_adventure)
                     //btRefresh.visibility = View.VISIBLE
-                    enableNextButton()
                 }
             }
 
@@ -159,14 +160,11 @@ class SelectionActivity : BaseActivity() {
     }
 
     private fun onNavigateToTabsScreen(restaurantData: ArrayList<RestaurantData>) {
-        val intent = Intent(this, TabsActivity::class.java)
-        intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, restaurantData)
-        startActivity(intent)
-    }
 
-    private fun enableNextButton() {
         if (mActivitiesFragment!!.getSelectedActivities().size > 0 && mAdventuresFragment!!.getSelectedAdventures().size > 0) {
-            btNextSelection.isEnabled = true
+            val intent = Intent(this, TabsActivity::class.java)
+            intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, restaurantData)
+            startActivity(intent)
         }
     }
 }
