@@ -50,7 +50,7 @@ class RestaurantFragment : Fragment() {
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mAddress = arguments!!.getString("abc")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        //checkLocationPermission()
+        checkLocationPermission()
         Log.i(TAG, "Restaurant data : $mRestaurantData")
     }
 
@@ -92,8 +92,7 @@ class RestaurantFragment : Fragment() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                activity!!,
+            requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
                 LOCATION_REQUEST_CODE
             )

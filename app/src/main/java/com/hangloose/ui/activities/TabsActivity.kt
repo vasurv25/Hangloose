@@ -20,13 +20,10 @@ class TabsActivity : BaseActivity() {
 
     private val TAG = "TabsActivity"
     private var mRestaurantData: ArrayList<RestaurantData>? = null
-    private var mAddress: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab)
         mRestaurantData = intent.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
-        mAddress = intent.getStringExtra("123")
         Log.i(TAG, "Restaurant data : $mRestaurantData")
         replaceFragment(RestaurantFragment())
     }
@@ -72,7 +69,6 @@ class TabsActivity : BaseActivity() {
         Log.i(TAG, "Restaurant data : $mRestaurantData")
         if (fragment is RestaurantFragment) {
             val args = Bundle()
-            args.putString("abc", mAddress)
             args.putParcelableArrayList(KEY_DATA, mRestaurantData)
             fragment.arguments = args
         }

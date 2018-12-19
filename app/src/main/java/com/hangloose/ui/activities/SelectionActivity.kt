@@ -1,22 +1,16 @@
 package com.hangloose.ui.activities
 
-import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
-import android.location.Geocoder
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.View
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySelectionBinding
 import com.hangloose.model.RestaurantList
@@ -51,14 +45,10 @@ class SelectionActivity : BaseActivity() {
     private var mAdventuresFragment: AdventuresFragment? = null
     private var mRestaurantData = ArrayList<RestaurantData>()
     private var mPreference: SharedPreferences? = null
-    private val LOCATION_REQUEST_CODE = 109
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    private var mAddress: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPreference = PreferenceHelper.defaultPrefs(this)
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         initBinding()
     }
 
@@ -154,7 +144,8 @@ class SelectionActivity : BaseActivity() {
                     )
                 )
             }
-            checkLocationPermission()
+            //checkLocationPermission()
+            onNavigateToTabsScreen(mRestaurantData)
         })
 
         mSelectionViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
@@ -180,49 +171,8 @@ class SelectionActivity : BaseActivity() {
 
         if (mActivitiesFragment!!.getSelectedActivities().size > 0 && mAdventuresFragment!!.getSelectedAdventures().size > 0) {
             val intent = Intent(this, TabsActivity::class.java)
-            intent.putExtra("123", mAddress)
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, restaurantData)
             startActivity(intent)
-        }
-    }
-
-    private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                LOCATION_REQUEST_CODE
-            )
-        } else {
-            mFusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
-                if (location != null) {
-                    Log.i(TAG, "${location.latitude} && ${location.longitude}")
-                    val geoCoder = Geocoder(this)
-                    val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-                    if (address.size > 0) {
-                        //editLocation.setText(address[0].getAddressLine(0), TextView.BufferType.EDITABLE)
-                        mAddress = address[0].getAddressLine(0)
-                        onNavigateToTabsScreen(mRestaurantData)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_REQUEST_CODE -> {
-                checkLocationPermission()
-            }
         }
     }
 }
