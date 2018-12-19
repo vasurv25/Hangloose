@@ -3,6 +3,7 @@ package com.hangloose.ui.activities
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
@@ -15,7 +16,6 @@ import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -38,8 +38,12 @@ import com.hangloose.ui.model.ConsumerData
 import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.LOGIN_VALID_PASSWORD
+import com.hangloose.utils.PreferenceHelper
+import com.hangloose.utils.PreferenceHelper.get
+import com.hangloose.utils.PreferenceHelper.set
 import com.hangloose.utils.REQUEST_PERMISSIONS
 import com.hangloose.utils.VALID_PHONE
+import com.hangloose.utils.X_AUTH_TOKEN
 import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.utils.requestPermissionForOtp
 import com.hangloose.utils.showSnackBar
@@ -64,10 +68,13 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     var mProfileTracker: ProfileTracker? = null
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private val RC_SIGN_IN = 9001
+    private var mPreference: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mPreference = PreferenceHelper.defaultPrefs(this)
         initBinding()
+        //checkHeaderToken()
         intializeGoogleSignInOptions()
         signInWithFacebook()
         requestPermissionForOtp(this)
@@ -115,8 +122,9 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 Log.i(TAG, "onChanged")
                 val consumerDetails = t!!.body()!!.consumer!!
                 val headers = t.headers()
+                mPreference!![X_AUTH_TOKEN] = headers.get("X-AUTH-TOKEN").toString()
                 var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
-                var type = typeList.get(0)
+                var type = typeList[0]
                 val consumerData = ConsumerData(
                     headers.get("X-AUTH-TOKEN").toString(),
                     consumerDetails.existing,
@@ -300,6 +308,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     private fun onNavigateSelectionScreen() {
         var intent = Intent(this@SignInActivity, SelectionActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun checkHeaderToken() {
+        val headerToken: String? = mPreference!![X_AUTH_TOKEN]
+        Log.i(TAG, """Header : $headerToken""")
+        if (headerToken != null) {
+            onNavigateSelectionScreen()
+        }
     }
 
     override fun onDestroy() {

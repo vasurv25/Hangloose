@@ -3,6 +3,7 @@ package com.hangloose.ui.activities
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -21,6 +22,7 @@ import com.hangloose.ui.model.AdventuresDetails
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.KEY_RESTAURANT_DATA
+import com.hangloose.utils.PreferenceHelper
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.SelectionViewModel
 import kotlinx.android.synthetic.main.activity_selection.indicator
@@ -42,13 +44,17 @@ class SelectionActivity : BaseActivity() {
     private var mActivitiesFragment: ActivitiesFragment? = null
     private var mAdventuresFragment: AdventuresFragment? = null
     private var mRestaurantData = ArrayList<RestaurantData>()
+    private var mPreference: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mPreference = PreferenceHelper.defaultPrefs(this)
         initBinding()
     }
 
     override fun init() {}
+
+    //override fun onBackPressed() {}
 
     private fun setFragments() {
         Log.i(TAG, "init")

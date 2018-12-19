@@ -54,6 +54,7 @@ class SelectionViewModel : ViewModel() {
                 }, {
                     Log.i(TAG, """error login : ${it.localizedMessage}""")
                     mShowErrorSnackBar.value = it.localizedMessage
+                    // TODO if error related to token mis-match navigate user to SignIn Activity
                 })
 
         mCompositeDisposable!!.add(disposable)
@@ -65,7 +66,7 @@ class SelectionViewModel : ViewModel() {
     ) {
         Log.i(TAG, "Actvities List : $activitiesSelectedList")
         Log.i(TAG, "Adeventures List : $adventuresSelectedList")
-        val disposable = HanglooseApp.getApiService()!!.getRestaurants(activitiesSelectedList, adventuresSelectedList)
+        val disposable = HanglooseApp.getApiService()!!.getRestaurants(ConsumerDetails.consumerData!!.headers!!, activitiesSelectedList, adventuresSelectedList)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
