@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
@@ -29,24 +30,27 @@ import com.hangloose.utils.getDisplaySize
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
-import kotlinx.android.synthetic.main.fragment_restaurant.*
-import kotlinx.android.synthetic.main.fragment_restaurant.view.*
+import kotlinx.android.synthetic.main.fragment_restaurant.editLocation
+import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
 
 class RestaurantFragment : Fragment() {
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
     private var mBtFilter: ImageButton? = null
     private var mBtRadioRealGroup: RadioRealButtonGroup? = null
+    private var mEditLocation: EditText? = null
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
     private val REQUEST_LOCATION_MAPS = 9
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 109
+    private var mAddress: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
+        mAddress = arguments!!.getString("abc")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        checkLocationPermission()
+        //checkLocationPermission()
         Log.i(TAG, "Restaurant data : $mRestaurantData")
     }
 
@@ -55,6 +59,8 @@ class RestaurantFragment : Fragment() {
         mSwipePlaceHolderView = rootView!!.findViewById(R.id.swipeView) as SwipePlaceHolderView
         mBtFilter = rootView.findViewById(R.id.ibFilter) as ImageButton
         mBtRadioRealGroup = rootView.findViewById(R.id.segmentedButtonGroup) as RadioRealButtonGroup
+        mEditLocation = rootView.findViewById(R.id.editLocation) as EditText
+        mEditLocation!!.setText(mAddress)
         setSwipeableView()
         setLocationSearch(rootView)
         return rootView
