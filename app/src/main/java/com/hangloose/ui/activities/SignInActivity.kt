@@ -81,6 +81,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             }
             false
         })
+//        FacebookSdk.sdkInitialize(applicationContext)
+//        Log.i(TAG, FacebookSdk.getApplicationSignature(applicationContext))
     }
 
     override fun init() {
@@ -124,7 +126,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 )
                 ConsumerDetails.consumerData = consumerData
                 onNavigateSelectionScreen()
-                Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
             })
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
