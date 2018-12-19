@@ -2,6 +2,7 @@ package com.hangloose.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
 import android.util.Log
 import com.hangloose.HanglooseApp
 import com.hangloose.model.Activities
@@ -24,6 +25,7 @@ class SelectionViewModel : ViewModel() {
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
     private var mRestaurantListResponse: MutableLiveData<Response<List<RestaurantList>>> = MutableLiveData()
+    var isVisible = ObservableBoolean()
 
     fun selectionListApiRequest() {
         Log.i(TAG, """X_AUTH_TOKEN : ${ConsumerDetails.consumerData!!.headers!!}""")
@@ -40,6 +42,12 @@ class SelectionViewModel : ViewModel() {
                 })
                 .subscribeOn(HanglooseApp.subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    isVisible.set(true)
+                }
+                .doFinally {
+                    isVisible.set(false)
+                }
                 .subscribe({
                     Log.i(TAG, "success login : $it")
                     mSelectionList.value = it
@@ -60,6 +68,12 @@ class SelectionViewModel : ViewModel() {
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(activitiesSelectedList, adventuresSelectedList)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                isVisible.set(true)
+            }
+            .doFinally {
+                isVisible.set(false)
+            }
             .subscribe({ response ->
                 if (response.isSuccessful) {
                     mRestaurantListResponse.value = response

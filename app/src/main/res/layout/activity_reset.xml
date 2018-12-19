@@ -21,8 +21,8 @@
         android:id="@+id/ll_Reset_Pass"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="@{clickHandler::onOutsideTouch}"
         android:background="@drawable/img_background"
+        android:onClick="@{clickHandler::onOutsideTouch}"
         tools:context="com.hangloose.ui.activities.ResetActivity">
 
         <TextView
@@ -96,6 +96,7 @@
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
             android:onClick="onCancelClick"
             android:text="@string/cancel"
             android:textColor="@android:color/white"
@@ -110,7 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="40dp"
-            android:background="#b51f1f"
+            android:background="@drawable/bg_rounded_corner_reset"
+            android:foreground="?attr/selectableItemBackground"
             android:onClick="@{resetPasswordViewModel::onResetClick}"
             android:text="@string/reset"
             android:textColor="@android:color/white"

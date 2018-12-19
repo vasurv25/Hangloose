@@ -86,6 +86,7 @@ class SelectionActivity : BaseActivity() {
         mActivitySelectionBinding = DataBindingUtil.setContentView(this, R.layout.activity_selection)
         mActivitySelectionBinding!!.clickHandler = this
         mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
+        mActivitySelectionBinding!!.selectionViewModel = mSelectionViewModel
         mSelectionViewModel.selectionListApiRequest()
         mSelectionViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
             Log.i(TAG, "onChanged")

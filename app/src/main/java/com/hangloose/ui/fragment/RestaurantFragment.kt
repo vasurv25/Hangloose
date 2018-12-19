@@ -14,7 +14,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,7 +22,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.hangloose.R
 import com.hangloose.ui.activities.SwipeableCardView
-import com.hangloose.ui.activities.TabsActivity
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.dpToPx
@@ -36,7 +35,7 @@ import kotlinx.android.synthetic.main.fragment_restaurant.view.*
 class RestaurantFragment : Fragment() {
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
-    private var mBtSearch: Button? = null
+    private var mBtFilter: ImageButton? = null
     private var mBtRadioRealGroup: RadioRealButtonGroup? = null
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
     private val REQUEST_LOCATION_MAPS = 9
@@ -54,7 +53,7 @@ class RestaurantFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_restaurant, null)
         mSwipePlaceHolderView = rootView!!.findViewById(R.id.swipeView) as SwipePlaceHolderView
-        mBtSearch = rootView.findViewById(R.id.btSearch) as Button
+        mBtFilter = rootView.findViewById(R.id.ibFilter) as ImageButton
         mBtRadioRealGroup = rootView.findViewById(R.id.segmentedButtonGroup) as RadioRealButtonGroup
         setSwipeableView()
         setLocationSearch(rootView)
@@ -160,9 +159,9 @@ class RestaurantFragment : Fragment() {
             }
         }
 
-        mBtSearch!!.setOnClickListener { (activity as TabsActivity).replaceFragment(SearchFragment()) }
+        //mBtFilter!!.setOnClickListener { (activity as TabsActivity).replaceFragment(FilterFragment()) }
 
-        mBtRadioRealGroup!!.setOnPositionChangedListener { button, currentPosition, lastPosition ->
+        mBtRadioRealGroup!!.setOnPositionChangedListener { _, currentPosition, _ ->
             when (currentPosition) {
                 0 -> {
                     var one = mRestaurantData!!.map { it.restaurantType }.filter { it.equals("VEGETARIAN") }

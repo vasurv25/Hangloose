@@ -14,7 +14,7 @@ import com.hangloose.ui.fragment.SearchFragment
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.KEY_RESTAURANT_DATA
-import kotlinx.android.synthetic.main.activity_tab.*
+import kotlinx.android.synthetic.main.activity_tab.tabLayout
 
 class TabsActivity : BaseActivity() {
 
@@ -72,8 +72,6 @@ class TabsActivity : BaseActivity() {
             val args = Bundle()
             args.putParcelableArrayList(KEY_DATA, mRestaurantData)
             fragment.arguments = args
-        } else if (fragment is SearchFragment) {
-            tabLayout.getTabAt(1)!!.select()
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)

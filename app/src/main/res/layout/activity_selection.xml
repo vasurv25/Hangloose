@@ -1,87 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
         <variable
-                name="clickHandler"
-                type="com.hangloose.ui.activities.SelectionActivity"/>
+            name="selectionViewModel"
+            type="com.hangloose.viewmodel.SelectionViewModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.hangloose.ui.activities.SelectionActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ll_selection">
+        android:id="@+id/ll_selection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
-                android:id="@+id/tvSelectionHeading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="-11.7sp"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/select_your_activities"/>
+            android:id="@+id/tvSelectionHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:letterSpacing="0.02"
+            android:lineSpacingExtra="-11.7sp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/select_your_activities" />
 
         <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/btNextSelection"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSelectionHeading"/>
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/btNextSelection"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSelectionHeading" />
 
         <Button
-                android:id="@+id/btNextSelection"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:background="@drawable/next_blue"
-                android:onClick="@{clickHandler::oNextClick}"
-                app:layout_constraintBottom_toTopOf="@+id/indicator"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"/>
+            android:id="@+id/btNextSelection"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/next_blue"
+            android:foreground="?attr/selectableItemBackground"
+            android:onClick="@{clickHandler::oNextClick}"
+            app:layout_constraintBottom_toTopOf="@+id/indicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
         <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
-                app:ci_drawable="@drawable/current_page_indicator"
-                app:ci_drawable_unselected="@drawable/next_page_indicator"
-                app:ci_gravity="center"
-                app:ci_height="7dp"
-                app:ci_margin="10dp"
-                app:ci_width="7dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            app:ci_drawable="@drawable/current_page_indicator"
+            app:ci_drawable_unselected="@drawable/next_page_indicator"
+            app:ci_gravity="center"
+            app:ci_height="7dp"
+            app:ci_margin="10dp"
+            app:ci_width="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-                android:id="@+id/btRefresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="16dp"
-                android:text="Refresh"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+            android:id="@+id/btRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="16dp"
+            android:text="Refresh"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/pbLayout"
+            layout="@layout/activity_progress_overlay"
+            android:visibility="@{selectionViewModel.isVisible? View.VISIBLE : View.GONE}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
