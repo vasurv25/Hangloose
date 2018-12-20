@@ -2,6 +2,7 @@ package com.hangloose.ui.activities
 
 import android.content.Context
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -35,12 +36,25 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
     @View(R.id.tvOffer)
     private val textOffer: TextView? = null
 
+    @View(R.id.ibLike)
+    private val like: ImageButton? = null
+
     @Resolve
     private fun onResolved() {
         Glide.with(context).load(R.drawable.ic_restaurant_view).into(image)
         textRestaurantName!!.text = data.name
         textRestoAddress!!.text = data.address + " . " + data.restaurantType
         textRating!!.text = data.ratings
+        like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+        like!!.setOnClickListener {
+            it.isSelected = !it.isSelected
+            if (it.isSelected) {
+                swipeView.doSwipe(true)
+                like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
+            } else {
+                like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+            }
+        }
         //textOffer!!.text = data.offer
     }
 

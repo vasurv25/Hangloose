@@ -198,7 +198,9 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "Username is: " + Profile.getCurrentProfile().name)
                     getFacebookUserProfile(AccessToken.getCurrentAccessToken())
                 }
-                mProfileTracker!!.startTracking()
+                if (mProfileTracker != null) {
+                    mProfileTracker!!.startTracking()
+                }
             }
 
             override fun onCancel() {

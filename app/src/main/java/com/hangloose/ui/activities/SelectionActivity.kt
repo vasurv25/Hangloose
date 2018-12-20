@@ -98,6 +98,7 @@ class SelectionActivity : BaseActivity() {
             Log.i(TAG, "onChanged")
             (0 until t!!.activities.size).forEach { i ->
                 val list = t.activities
+                Log.i(TAG, "Activities : " + list[i].id!!)
                 mActivitiesList.add(
                     ActivitiesDetails(
                         list[i].createdAt!!,
@@ -110,6 +111,7 @@ class SelectionActivity : BaseActivity() {
             }
             (0 until t.adventures.size).forEach { i ->
                 val list = t.adventures
+                Log.i(TAG, "Adventures : " + list[i].id!!)
                 mAdventuresList.add(
                     AdventuresDetails(
                         list[i].createdAt!!,
