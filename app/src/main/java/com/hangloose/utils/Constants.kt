@@ -15,3 +15,5 @@ const val KEY_ADVENTURES_LIST = "key_adventures"
 const val KEY_RESTAURANT_DATA = "key_restaurant_data"
 const val KEY_DATA = "key_data"
 const val X_AUTH_TOKEN = "x_auth_token"
+
+const val EXTRA_RESTAURANT_DETAILS_DATA = "EXTRA_RESTAURANT_DETAILS_DATA"

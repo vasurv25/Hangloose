@@ -3,8 +3,8 @@
        android:shape="rectangle">
     <solid android:color="@color/colorSignInBtn"
             />
-    <corners android:radius="8dp"/>
-    <stroke
-            android:width="8dp"
-            android:color="@color/colorSignInBtn"/>
+    <corners
+            android:topRightRadius="6dp"
+            android:bottomRightRadius="6dp"/>
+
 </shape>

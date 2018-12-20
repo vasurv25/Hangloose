@@ -49,4 +49,32 @@
     <string name="select_your_adventure">Select Your Adventure</string>
     <string name="filter">Filters</string>
     <string name="title_activity_location_maps">Map</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="restaurant_place">Restaurant Place</string>
+    <string name="ratings">Ratings</string>
+    <string name="rating_value">4.3</string>
+    <string name="opens">Opens</string>
+    <string name="time">10 AM to 11 PM</string>
+    <string name="charges">Charges</string>
+    <string name="charges_value">₹ 1000 for 2 (Approx)</string>
+    <string name="category_value">Dining - Music - Dance</string>
+    <string name="veg">Veg</string>
+    <string name="nonveg">Non-Veg</string>
+    <string name="offers_with_reservation_title">Offers with Reservation</string>
+    <string name="offers_with_reservation_subtitle">Reserve a table and get special discounts</string>
+    <string name="offer_on_total_bill">20% Off Total Bill</string>
+    <string name="addon_offers">+2 Add-On Offers</string>
+    <string name="available_now">Available Now</string>
+    <string name="offer_availed">Offer availed 70 times</string>
+    <string name="select_offer">Select Offer</string>
+    <string name="menu">Menu</string>
+    <string name="about">About</string>
+    <string name="about_dummy">Lorem Ipsum is simple dummy text Wikipedia A white sphere made of large jigsaw pieces,
+        with letters from several alphabets shown on the pieces Wikipedia wordmark The logo of Wikipedia, a globe
+        featuring glyphs from several writing systems Screenshot Type of site Online encyclopedia</string>
+    <string name="tags">Tags</string>
+    <string name="address">Address</string>
+    <string name="address_dummy">Abc, \n Pune, Maharashtra</string>
+    <string name="contact">Contact</string>
+    <string name="check_availability">Check Availability</string>
 </resources>

@@ -1,13 +1,16 @@
 package com.hangloose.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.hangloose.R
 import com.hangloose.ui.model.RestaurantData
+import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
@@ -36,6 +39,9 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
     @View(R.id.tvOffer)
     private val textOffer: TextView? = null
 
+    @View(R.id.btBookTable)
+    private val btnBookTable: Button? = null
+
     @View(R.id.ibLike)
     private val like: ImageButton? = null
 
@@ -46,16 +52,21 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
         textRestoAddress!!.text = data.address + " . " + data.restaurantType
         textRating!!.text = data.ratings
         like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
-        like!!.setOnClickListener {
+        like.setOnClickListener {
             it.isSelected = !it.isSelected
             if (it.isSelected) {
                 swipeView.doSwipe(true)
-                like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
+                like.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
             } else {
-                like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+                like.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
             }
         }
         //textOffer!!.text = data.offer
+        btnBookTable!!.setOnClickListener {
+            val intent = Intent(context, RestaurantDetailsActivity::class.java)
+            intent.putExtra(EXTRA_RESTAURANT_DETAILS_DATA, data)
+            context.startActivity(intent)
+        }
     }
 
     @SwipeOut

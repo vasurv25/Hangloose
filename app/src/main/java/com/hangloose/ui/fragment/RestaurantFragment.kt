@@ -30,10 +30,11 @@ import com.hangloose.utils.getDisplaySize
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
-import kotlinx.android.synthetic.main.fragment_restaurant.editLocation
-import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
+import kotlinx.android.synthetic.main.fragment_restaurant.*
+import kotlinx.android.synthetic.main.fragment_restaurant.view.*
 
 class RestaurantFragment : Fragment() {
+
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
     private var mBtFilter: ImageButton? = null
@@ -174,7 +175,13 @@ class RestaurantFragment : Fragment() {
                     mSwipePlaceHolderView!!.removeAllViews()
                     for (data in mRestaurantData!!) {
                         if (data.restaurantType.equals("VEGETERIAN")) {
-                            mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+                            mSwipePlaceHolderView!!.addView(
+                                SwipeableCardView(
+                                    context!!,
+                                    data,
+                                    mSwipePlaceHolderView!!
+                                )
+                            )
                         }
                     }
                 }
@@ -182,7 +189,13 @@ class RestaurantFragment : Fragment() {
                     mSwipePlaceHolderView!!.removeAllViews()
                     for (data in mRestaurantData!!) {
                         if (data.restaurantType.equals("NON_VEGETERIAN")) {
-                            mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+                            mSwipePlaceHolderView!!.addView(
+                                SwipeableCardView(
+                                    context!!,
+                                    data,
+                                    mSwipePlaceHolderView!!
+                                )
+                            )
                         }
                     }
                 }
@@ -190,7 +203,13 @@ class RestaurantFragment : Fragment() {
                     mSwipePlaceHolderView!!.removeAllViews()
                     for (data in mRestaurantData!!) {
                         if (data.restaurantType.equals("BAR")) {
-                            mSwipePlaceHolderView!!.addView(SwipeableCardView(context!!, data, mSwipePlaceHolderView!!))
+                            mSwipePlaceHolderView!!.addView(
+                                SwipeableCardView(
+                                    context!!,
+                                    data,
+                                    mSwipePlaceHolderView!!
+                                )
+                            )
                         }
                     }
                 }

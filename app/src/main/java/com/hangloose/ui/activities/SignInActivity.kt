@@ -48,15 +48,7 @@ import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.utils.requestPermissionForOtp
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel
-import kotlinx.android.synthetic.main.activity_sign_in.btnFacebook
-import kotlinx.android.synthetic.main.activity_sign_in.btnGoogle
-import kotlinx.android.synthetic.main.activity_sign_in.btnSignInFB
-import kotlinx.android.synthetic.main.activity_sign_in.editPhone
-import kotlinx.android.synthetic.main.activity_sign_in.ll_signin
-import kotlinx.android.synthetic.main.activity_sign_in.textForgotPassword
-import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPassword
-import kotlinx.android.synthetic.main.activity_sign_in.textLayoutPhone
-import kotlinx.android.synthetic.main.activity_sign_in.textView4
+import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.Arrays
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
@@ -123,8 +115,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 val consumerDetails = t!!.body()!!.consumer!!
                 val headers = t.headers()
                 mPreference!![X_AUTH_TOKEN] = headers.get("X-AUTH-TOKEN").toString()
-                var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
-                var type = typeList[0]
+                val typeList = t.body()!!.consumerAuths!!.map { it.type }
+                val type = typeList[0]
                 val consumerData = ConsumerData(
                     headers.get("X-AUTH-TOKEN").toString(),
                     consumerDetails.existing,

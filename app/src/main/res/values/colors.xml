@@ -12,5 +12,7 @@
     <color name="black">@android:color/black</color>
     <color name="colorIndicator">#333366</color>
     <color name="colorGrey">#cccccc</color>
-    <color name="colorTextTab">#cccccc</color>
+    <color name="colorSubTitle">#999999</color>
+    <color name="colorGreen">#58b947</color>
+    <color name="colorBgGrey">#eeeeee</color>
 </resources>
