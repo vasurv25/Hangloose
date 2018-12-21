@@ -347,17 +347,46 @@
                     android:id="@+id/textAbout"
                     style="@style/text16"/>
 
-            <TextView
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:lines="3"-->
+            <!--android:maxLines="3"-->
+            <!--android:text="@string/about_dummy"-->
+            <!--style="@style/text12"-->
+            <!--android:layout_below="@+id/textAbout"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:textColor="@color/colorSubTitle"-->
+            <!--/>-->
+
+            <com.ms.square.android.expandabletextview.ExpandableTextView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/expand_text_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lines="3"
-                    android:maxLines="3"
-                    android:text="@string/about_dummy"
-                    style="@style/text12"
                     android:layout_below="@+id/textAbout"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/colorSubTitle"
-                    />
+                    android:layout_height="wrap_content"
+                    expandableTextView:maxCollapsedLines="3"
+                    expandableTextView:animDuration="200">
+
+                <TextView
+                        android:id="@id/expandable_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        style="@style/text12"
+                        android:textColor="@color/colorSubTitle"/>
+
+                <ImageButton
+                        android:id="@id/expand_collapse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:layout_gravity="end|bottom"
+                        android:background="@android:color/transparent"/>
+            </com.ms.square.android.expandabletextview.ExpandableTextView>
         </RelativeLayout>
 
         <RelativeLayout

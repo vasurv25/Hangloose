@@ -112,6 +112,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:' + google_play_services
     implementation 'com.google.android.gms:play-services-places:' + google_play_services
     implementation 'com.google.android.gms:play-services-auth:' + google_play_services
+    //Expandable TextView
+    implementation 'com.ms-square:expandableTextView:0.1.4'
 }
 
 task ktlint(type: JavaExec, group: "verification") {

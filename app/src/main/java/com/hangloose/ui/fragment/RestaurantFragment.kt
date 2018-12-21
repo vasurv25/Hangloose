@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -17,9 +18,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.hangloose.R
 import com.hangloose.ui.activities.SwipeableCardView
@@ -45,6 +51,8 @@ class RestaurantFragment : Fragment() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 109
     private var mAddress: String? = null
+    private val REQUEST_CHECK_SETTINGS = 10
+    private var mGoogleApiClient: GoogleApiClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +106,55 @@ class RestaurantFragment : Fragment() {
                 LOCATION_REQUEST_CODE
             )
         } else {
+            enableGPS()
+        }
+    }
+
+    private fun enableGPS() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = GoogleApiClient.Builder(context!!)
+                .addApi(LocationServices.API)
+                .build()
+            mGoogleApiClient!!.connect()
+            val locationRequest = LocationRequest.create()
+            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            locationRequest.interval = 1000 / 2
+            locationRequest.fastestInterval = 1000 / 4
+            val mLocationSettingRequestBuilder = LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+            mLocationSettingRequestBuilder.setAlwaysShow(true)
+
+            val result = LocationServices.getSettingsClient(context!!)
+                .checkLocationSettings(mLocationSettingRequestBuilder.build())
+
+            result.addOnSuccessListener { getUserLocation() }
+            result.addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+//                    exception.startResolutionForResult(activity!!, REQUEST_CHECK_SETTINGS)
+                    startIntentSenderForResult(
+                        exception.resolution.intentSender,
+                        REQUEST_CHECK_SETTINGS,
+                        null,
+                        0,
+                        0,
+                        0,
+                        null
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getUserLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                context!!,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             mFusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
                 if (location != null) {
                     Log.i(TAG, "${location.latitude} && ${location.longitude}")
@@ -135,6 +192,16 @@ class RestaurantFragment : Fragment() {
                         Log.i(TAG, status.statusMessage)
                     }
                     Activity.RESULT_CANCELED -> Log.i(TAG, "RESULT_CANCELED")
+                }
+            }
+            REQUEST_CHECK_SETTINGS -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        val handler = Handler().postDelayed({ getUserLocation() }, 1000)
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        Toast.makeText(context!!, "Please enable Location service!", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

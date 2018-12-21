@@ -26,6 +26,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
             textName.text = restaurantData!!.name
             textPlace.text = restaurantData!!.address
             textRatingValue.text = restaurantData!!.ratings
+            expand_text_view.text = getString(R.string.about_dummy)
         }
     }
 }
