@@ -71,6 +71,12 @@ class SelectionActivity : BaseActivity() {
     private var mAddress: String? = null
     private val REQUEST_CHECK_SETTINGS = 10
     private var mGoogleApiClient: GoogleApiClient? = null
+    val mCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult?) {
+            super.onLocationResult(locationResult)
+            onLocationChanged(locationResult!!.lastLocation)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -269,12 +275,7 @@ class SelectionActivity : BaseActivity() {
             val result = LocationServices.getSettingsClient(this)
                 .checkLocationSettings(mLocationSettingRequestBuilder.build())
 
-            mFusedLocationClient.requestLocationUpdates(locationRequest, object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    super.onLocationResult(locationResult)
-                    onLocationChanged(locationResult!!.lastLocation)
-                }
-            }, Looper.myLooper())
+            mFusedLocationClient.requestLocationUpdates(locationRequest, mCallback, Looper.myLooper())
 
             result.addOnSuccessListener { getUserLocation() }
             result.addOnFailureListener { exception ->
@@ -296,6 +297,7 @@ class SelectionActivity : BaseActivity() {
     }
 
     private fun onLocationChanged(location: Location) {
+        mFusedLocationClient.removeLocationUpdates(mCallback)
         val geoCoder = Geocoder(this)
         val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
         if (address.size > 0) {

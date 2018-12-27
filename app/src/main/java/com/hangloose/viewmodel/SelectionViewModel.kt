@@ -82,6 +82,7 @@ class SelectionViewModel : ViewModel() {
                     val jObjError = JSONObject(response.errorBody()!!.string())
                     mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
                 }
+                mCompositeDisposable!!.dispose()
             }, {
                 Log.i(TAG, "error login")
                 mShowErrorSnackBar.value = it.localizedMessage
