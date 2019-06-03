@@ -39,13 +39,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [appName: project.APPLICATION_NAME]
             signingConfig android.signingConfigs.hangLooseRelease
-            buildConfigField "String", "BASE_URL", '"http://hangloose-env.m4nk3aaj6d.ap-south-1.elasticbeanstalk.com/"'
+            buildConfigField "String", "BASE_URL", '"http://hangloose.ap-south-1.elasticbeanstalk.com/"'
         }
         debug {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [appName: "$project.APPLICATION_NAME" + "_Debug"]
             signingConfig android.signingConfigs.hangLooseDebug
-            buildConfigField "String", "BASE_URL", '"http://hangloose-env.m4nk3aaj6d.ap-south-1.elasticbeanstalk.com/"'
+            buildConfigField "String", "BASE_URL", '"http://hangloose.ap-south-1.elasticbeanstalk.com/"'
         }
     }
 
@@ -92,8 +92,9 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
     //Rx
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    //implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'com.jakewharton.rxbinding:rxbinding-kotlin:0.4.0'
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     // Page indicator for ViewPager
     implementation 'me.relex:circleindicator:1.2.2@aar'

@@ -6,7 +6,10 @@ import android.util.Log
 import com.hangloose.R
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
-import kotlinx.android.synthetic.main.activity_restaurant_details.*
+import kotlinx.android.synthetic.main.activity_restaurant_details.expand_text_view
+import kotlinx.android.synthetic.main.activity_restaurant_details.textName
+import kotlinx.android.synthetic.main.activity_restaurant_details.textPlace
+import kotlinx.android.synthetic.main.activity_restaurant_details.textRatingValue
 
 class RestaurantDetailsActivity : AppCompatActivity() {
 
@@ -19,6 +22,12 @@ class RestaurantDetailsActivity : AppCompatActivity() {
         restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
         Log.i(TAG, restaurantData.toString())
         setUpViews()
+        val al = ArrayList<String>(4)
+        //Added 4 elements
+        al.add("Hi")
+        al.add("Hello")
+        al.add("Bye")
+        al.add("GM")
     }
 
     private fun setUpViews() {

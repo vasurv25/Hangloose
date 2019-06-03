@@ -33,7 +33,7 @@ import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
 import kotlinx.android.synthetic.main.fragment_restaurant.editLocation
-import kotlinx.android.synthetic.main.fragment_restaurant.view.*
+import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
 
 class RestaurantFragment : Fragment() {
 

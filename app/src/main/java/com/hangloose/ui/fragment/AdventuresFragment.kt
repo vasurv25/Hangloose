@@ -32,7 +32,7 @@ class AdventuresFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mContentList = arguments!!.getParcelableArrayList(KEY_ADVENTURES_LIST)
-            Log.i(TAG, "ActivitiesList : $mContentList")
+            Log.i(TAG, "AdventuresList : $mContentList")
         }
     }
 
@@ -71,6 +71,7 @@ class AdventuresFragment : Fragment() {
     }
 
     fun getSelectedAdventures(): ArrayList<String> {
+        Log.i(TAG, "getSelectedAdventures : " + mAdapter!!.getAdventuresList())
         return mAdapter!!.getAdventuresList()
     }
 }

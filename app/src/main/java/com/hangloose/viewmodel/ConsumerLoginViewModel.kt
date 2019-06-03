@@ -110,6 +110,8 @@ class ConsumerLoginViewModel : ViewModel() {
             .subscribe({ response ->
                 if (response.isSuccessful) {
                     mConsumerAuthDetailResponse.value = response
+                    val header = response.headers()
+                    Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
                 } else {
                     val jObjError = JSONObject(response.errorBody()!!.string())
                     mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
