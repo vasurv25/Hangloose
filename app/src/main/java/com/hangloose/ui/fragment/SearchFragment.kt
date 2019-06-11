@@ -11,7 +11,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
-import com.hangloose.ui.adapter.SearchAdapter
+//import com.hangloose.ui.adapter.SearchAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
 
@@ -19,7 +19,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var TAG = "SearchFragment"
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
-    private var mSearchAdapter: SearchAdapter? = null
+    //private var mSearchAdapter: SearchAdapter? = null
     private var mRestaurantSearchList: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +36,8 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun setUpAdapter() {
-        mSearchAdapter = SearchAdapter(activity!!, mRestaurantData!!)
-        mRestaurantSearchList!!.adapter = mSearchAdapter
+        //mSearchAdapter = SearchAdapter(activity!!, mRestaurantData!!)
+        //mRestaurantSearchList!!.adapter = mSearchAdapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -53,7 +53,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
-        mSearchAdapter!!.searchFilter(query!!)
+        //mSearchAdapter!!.searchFilter(query!!)
         return false
     }
 }
