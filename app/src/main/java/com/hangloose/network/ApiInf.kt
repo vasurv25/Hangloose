@@ -46,5 +46,5 @@ interface ApiInf {
     fun getAdventures(@Header("X_AUTH_TOKEN") header: String): Observable<Response<List<Adventures>>>
 
     @GET("/restaurants")
-    fun getRestaurants(@Header("X_AUTH_TOKEN") header: String, @Query("activityIds") activityIds: ArrayList<String>, @Query("adventureIds") adventureIds: ArrayList<String>): Observable<Response<List<RestaurantList>>>
+    fun getRestaurants(@Header("X_AUTH_TOKEN") header: String, @Query("activityIds", encoded = true) activityIds: String, @Query("adventureIds", encoded = true) adventureIds: String): Observable<Response<List<RestaurantList>>>
 }
