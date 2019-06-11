@@ -39,7 +39,7 @@ import com.hangloose.ui.model.ActivitiesDetails
 import com.hangloose.ui.model.AdventuresDetails
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.ui.model.SelectionList
-import com.hangloose.utils.KEY_RESTAURANT_DATA
+import com.hangloose.utils.KEY_ACTIVITIES_LIST
 import com.hangloose.utils.PreferenceHelper
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.SelectionViewModel
@@ -205,7 +205,7 @@ class SelectionActivity : BaseActivity() {
                 )
             }
             //checkLocationPermission()
-            onNavigateToTabsScreen(mRestaurantData)
+            //onNavigateToLocationScreen()
         })
 
         mSelectionViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
@@ -223,18 +223,19 @@ class SelectionActivity : BaseActivity() {
         mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
         mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
         if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
-            checkLocationPermission()
+            //mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
+            onNavigateToLocationScreen(mActivitiesSelectedList, mActivitiesSelectedList)
         }
     }
 
-    private fun onNavigateToTabsScreen(restaurantData: ArrayList<RestaurantData>) {
-
-        if (mActivitiesFragment!!.getSelectedActivities().size > 0 && mAdventuresFragment!!.getSelectedAdventures().size > 0) {
-            val intent = Intent(this, TabsActivity::class.java)
-            intent.putExtra("123", mAddress)
-            intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, restaurantData)
-            startActivity(intent)
-        }
+    private fun onNavigateToLocationScreen(
+        mActivitiesSelectedList: ArrayList<String>,
+        mActivitiesSelectedList1: ArrayList<String>
+    ) {
+        val intent = Intent(this, LocationSettingActivity::class.java)
+        intent.putParcelableArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesList)
+        intent.putParcelableArrayListExtra(KEY_ACTIVITIES_LIST, mAdventuresList)
+        startActivity(intent)
     }
 
     private fun checkLocationPermission() {
