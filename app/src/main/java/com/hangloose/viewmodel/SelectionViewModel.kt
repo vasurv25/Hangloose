@@ -64,9 +64,7 @@ class SelectionViewModel : ViewModel() {
         activitiesSelectedList: ArrayList<String>,
         adventuresSelectedList: ArrayList<String>
     ) {
-        Log.i(TAG, "Actvities List : $activitiesSelectedList")
-        Log.i(TAG, "Adeventures List : $adventuresSelectedList")
-        val disposable = HanglooseApp.getApiService()!!.getRestaurants(ConsumerDetails.consumerData!!.headers!!, activitiesSelectedList, adventuresSelectedList)
+        val disposable = HanglooseApp.getApiService()!!.getRestaurants(ConsumerDetails.consumerData!!.headers!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList))
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -107,5 +105,14 @@ class SelectionViewModel : ViewModel() {
     fun reset() {
         unSubscribeFromObservable()
         mCompositeDisposable = null
+    }
+
+    private fun convertToCSV(list : ArrayList<String>) : String {
+        var listInString = StringBuilder()
+
+        for (name in list) {
+            listInString = if (listInString.isNotEmpty()) listInString.append(",").append(name) else listInString.append(name)
+        }
+        return listInString.toString();
     }
 }
