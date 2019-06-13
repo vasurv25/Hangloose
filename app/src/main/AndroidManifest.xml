@@ -80,6 +80,11 @@
                 android:theme="@style/AppThemeNoActionBar"
                 android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
+        <activity
+            android:name=".ui.activities.LocationSettingActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+
         <receiver
                 android:name=".ui.receiver.SMSBroadcastReceiver"
                 android:enabled="true"

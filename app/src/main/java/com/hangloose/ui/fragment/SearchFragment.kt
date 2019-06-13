@@ -11,7 +11,6 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
-//import com.hangloose.ui.adapter.SearchAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
 
