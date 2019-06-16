@@ -10,6 +10,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.ResultReceiver
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
@@ -20,11 +21,13 @@ import com.google.android.gms.location.*
 import com.hangloose.ui.fragment.SearchLocationFragment
 import com.hangloose.utils.KEY_ACTIVITIES_LIST
 import com.hangloose.utils.KEY_ADVENTURES_LIST
-import kotlinx.android.synthetic.main.activity_location_setting.*
-import android.support.design.widget.BottomSheetBehavior
 import com.hangloose.R
+import kotlinx.android.synthetic.main.content_location_setting.*
+import android.support.design.widget.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_location_setting.*
 
-
+//https://www.androhub.com/bottom-sheets-dialog-in-android/
+//https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
 class LocationSettingActivity : BaseActivity(), View.OnClickListener {
 
     private var TAG = "LocationSettingActivity"
@@ -37,6 +40,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mActivitiesSelectedList = ArrayList<String>()
     private var mAdventuresSelectedList = ArrayList<String>()
+    private var mBottomSheetBehavior: BottomSheetBehavior<*>? = null
 
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -54,8 +58,18 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_setting)
-        mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
-        mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
+        //mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
+        //mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bottom_sheet.translationY = 700f
+
+        //By default set BottomSheet Behavior as Collapsed and Height 0
+        mBottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+        mBottomSheetBehavior!!.peekHeight = 0
+
+        if (mBottomSheetBehavior != null && mBottomSheetBehavior is BottomSheetBehavior<*>) {
+            mBottomSheetBehavior!!.setBottomSheetCallback(mBottomSheetBehaviorCallback)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -92,6 +106,19 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private val mBottomSheetBehaviorCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+            }
+            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                mBottomSheetBehavior!!.peekHeight = 1000
+            }
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {}
     }
 
 
