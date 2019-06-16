@@ -40,6 +40,7 @@ import com.hangloose.ui.model.AdventuresDetails
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.KEY_ACTIVITIES_LIST
+import com.hangloose.utils.KEY_ADVENTURES_LIST
 import com.hangloose.utils.PreferenceHelper
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.SelectionViewModel
@@ -223,18 +224,17 @@ class SelectionActivity : BaseActivity() {
         mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
         mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
         if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
-            //mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
-            onNavigateToLocationScreen(mActivitiesSelectedList, mActivitiesSelectedList)
+            onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
         }
     }
 
     private fun onNavigateToLocationScreen(
         mActivitiesSelectedList: ArrayList<String>,
-        mActivitiesSelectedList1: ArrayList<String>
+        mAdventuresSelectedList: ArrayList<String>
     ) {
         val intent = Intent(this, LocationSettingActivity::class.java)
-        intent.putParcelableArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesList)
-        intent.putParcelableArrayListExtra(KEY_ACTIVITIES_LIST, mAdventuresList)
+        intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
+        intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
         startActivity(intent)
     }
 

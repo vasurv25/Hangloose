@@ -17,12 +17,13 @@ import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.hangloose.R
-import com.hangloose.ui.model.ActivitiesDetails
-import com.hangloose.ui.model.AdventuresDetails
+import com.hangloose.ui.fragment.SearchLocationFragment
 import com.hangloose.utils.KEY_ACTIVITIES_LIST
 import com.hangloose.utils.KEY_ADVENTURES_LIST
 import kotlinx.android.synthetic.main.activity_location_setting.*
+import android.support.design.widget.BottomSheetBehavior
+import com.hangloose.R
+
 
 class LocationSettingActivity : BaseActivity(), View.OnClickListener {
 
@@ -34,8 +35,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
     private var mAddress: String? = null
     private val REQUEST_CHECK_SETTINGS = 10
     private var mGoogleApiClient: GoogleApiClient? = null
-    private var mActivitiesList = ArrayList<ActivitiesDetails>()
-    private var mAdventuresList = ArrayList<AdventuresDetails>()
+    private var mActivitiesSelectedList = ArrayList<String>()
+    private var mAdventuresSelectedList = ArrayList<String>()
 
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -47,19 +48,23 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
 
     override fun init() {
         btnEnableLocation.setOnClickListener(this)
+        tvLocationManually.setOnClickListener(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_setting)
-        mActivitiesList = intent.getParcelableArrayListExtra<ActivitiesDetails>(KEY_ACTIVITIES_LIST)
-        mAdventuresList = intent.getParcelableArrayListExtra<AdventuresDetails>(KEY_ADVENTURES_LIST)
+        mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
+        mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
             btnEnableLocation.id -> {
                 onEnableLocationClick()
+            }
+            tvLocationManually.id -> {
+                openLocationSearchDialog()
             }
         }
     }
@@ -181,5 +186,14 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun openLocationSearchDialog() {
+        var searchLocationFragment = SearchLocationFragment()
+        searchLocationFragment.show(supportFragmentManager, "LocationDialog")
+
+        /*val behavior = BottomSheetBehavior.from(searchLocationFragment)
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+        behavior.setPeekHeight(0)*/
     }
 }
