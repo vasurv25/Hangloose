@@ -18,7 +18,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.activities.SplashActivity"
+                android:name=".ui.activities.LocationSettingActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
@@ -80,11 +80,11 @@
                 android:theme="@style/AppThemeNoActionBar"
                 android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
-        <activity
+        <!--<activity
             android:name=".ui.activities.LocationSettingActivity"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
-
+-->
         <receiver
                 android:name=".ui.receiver.SMSBroadcastReceiver"
                 android:enabled="true"
@@ -109,6 +109,9 @@
                 android:name=".ui.activities.RestaurantDetailsActivity"
                 android:theme="@style/AppThemeNoActionBar"
                 android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+
+        <service android:name=".ui.service.AddressesByNameIntentService"
+                 android:exported="false"></service>
     </application>
 
 </manifest>
