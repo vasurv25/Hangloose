@@ -16,12 +16,13 @@ import com.hangloose.R
 import com.hangloose.ui.fragment.ProfileFragment
 import com.hangloose.ui.fragment.RestaurantFragment
 import com.hangloose.ui.fragment.SearchFragment
+import com.hangloose.ui.fragment.SearchLocationFragment
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import kotlinx.android.synthetic.main.activity_tab.tabLayout
 
-class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
+class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, SearchLocationFragment.ContentListener {
 
     private val TAG = "TabsActivity"
     private var mRestaurantData: ArrayList<RestaurantData>? = null
@@ -90,7 +91,13 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
             .setTextColor(resources.getColor(R.color.colorPrimary, null))
     }
 
-    fun replaceFragment(fragment: Fragment) {
+    override fun onItemClicked(location: String?) {
+        Log.d(TAG, "Click : $location")
+        mAddress = location
+        replaceFragment(RestaurantFragment())
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
         Log.i(TAG, "Restaurant data : $mRestaurantData")
         if (fragment is RestaurantFragment || fragment is SearchFragment) {
             val args = Bundle()

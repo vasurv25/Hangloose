@@ -22,15 +22,11 @@ class LocationViewModel : ViewModel() {
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     var isVisible = ObservableBoolean()
 
-    fun restaurantListApiRequest(
-        activitiesSelectedList: ArrayList<String>,
-        adventuresSelectedList: ArrayList<String>
-    ) {
-        Log.i(TAG, "Actvities List : $activitiesSelectedList")
-        Log.i(TAG, "Adeventures List : $adventuresSelectedList")
+    fun restaurantListApiRequest() {
+        //Log.i(TAG, "Actvities List : $activitiesSelectedList")
+        //Log.i(TAG, "Adeventures List : $adventuresSelectedList")
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(
-            ConsumerDetails.consumerData!!.headers!!, convertToCSV(activitiesSelectedList)
-            , convertToCSV(adventuresSelectedList))
+            ConsumerDetails.consumerData!!.headers!!, "VEGETERIAN")
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

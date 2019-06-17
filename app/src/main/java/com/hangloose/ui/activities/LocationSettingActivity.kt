@@ -3,14 +3,13 @@ package com.hangloose.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.ResultReceiver
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
@@ -19,16 +18,20 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.hangloose.ui.fragment.SearchLocationFragment
-import com.hangloose.utils.KEY_ACTIVITIES_LIST
-import com.hangloose.utils.KEY_ADVENTURES_LIST
 import com.hangloose.R
 import kotlinx.android.synthetic.main.content_location_setting.*
 import android.support.design.widget.BottomSheetBehavior
+import com.hangloose.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_location_setting.*
+import android.arch.lifecycle.Observer
+import com.hangloose.model.RestaurantList
+import com.hangloose.ui.model.RestaurantData
+import com.hangloose.utils.KEY_RESTAURANT_DATA
+import retrofit2.Response
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
 //https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
-class LocationSettingActivity : BaseActivity(), View.OnClickListener {
+class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLocationFragment.ContentListener {
 
     private var TAG = "LocationSettingActivity"
 
@@ -41,6 +44,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
     private var mActivitiesSelectedList = ArrayList<String>()
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mBottomSheetBehavior: BottomSheetBehavior<*>? = null
+    private var mLocationViewModel : LocationViewModel? = null
+    private var mRestaurantData = ArrayList<RestaurantData>()
 
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -61,7 +66,6 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
         //mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         //mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
-        bottom_sheet.translationY = 700f
 
         //By default set BottomSheet Behavior as Collapsed and Height 0
         mBottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -70,6 +74,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
         if (mBottomSheetBehavior != null && mBottomSheetBehavior is BottomSheetBehavior<*>) {
             mBottomSheetBehavior!!.setBottomSheetCallback(mBottomSheetBehaviorCallback)
         }
+
+        initBinding()
     }
 
     override fun onClick(view: View?) {
@@ -119,6 +125,45 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+    }
+
+    override fun onItemClicked(location: String?) {
+        mAddress = location
+        mLocationViewModel!!.restaurantListApiRequest()
+    }
+
+    private fun initBinding() {
+        mLocationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
+        mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
+            val data = t!!.body()
+            (0 until data!!.size).forEach { i ->
+                mRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt
+                    )
+                )
+            }
+            navigateToTabsActivity()
+        })
+    }
+
+    private fun navigateToTabsActivity() {
+        var intent = Intent(this, TabsActivity::class.java)
+        intent.putExtra("123", mAddress)
+        intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+        startActivity(intent)
     }
 
 
@@ -188,12 +233,13 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
 
     private fun onLocationChanged(location: Location) {
         mFusedLocationClient.removeLocationUpdates(mCallback)
-        val geoCoder = Geocoder(this)
+        /*val geoCoder = Geocoder(this)
         val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
         if (address.size > 0) {
             mAddress = address[0].getAddressLine(0)
             //mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
-        }
+        }*/
+        mLocationViewModel!!.restaurantListApiRequest()
     }
 
     private fun getUserLocation() {
@@ -218,9 +264,5 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener {
     private fun openLocationSearchDialog() {
         var searchLocationFragment = SearchLocationFragment()
         searchLocationFragment.show(supportFragmentManager, "LocationDialog")
-
-        /*val behavior = BottomSheetBehavior.from(searchLocationFragment)
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED)
-        behavior.setPeekHeight(0)*/
     }
 }

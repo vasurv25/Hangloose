@@ -1,13 +1,9 @@
 package com.hangloose.ui.fragment
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.Gravity
@@ -17,11 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.hangloose.R
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
@@ -32,7 +24,6 @@ import com.hangloose.utils.getDisplaySize
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
-import kotlinx.android.synthetic.main.fragment_restaurant.editLocation
 import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
 
 class RestaurantFragment : Fragment() {
@@ -43,8 +34,6 @@ class RestaurantFragment : Fragment() {
     private var mBtRadioRealGroup: RadioRealButtonGroup? = null
     private var mEditLocation: EditText? = null
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
-    private val REQUEST_LOCATION_MAPS = 9
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var mAddress: String? = null
     private var mContext: TabsActivity? = null
     private val LOCATION_REQUEST_CODE = 109
@@ -53,8 +42,7 @@ class RestaurantFragment : Fragment() {
         super.onCreate(savedInstanceState)
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mAddress = arguments!!.getString("abc")
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
-        //checkLocationPermission()
+
         Log.i(TAG, "Restaurant data : $mRestaurantData")
     }
 
@@ -78,10 +66,6 @@ class RestaurantFragment : Fragment() {
         return rootView
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onDetach() {
         super.onDetach()
         mContext = null
@@ -91,79 +75,22 @@ class RestaurantFragment : Fragment() {
         rootView.editLocation.setOnTouchListener(View.OnTouchListener { _, event ->
             val DRAWABLE_END = 2
             if (event.action == MotionEvent.ACTION_UP) {
-                checkLocationPermission()
-                if (event.rawX >= (rootView.editLocation.right - rootView.editLocation.compoundDrawables[DRAWABLE_END].bounds.width())) {
-                    //Open Maps
-                    val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                        .build(activity)
-                    startActivityForResult(intent, REQUEST_LOCATION_MAPS)
-                    return@OnTouchListener true
-                }
+//                checkLocationPermission()
+//                if (event.rawX >= (rootView.editLocation.right - rootView.editLocation.compoundDrawables[DRAWABLE_END].bounds.width())) {
+//                    //Open Maps
+//                    val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+//                        .build(activity)
+//                    startActivityForResult(intent, REQUEST_LOCATION_MAPS)
+
+
+                openLocationSearchDialog()
+                return@OnTouchListener true
+//                }
             }
             false
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REQUEST_LOCATION_MAPS -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        val place = PlaceAutocomplete.getPlace(mContext!!, data)
-                        Log.i(TAG, place.toString())
-                        Log.i(
-                            TAG + "1",
-                            "${place.latLng.latitude} && ${place.latLng.longitude} && ${place.address}"
-                        )
-                        editLocation.setText(place.address.toString())
-                    }
-                    PlaceAutocomplete.RESULT_ERROR -> {
-                        val status = PlaceAutocomplete.getStatus(context, data)
-                        Log.i(TAG, status.statusMessage)
-                    }
-                    Activity.RESULT_CANCELED -> Log.i(TAG, "RESULT_CANCELED")
-                }
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_REQUEST_CODE -> {
-                checkLocationPermission()
-            }
-        }
-    }
-
-    private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                mContext!!,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                mContext!!,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                LOCATION_REQUEST_CODE
-            )
-        } else {
-            mFusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
-                if (location != null) {
-                    Log.i(TAG, "${location.latitude} && ${location.longitude}")
-                    val geoCoder = Geocoder(context)
-                    val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-                    if (address.size > 0) {
-                        editLocation.setText(address[0].getAddressLine(0), TextView.BufferType.EDITABLE)
-                    }
-                }
-            }
-        }
-    }
 
     private fun setSwipeableView() {
         val sideMargin = dpToPx(220)
@@ -241,6 +168,28 @@ class RestaurantFragment : Fragment() {
             }
         }
     }
+
+    private fun openLocationSearchDialog() {
+        var fragment = SearchLocationFragment()
+        fragment.setTargetFragment(this, 100)
+        var fragmentManager = fragmentManager
+        fragment.show(fragmentManager, "SearchLocation")
+//        var fragmentTransaction = fragmentManager!!.beginTransaction()
+//        fragmentTransaction.replace(R.id.fragmentContainer, SearchLocationFragment())
+//        fragmentTransaction.addToBackStack(null)
+//        fragmentTransaction.commit()
+    }
+
+    override fun onActivityResult(requestCode : Int, resultCode : Int, intent : Intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 100) {
+                var address = intent.getStringExtra ("456")
+                Log.d(TAG, "Addresssssssssssssss : $address")
+            }
+        }
+    }
+
 }
 
 /*mBtSegmentedGroup!!.setOnClickedButtonListener {
