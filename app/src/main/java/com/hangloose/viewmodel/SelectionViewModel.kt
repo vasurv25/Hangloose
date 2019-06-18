@@ -64,7 +64,7 @@ class SelectionViewModel : ViewModel() {
         activitiesSelectedList: ArrayList<String>,
         adventuresSelectedList: ArrayList<String>
     ) {
-        val disposable = HanglooseApp.getApiService()!!.getRestaurants(ConsumerDetails.consumerData!!.headers!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList))
+        val disposable = HanglooseApp.getApiService()!!.getRestaurants(ConsumerDetails.consumerData!!.headers!!, "VEGETERIAN")
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
