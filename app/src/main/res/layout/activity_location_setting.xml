@@ -4,7 +4,7 @@
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent">
 
-    <include layout="@layout/content_location_setting"/>
+    <include layout="@layout/content_location_setting" />
 
     <!-- Bottom Sheet Dialog Content @set app:layout_behavior = "android.support.design.widget.BottomSheetBehavior" -->
     <android.support.v4.widget.NestedScrollView
@@ -17,10 +17,9 @@
 
         <include
                 layout="@layout/content_bottom_sheet"
-                android:layout_height="700dp"
-                android:layout_width="match_parent"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
     </android.support.v4.widget.NestedScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>

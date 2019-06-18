@@ -28,6 +28,11 @@ import com.hangloose.model.RestaurantList
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import retrofit2.Response
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
 //https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
@@ -40,12 +45,16 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     private val LOCATION_REQUEST_CODE = 109
     private var mAddress: String? = null
     private val REQUEST_CHECK_SETTINGS = 10
-    private var mGoogleApiClient: GoogleApiClient? = null
+    //private var mGoogleApiClient: GoogleApiClient? = null
     private var mActivitiesSelectedList = ArrayList<String>()
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mBottomSheetBehavior: BottomSheetBehavior<*>? = null
-    private var mLocationViewModel : LocationViewModel? = null
+    private var mLocationViewModel: LocationViewModel? = null
     private var mRestaurantData = ArrayList<RestaurantData>()
+
+    var mGoogleApiClient: GoogleApiClient? = null
+    var mLastLocation: Location? = null
+    var mLocationRequest: LocationRequest? = null
 
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -63,6 +72,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_setting)
+
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         //mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         //mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
