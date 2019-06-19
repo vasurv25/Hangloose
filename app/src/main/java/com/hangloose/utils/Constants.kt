@@ -17,3 +17,4 @@ const val KEY_DATA = "key_data"
 const val X_AUTH_TOKEN = "x_auth_token"
 
 const val EXTRA_RESTAURANT_DETAILS_DATA = "EXTRA_RESTAURANT_DETAILS_DATA"
+const val API_NOT_CONNECTED = "Google API not connected"
