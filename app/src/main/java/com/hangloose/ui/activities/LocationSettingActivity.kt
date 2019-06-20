@@ -34,6 +34,8 @@ import com.google.android.gms.location.LocationServices
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
 //https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
+//TODO : Code Clean Up & Hit restaurant API with Adventure, Activities, lat & long
+//TODO : On BottomSheetFragment on click of get current location asks for location permission
 class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLocationFragment.ContentListener {
 
     private var TAG = "LocationSettingActivity"
@@ -100,7 +102,12 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
-                checkLocationPermission()
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED) {
+                    checkLocationPermission()
+                }
             }
         }
     }
@@ -114,6 +121,11 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
                         val handler = Handler().postDelayed({ getUserLocation() }, 1000)
                     }
                     Activity.RESULT_CANCELED -> {
+                        if (mGoogleApiClient != null && mGoogleApiClient!!.isConnected()) {
+                            mGoogleApiClient!!.disconnect()
+                            mGoogleApiClient = null
+                            mFusedLocationClient.removeLocationUpdates(mCallback)
+                        }
                         Toast.makeText(this, "Please enable Location service!", Toast.LENGTH_LONG).show()
                     }
                 }
