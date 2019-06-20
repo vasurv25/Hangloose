@@ -18,6 +18,7 @@ import com.hangloose.R
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
 import com.hangloose.ui.model.RestaurantData
+import com.hangloose.utils.KEY_ADDRRESS
 import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.dpToPx
 import com.hangloose.utils.getDisplaySize
@@ -41,7 +42,7 @@ class RestaurantFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
-        mAddress = arguments!!.getString("abc")
+        mAddress = arguments!!.getString(KEY_ADDRRESS)
 
         Log.i(TAG, "Restaurant data : $mRestaurantData")
     }

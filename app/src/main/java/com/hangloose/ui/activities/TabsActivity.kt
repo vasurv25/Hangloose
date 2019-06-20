@@ -18,6 +18,7 @@ import com.hangloose.ui.fragment.RestaurantFragment
 import com.hangloose.ui.fragment.SearchFragment
 import com.hangloose.ui.fragment.SearchLocationFragment
 import com.hangloose.ui.model.RestaurantData
+import com.hangloose.utils.KEY_ADDRRESS
 import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import kotlinx.android.synthetic.main.activity_tab.tabLayout
@@ -101,7 +102,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, SearchLoca
         Log.i(TAG, "Restaurant data : $mRestaurantData")
         if (fragment is RestaurantFragment || fragment is SearchFragment) {
             val args = Bundle()
-            args.putString("abc", mAddress)
+            args.putString(KEY_ADDRRESS, mAddress)
             args.putParcelableArrayList(KEY_DATA, mRestaurantData)
             fragment.arguments = args
         }

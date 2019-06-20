@@ -24,14 +24,12 @@ import android.support.design.widget.BottomSheetBehavior
 import com.hangloose.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_location_setting.*
 import android.arch.lifecycle.Observer
+import android.location.Geocoder
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import retrofit2.Response
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
@@ -45,7 +43,6 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     private val LOCATION_REQUEST_CODE = 109
     private var mAddress: String? = null
     private val REQUEST_CHECK_SETTINGS = 10
-    //private var mGoogleApiClient: GoogleApiClient? = null
     private var mActivitiesSelectedList = ArrayList<String>()
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mBottomSheetBehavior: BottomSheetBehavior<*>? = null
@@ -73,7 +70,6 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_setting)
 
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         //mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         //mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
@@ -104,7 +100,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
-                //checkLocationPermission()
+                checkLocationPermission()
             }
         }
     }
@@ -212,8 +208,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
             mGoogleApiClient!!.connect()
             val locationRequest = LocationRequest.create()
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            locationRequest.interval = 1000 / 2
-            locationRequest.fastestInterval = 1000 / 4
+            locationRequest.interval = 10 * 1000
+            locationRequest.fastestInterval = 5000
             val mLocationSettingRequestBuilder = LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest)
             mLocationSettingRequestBuilder.setAlwaysShow(true)
@@ -244,13 +240,14 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
 
     private fun onLocationChanged(location: Location) {
         mFusedLocationClient.removeLocationUpdates(mCallback)
-        /*val geoCoder = Geocoder(this)
+        val geoCoder = Geocoder(this)
         val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
         if (address.size > 0) {
             mAddress = address[0].getAddressLine(0)
+            Log.d(TAG, "Addressssssssss : $mAddress")
             //mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
-        }*/
-        mLocationViewModel!!.restaurantListApiRequest()
+            mLocationViewModel!!.restaurantListApiRequest()
+        }
     }
 
     private fun getUserLocation() {
@@ -265,7 +262,11 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         ) {
             mFusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
                 if (location != null) {
-                    Log.i(TAG, "${location.latitude} && ${location.longitude}")
+                    //18.5599463 && 73.7913587
+                    //18.5592426 && 73.7938646
+                    //18.5589954 && 73.7928294
+                    Log.d(TAG, "Address00000000000 : ${location.latitude} && ${location.longitude}")
+                    Toast.makeText(this, "123" + location.latitude + location.longitude, Toast.LENGTH_SHORT).show()
                     onLocationChanged(location)
                 }
             }
