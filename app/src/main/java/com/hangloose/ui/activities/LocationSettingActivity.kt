@@ -30,6 +30,8 @@ import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_RESTAURANT_DATA
 import retrofit2.Response
 import com.google.android.gms.location.LocationServices
+import com.hangloose.utils.checkSelfPermission
+import com.hangloose.utils.getLocationFromAddress
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
@@ -43,6 +45,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     private val REQUEST_LOCATION_MAPS = 9
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 109
+    private val REQUEST_MANUAL_CODE = 110
     private var mAddress: String? = null
     private val REQUEST_CHECK_SETTINGS = 10
     private var mActivitiesSelectedList = ArrayList<String>()
@@ -90,45 +93,10 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     override fun onClick(view: View?) {
         when (view!!.id) {
             btnEnableLocation.id -> {
-                onEnableLocationClick()
+                checkLocationPermission()
             }
             tvLocationManually.id -> {
                 openLocationSearchDialog()
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_REQUEST_CODE -> {
-                if (ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED) {
-                    checkLocationPermission()
-                }
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REQUEST_CHECK_SETTINGS -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        val handler = Handler().postDelayed({ getUserLocation() }, 1000)
-                    }
-                    Activity.RESULT_CANCELED -> {
-                        if (mGoogleApiClient != null && mGoogleApiClient!!.isConnected()) {
-                            mGoogleApiClient!!.disconnect()
-                            mGoogleApiClient = null
-                            mFusedLocationClient.removeLocationUpdates(mCallback)
-                        }
-                        Toast.makeText(this, "Please enable Location service!", Toast.LENGTH_LONG).show()
-                    }
-                }
             }
         }
     }
@@ -148,6 +116,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
 
     override fun onItemClicked(location: String?) {
         mAddress = location
+        val latLng = getLocationFromAddress(this, mAddress!!)
+        Log.i(TAG, "$latLng")
         mLocationViewModel!!.restaurantListApiRequest()
     }
 
@@ -185,22 +155,9 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         startActivity(intent)
     }
 
-
-    private fun onEnableLocationClick() {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        checkLocationPermission()
-    }
-
     private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if (!checkSelfPermission(this)) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
@@ -208,6 +165,17 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
             )
         } else {
             enableGPS()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_REQUEST_CODE -> {
+                if (checkSelfPermission(this)) {
+                    checkLocationPermission()
+                }
+            }
         }
     }
 
@@ -250,6 +218,30 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_CHECK_SETTINGS -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        val handler = Handler().postDelayed({ getUserLocation() }, 1000)
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        if (mGoogleApiClient != null && mGoogleApiClient!!.isConnected()) {
+                            mGoogleApiClient!!.disconnect()
+                            mGoogleApiClient = null
+                            mFusedLocationClient.removeLocationUpdates(mCallback)
+                        }
+                        Toast.makeText(this, "Please enable Location service!", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            REQUEST_MANUAL_CODE -> {
+                Log.i("Anjani", "Anjani")
+            }
+        }
+    }
+
     private fun onLocationChanged(location: Location) {
         mFusedLocationClient.removeLocationUpdates(mCallback)
         val geoCoder = Geocoder(this)
@@ -263,15 +255,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     }
 
     private fun getUserLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (!checkSelfPermission(this)) {
             mFusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
                 if (location != null) {
                     //18.5599463 && 73.7913587
@@ -287,6 +271,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
 
     private fun openLocationSearchDialog() {
         var searchLocationFragment = SearchLocationFragment()
+//        searchLocationFragment.setTargetFragment(searchLocationFragment, REQUEST_MANUAL_CODE)
         searchLocationFragment.show(supportFragmentManager, "LocationDialog")
     }
 }

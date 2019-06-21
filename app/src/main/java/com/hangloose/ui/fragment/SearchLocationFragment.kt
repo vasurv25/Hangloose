@@ -2,6 +2,7 @@ package com.hangloose.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.hangloose.ui.adapter.PlacesAutoCompleteAdapter
 import com.hangloose.ui.adapter.RecyclerItemClickListener
 import com.hangloose.utils.API_NOT_CONNECTED
+import com.hangloose.utils.getLocationFromAddress
 import kotlinx.android.synthetic.main.content_bottom_sheet.*
 import kotlinx.android.synthetic.main.content_location_setting.*
 import kotlinx.android.synthetic.main.location_search_adapter.*
@@ -48,6 +50,8 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
     private var mViewSeparator: View? = null
     private var mLayoutParent: ConstraintLayout? = null
     private var mDialogDownArrow: ImageView? = null
+
+    private val RESULT_CURRENT_LOCATION_REQUEST = 900
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private val mLatLngBounds: LatLngBounds = LatLngBounds(LatLng(-0.0, 0.0), LatLng(0.0, 0.0))
@@ -83,6 +87,7 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
 
         mAddressSearch!!.setOnTouchListener(this)
         mDialogDownArrow!!.setOnClickListener(this)
+        mTextCurrentLocation!!.setOnClickListener(this)
 
         setDialogLayoutHeight()
 
@@ -126,7 +131,7 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
                             //Do the things here on Click.....
                             mAddress = item.description.toString()
                             mCallback.onItemClicked(item.description.toString())
-                            Toast.makeText(context, item.description, Toast.LENGTH_SHORT)
+                            Toast.makeText(context, "${item.description}", Toast.LENGTH_SHORT)
                                 .show()
                             dialog.dismiss()
                         } else {
@@ -227,6 +232,9 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
             mDialogDownArrow!!.id -> {
                 dialog.dismiss()
             }
+            mTextCurrentLocation!!.id -> {
+//                targetFragment!!.onActivityResult(targetRequestCode, RESULT_CURRENT_LOCATION_REQUEST, null)
+            }
         }
     }
 
@@ -258,14 +266,14 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
 
     private fun setDialogLayoutHeight() {
         var height = getScreenDisplayHeight()
-        var layoutParams =  mLayoutParent!!.layoutParams
+        var layoutParams = mLayoutParent!!.layoutParams
         Log.d("Search", "Screen Height : " + (height / 1.2).toInt() + "-" + height)
         layoutParams.height = (height / 1.2).toInt()
         mLayoutParent!!.layoutParams = layoutParams
 
     }
 
-    private fun getScreenDisplayHeight() : Int {
+    private fun getScreenDisplayHeight(): Int {
         var displayMetrics = DisplayMetrics()
         activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels
