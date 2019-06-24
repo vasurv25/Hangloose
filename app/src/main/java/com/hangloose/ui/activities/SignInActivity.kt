@@ -32,21 +32,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
+import com.hangloose.model.Consumer
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.ui.model.ConsumerData
 import com.hangloose.ui.model.ConsumerDetails
-import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.utils.LOGIN_VALID_PASSWORD
-import com.hangloose.utils.PreferenceHelper
+import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
-import com.hangloose.utils.REQUEST_PERMISSIONS
-import com.hangloose.utils.VALID_PHONE
-import com.hangloose.utils.X_AUTH_TOKEN
-import com.hangloose.utils.hideSoftKeyboard
-import com.hangloose.utils.requestPermissionForOtp
-import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.util.Arrays
@@ -61,6 +54,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private val RC_SIGN_IN = 9001
     private var mPreference: SharedPreferences? = null
+    private var mHeader: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,6 +108,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 Log.i(TAG, "onChanged")
                 val consumerDetails = t!!.body()!!.consumer!!
                 val headers = t.headers()
+                mHeader = headers.get("X-AUTH-TOKEN").toString()
                 mPreference!![X_AUTH_TOKEN] = headers.get("X-AUTH-TOKEN").toString()
                 val typeList = t.body()!!.consumerAuths!!.map { it.type }
                 val type = typeList[0]
@@ -125,7 +120,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     type
                 )
                 ConsumerDetails.consumerData = consumerData
-                onNavigateSelectionScreen()
+                checkHeaderToken()
 //                Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
             })
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->

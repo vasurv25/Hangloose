@@ -1,48 +1,26 @@
 package com.hangloose.ui.activities
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
-import android.location.Geocoder
-import android.location.Location
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySelectionBinding
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.ViewPagerAdapter
 import com.hangloose.ui.fragment.ActivitiesFragment
 import com.hangloose.ui.fragment.AdventuresFragment
-import com.hangloose.ui.model.ActivitiesDetails
-import com.hangloose.ui.model.AdventuresDetails
-import com.hangloose.ui.model.RestaurantData
-import com.hangloose.ui.model.SelectionList
-import com.hangloose.utils.KEY_ACTIVITIES_LIST
-import com.hangloose.utils.KEY_ADVENTURES_LIST
-import com.hangloose.utils.PreferenceHelper
-import com.hangloose.utils.showSnackBar
+import com.hangloose.ui.model.*
+import com.hangloose.utils.*
+import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.SelectionViewModel
 import kotlinx.android.synthetic.main.activity_selection.btNextSelection
 import kotlinx.android.synthetic.main.activity_selection.indicator
@@ -63,57 +41,23 @@ class SelectionActivity : BaseActivity() {
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mActivitiesFragment: ActivitiesFragment? = null
     private var mAdventuresFragment: AdventuresFragment? = null
-    private var mRestaurantData = ArrayList<RestaurantData>()
     private var mPreference: SharedPreferences? = null
+    var mHeader: String? =null
 
-    private val REQUEST_LOCATION_MAPS = 9
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    private val LOCATION_REQUEST_CODE = 109
-    private var mAddress: String? = null
-    private val REQUEST_CHECK_SETTINGS = 10
-    private var mGoogleApiClient: GoogleApiClient? = null
-    val mCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            super.onLocationResult(locationResult)
-            onLocationChanged(locationResult!!.lastLocation)
-        }
-    }
+    private var mRestaurantData = ArrayList<RestaurantData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPreference = PreferenceHelper.defaultPrefs(this)
+        val headerToken: String? = mPreference!![X_AUTH_TOKEN]
+        Log.i(TAG, """Header : $headerToken""")
+        mHeader = headerToken
         initBinding()
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun init() {}
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_REQUEST_CODE -> {
-                checkLocationPermission()
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REQUEST_CHECK_SETTINGS -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        val handler = Handler().postDelayed({ getUserLocation() }, 1000)
-                    }
-                    Activity.RESULT_CANCELED -> {
-                        Toast.makeText(this, "Please enable Location service!", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
-    //override fun onBackPressed() {}
+    override fun onBackPressed() {}
 
     private fun setFragments() {
         Log.i(TAG, "init")
@@ -152,7 +96,7 @@ class SelectionActivity : BaseActivity() {
         mActivitySelectionBinding!!.clickHandler = this
         mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
         mActivitySelectionBinding!!.selectionViewModel = mSelectionViewModel
-        mSelectionViewModel.selectionListApiRequest()
+        mSelectionViewModel.selectionListApiRequest(mHeader)
         mSelectionViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
             Log.i(TAG, "onChanged")
             (0 until t!!.activities.size).forEach { i ->
@@ -205,9 +149,33 @@ class SelectionActivity : BaseActivity() {
                     )
                 )
             }
+            onNavigateToTabsActivity()
+        })
+
+        /*mSelectionViewModel.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
+            val data = t!!.body()
+            (0 until data!!.size).forEach { i ->
+                mRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt
+                    )
+                )
+            }
             //checkLocationPermission()
             //onNavigateToLocationScreen()
-        })
+        })*/
 
         mSelectionViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
@@ -224,105 +192,33 @@ class SelectionActivity : BaseActivity() {
         mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
         mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
         if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
-            onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
+            val address: String? = mPreference!![PREFERENCE_ADDRESS]
+            if (address == null) {
+                onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
+            } else {
+                val latLongFromLocationName = getLatLongFromLocationName(this, address)
+                mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList
+                    , latLongFromLocationName!!.latitude
+                    , latLongFromLocationName!!.longitude, mHeader)
+            }
         }
     }
 
     private fun onNavigateToLocationScreen(
-        mActivitiesSelectedList: ArrayList<String>,
-        mAdventuresSelectedList: ArrayList<String>
+        activitiesSelectedList: ArrayList<String>,
+        adventuresSelectedList: ArrayList<String>
     ) {
-        val intent = Intent(this, LocationSettingActivity::class.java)
+            val intent = Intent(this, LocationSettingActivity::class.java)
+            intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, activitiesSelectedList)
+            intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, adventuresSelectedList)
+            startActivity(intent)
+    }
+
+    private fun onNavigateToTabsActivity() {
+        val intent = Intent(this, TabsActivity::class.java)
         intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
         intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
+        intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
         startActivity(intent)
-    }
-
-    private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                LOCATION_REQUEST_CODE
-            )
-        } else {
-            enableGPS()
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun enableGPS() {
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .build()
-            mGoogleApiClient!!.connect()
-            val locationRequest = LocationRequest.create()
-            locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            locationRequest.interval = 1000 / 2
-            locationRequest.fastestInterval = 1000 / 4
-            val mLocationSettingRequestBuilder = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-            mLocationSettingRequestBuilder.setAlwaysShow(true)
-
-            val result = LocationServices.getSettingsClient(this)
-                .checkLocationSettings(mLocationSettingRequestBuilder.build())
-
-            mFusedLocationClient.requestLocationUpdates(locationRequest, mCallback, Looper.myLooper())
-
-            result.addOnSuccessListener { getUserLocation() }
-            result.addOnFailureListener { exception ->
-                if (exception is ResolvableApiException) {
-//                    exception.startResolutionForResult(activity!!, REQUEST_CHECK_SETTINGS)
-                    ActivityCompat.startIntentSenderForResult(
-                        this,
-                        exception.resolution.intentSender,
-                        REQUEST_CHECK_SETTINGS,
-                        null,
-                        0,
-                        0,
-                        0,
-                        null
-                    )
-                }
-            }
-        }
-    }
-
-    private fun onLocationChanged(location: Location) {
-        mFusedLocationClient.removeLocationUpdates(mCallback)
-        val geoCoder = Geocoder(this)
-        val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-        if (address.size > 0) {
-            mAddress = address[0].getAddressLine(0)
-            mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
-        }
-    }
-
-    private fun getUserLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            mFusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
-                if (location != null) {
-                    Log.i(TAG, "${location.latitude} && ${location.longitude}")
-                    onLocationChanged(location)
-                }
-            }
-        }
     }
 }

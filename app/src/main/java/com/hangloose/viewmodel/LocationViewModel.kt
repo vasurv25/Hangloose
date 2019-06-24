@@ -6,7 +6,6 @@ import android.databinding.ObservableBoolean
 import android.util.Log
 import com.hangloose.HanglooseApp
 import com.hangloose.model.RestaurantList
-import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,30 +21,38 @@ class LocationViewModel : ViewModel() {
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     var isVisible = ObservableBoolean()
 
-    fun restaurantListApiRequest() {
-        //Log.i(TAG, "Actvities List : $activitiesSelectedList")
-        //Log.i(TAG, "Adeventures List : $adventuresSelectedList")
+    fun restaurantListApiRequest(
+        activitiesSelectedList: ArrayList<String>,
+        adventuresSelectedList: ArrayList<String>,
+        latitude: Double,
+        longitude: Double,
+        mHeader: String?
+    ) {
+        Log.i(TAG, "Actvities List : $activitiesSelectedList")
+        Log.i(TAG, "Adeventures List : $adventuresSelectedList")
+        Log.i(TAG, "Consumer Deatils$mHeader")
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(
-            ConsumerDetails.consumerData!!.headers!!, "VEGETERIAN")
+            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                isVisible.set(true)
+                //isVisible.set(true)
             }
             .doFinally {
-                isVisible.set(false)
+                //isVisible.set(false)
             }
             .subscribe({ response ->
                 if (response.isSuccessful) {
+                    Log.i(TAG, "Response : ${response.isSuccessful}")
                     mRestaurantListResponse.value = response
                 } else {
                     val jObjError = JSONObject(response.errorBody()!!.string())
-                    mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                    //mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
                 }
                 mCompositeDisposable!!.dispose()
             }, {
                 Log.i(TAG, "error login")
-                mShowErrorSnackBar.value = it.localizedMessage
+                //mShowErrorSnackBar.value = it.localizedMessage
             })
         mCompositeDisposable!!.add(disposable)
     }
