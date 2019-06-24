@@ -3,14 +3,20 @@ package com.hangloose.utils
 import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Point
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
 
 fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
     val snackbar = Snackbar.make(
@@ -81,4 +87,11 @@ fun getDisplaySize(windowManager: WindowManager): Point {
 
 fun dpToPx(dp: Int): Int {
     return (dp * Resources.getSystem().displayMetrics.density).toInt()
+}
+
+fun getLatLongFromLocationName(activity: Activity, address: String?): Address? {
+    var geoCoder = Geocoder(activity)
+    var list = geoCoder.getFromLocationName(address, 1)
+    var address = list.get (0)
+    return address
 }

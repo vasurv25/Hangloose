@@ -2,6 +2,7 @@ package com.hangloose.ui.activities
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
@@ -18,25 +19,37 @@ import com.hangloose.ui.fragment.RestaurantFragment
 import com.hangloose.ui.fragment.SearchFragment
 import com.hangloose.ui.fragment.SearchLocationFragment
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.utils.KEY_DATA
-import com.hangloose.utils.KEY_RESTAURANT_DATA
+import com.hangloose.utils.*
+import com.hangloose.utils.PreferenceHelper.get
 import kotlinx.android.synthetic.main.activity_tab.tabLayout
 
-class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, SearchLocationFragment.ContentListener {
+class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
 
     private val TAG = "TabsActivity"
     private var mRestaurantData: ArrayList<RestaurantData>? = null
-    private var mAddress: String? = null
+
+    private var mPreference: SharedPreferences? = null
+
+    private var mActivitiesSelectedList = ArrayList<String>()
+    private var mAdventuresSelectedList = ArrayList<String>()
     private val navLabels =
         intArrayOf(R.string.nav_home, R.string.nav_search, R.string.nav_profile)
     private val navIcons =
         intArrayOf(R.drawable.home, R.drawable.search, R.drawable.profile)
 
+    var mHeader : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab)
+
+        mPreference = PreferenceHelper.defaultPrefs(this)
         mRestaurantData = intent.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
-        mAddress = intent.getStringExtra("123")
+        mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
+        mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
+        val headerToken: String? = mPreference!![X_AUTH_TOKEN]
+        Log.i(TAG, """Header : $headerToken""")
+        mHeader = headerToken
         Log.i(TAG, "Restaurant data : $mRestaurantData")
         onTabSelected(tabLayout.getTabAt(0))
     }
@@ -91,17 +104,12 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, SearchLoca
             .setTextColor(resources.getColor(R.color.colorPrimary, null))
     }
 
-    override fun onItemClicked(location: String?) {
-        Log.d(TAG, "Click : $location")
-        mAddress = location
-        replaceFragment(RestaurantFragment())
-    }
-
     private fun replaceFragment(fragment: Fragment) {
         Log.i(TAG, "Restaurant data : $mRestaurantData")
         if (fragment is RestaurantFragment || fragment is SearchFragment) {
             val args = Bundle()
-            args.putString("abc", mAddress)
+            args.putStringArrayList(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
+            args.putStringArrayList(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
             args.putParcelableArrayList(KEY_DATA, mRestaurantData)
             fragment.arguments = args
         }
@@ -109,4 +117,6 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, SearchLoca
             .replace(R.id.fragmentContainer, fragment)
             .commit()
     }
+
+    override fun onBackPressed() {}
 }

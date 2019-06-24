@@ -24,18 +24,23 @@ import android.support.design.widget.BottomSheetBehavior
 import com.hangloose.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_location_setting.*
 import android.arch.lifecycle.Observer
+import android.content.SharedPreferences
+import android.databinding.DataBindingUtil
+import android.location.Geocoder
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.utils.KEY_RESTAURANT_DATA
 import retrofit2.Response
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
+import com.hangloose.databinding.ActivityLocationSettingBinding
+import com.hangloose.utils.*
+import com.hangloose.utils.PreferenceHelper.get
+import com.hangloose.utils.PreferenceHelper.set
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
 //https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
+//TODO : Code Clean Up & Hit restaurant API with Adventure, Activities, lat & long
+//TODO : On BottomSheetFragment on click of get current location asks for location permission
 class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLocationFragment.ContentListener {
 
     private var TAG = "LocationSettingActivity"
@@ -45,16 +50,23 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     private val LOCATION_REQUEST_CODE = 109
     private var mAddress: String? = null
     private val REQUEST_CHECK_SETTINGS = 10
-    //private var mGoogleApiClient: GoogleApiClient? = null
     private var mActivitiesSelectedList = ArrayList<String>()
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mBottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var mLocationViewModel: LocationViewModel? = null
     private var mRestaurantData = ArrayList<RestaurantData>()
 
+    private var mLocationSettingBinding: ActivityLocationSettingBinding? = null
+
+    private var mSearchLocationFragment: SearchLocationFragment? = null
+
+    private var mPreference: SharedPreferences? = null
+
     var mGoogleApiClient: GoogleApiClient? = null
     var mLastLocation: Location? = null
     var mLocationRequest: LocationRequest? = null
+
+    var mHeader: String? =null
 
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -71,12 +83,18 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_location_setting)
+        //setContentView(R.layout.activity_location_setting)
+        initBinding()
+        mPreference = PreferenceHelper.defaultPrefs(this)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
+        mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
 
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        //mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
-        //mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+
+        val headerToken: String? = mPreference!![X_AUTH_TOKEN]
+        Log.i(TAG, """Header : $headerToken""")
+        mHeader = headerToken
 
         //By default set BottomSheet Behavior as Collapsed and Height 0
         mBottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -85,8 +103,6 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         if (mBottomSheetBehavior != null && mBottomSheetBehavior is BottomSheetBehavior<*>) {
             mBottomSheetBehavior!!.setBottomSheetCallback(mBottomSheetBehaviorCallback)
         }
-
-        initBinding()
     }
 
     override fun onClick(view: View?) {
@@ -104,7 +120,12 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
-                //checkLocationPermission()
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED) {
+                    checkLocationPermission()
+                }
             }
         }
     }
@@ -118,6 +139,11 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
                         val handler = Handler().postDelayed({ getUserLocation() }, 1000)
                     }
                     Activity.RESULT_CANCELED -> {
+                        if (mGoogleApiClient != null && mGoogleApiClient!!.isConnected()) {
+                            mGoogleApiClient!!.disconnect()
+                            mGoogleApiClient = null
+                            mFusedLocationClient.removeLocationUpdates(mCallback)
+                        }
                         Toast.makeText(this, "Please enable Location service!", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -138,13 +164,26 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         override fun onSlide(bottomSheet: View, slideOffset: Float) {}
     }
 
-    override fun onItemClicked(location: String?) {
-        mAddress = location
-        mLocationViewModel!!.restaurantListApiRequest()
+    override fun onItemClicked(address: String?) {
+        /*var locationManager =  getSystemService(Context.LOCATION_SERVICE)
+        var location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        latPoint = location.getLatitude()
+        lngPoint = location.getLongitude()*/
+        mAddress = address
+        var locationWithLatLong = getLatLongFromLocationName(this, mAddress)
+        Log.d(TAG, "Lat Long : " + locationWithLatLong!!.latitude + "-" + locationWithLatLong!!.longitude)
+        //mLocationViewModel!!.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
+        mLocationViewModel!!.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList, locationWithLatLong!!.latitude, locationWithLatLong!!.longitude, mHeader)
+    }
+
+    override fun onCurrentLocationClicked() {
+        checkLocationPermission()
     }
 
     private fun initBinding() {
+        mLocationSettingBinding = DataBindingUtil.setContentView(this, R.layout.activity_location_setting)
         mLocationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
+        mLocationSettingBinding!!.locationViewModel = mLocationViewModel
         mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
             val data = t!!.body()
             (0 until data!!.size).forEach { i ->
@@ -171,15 +210,16 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     }
 
     private fun navigateToTabsActivity() {
+        mPreference!![PREFERENCE_ADDRESS] = mAddress
         var intent = Intent(this, TabsActivity::class.java)
-        intent.putExtra("123", mAddress)
         intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+        intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
+        intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
         startActivity(intent)
     }
 
 
     private fun onEnableLocationClick() {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermission()
     }
 
@@ -212,8 +252,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
             mGoogleApiClient!!.connect()
             val locationRequest = LocationRequest.create()
             locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            locationRequest.interval = 1000 / 2
-            locationRequest.fastestInterval = 1000 / 4
+            locationRequest.interval = 10 * 1000
+            locationRequest.fastestInterval = 5000
             val mLocationSettingRequestBuilder = LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest)
             mLocationSettingRequestBuilder.setAlwaysShow(true)
@@ -244,13 +284,20 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
 
     private fun onLocationChanged(location: Location) {
         mFusedLocationClient.removeLocationUpdates(mCallback)
-        /*val geoCoder = Geocoder(this)
+        val geoCoder = Geocoder(this)
         val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
         if (address.size > 0) {
             mAddress = address[0].getAddressLine(0)
+            Log.d(TAG, "Addressssssssss : $mAddress")
             //mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList)
-        }*/
-        mLocationViewModel!!.restaurantListApiRequest()
+            mLocationViewModel!!.restaurantListApiRequest(
+                mActivitiesSelectedList,
+                mAdventuresSelectedList,
+                location.latitude,
+                location.longitude,
+                mHeader
+            )
+        }
     }
 
     private fun getUserLocation() {
@@ -265,7 +312,11 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
         ) {
             mFusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
                 if (location != null) {
-                    Log.i(TAG, "${location.latitude} && ${location.longitude}")
+                    //18.5599463 && 73.7913587
+                    //18.5592426 && 73.7938646
+                    //18.5589954 && 73.7928294
+                    Log.d(TAG, "Address00000000000 : ${location.latitude} && ${location.longitude}")
+                    Toast.makeText(this, "123" + location.latitude + location.longitude, Toast.LENGTH_SHORT).show()
                     onLocationChanged(location)
                 }
             }
@@ -273,7 +324,28 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, SearchLoca
     }
 
     private fun openLocationSearchDialog() {
-        var searchLocationFragment = SearchLocationFragment()
-        searchLocationFragment.show(supportFragmentManager, "LocationDialog")
+        mSearchLocationFragment = SearchLocationFragment()
+        mSearchLocationFragment!!.show(supportFragmentManager, "LocationDialog")
     }
+
+    private fun removeSearchLocationFragment() {
+        if (mSearchLocationFragment != null) {
+            mSearchLocationFragment!!.dialog.dismiss()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        removeSearchLocationFragment()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mFusedLocationClient.removeLocationUpdates(mCallback)
+        if (mGoogleApiClient!!.isConnected) {
+            mGoogleApiClient!!.disconnect()
+        }
+    }
+
+    override fun onBackPressed() {}
 }

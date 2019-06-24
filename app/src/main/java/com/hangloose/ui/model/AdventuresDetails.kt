@@ -33,12 +33,12 @@ class AdventuresDetails (
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<ActivitiesDetails> {
-        override fun createFromParcel(parcel: Parcel): ActivitiesDetails {
-            return ActivitiesDetails(parcel)
+    companion object CREATOR : Parcelable.Creator<AdventuresDetails> {
+        override fun createFromParcel(parcel: Parcel): AdventuresDetails {
+            return AdventuresDetails(parcel)
         }
 
-        override fun newArray(size: Int): Array<ActivitiesDetails?> {
+        override fun newArray(size: Int): Array<AdventuresDetails?> {
             return arrayOfNulls(size)
         }
     }

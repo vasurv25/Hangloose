@@ -1,44 +1,52 @@
 package com.hangloose.ui.fragment
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.View
-import android.widget.EditText
-import android.widget.Toast
-import com.hangloose.R
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.CoordinatorLayout
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.hangloose.ui.activities.TabsActivity
+import com.hangloose.R
 import com.hangloose.ui.adapter.PlacesAutoCompleteAdapter
 import com.hangloose.ui.adapter.RecyclerItemClickListener
 import com.hangloose.utils.API_NOT_CONNECTED
-import kotlinx.android.synthetic.main.content_bottom_sheet.*
-import kotlinx.android.synthetic.main.content_location_setting.*
-import kotlinx.android.synthetic.main.location_search_adapter.*
+import com.hangloose.utils.KEY_ACTIVITIES_LIST
+import com.hangloose.utils.KEY_ADVENTURES_LIST
+import com.hangloose.viewmodel.LocationViewModel
 
-class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.ConnectionCallbacks,
+class SecondSearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener, View.OnClickListener {
 
     private var mAddressSearch: EditText? = null
@@ -53,34 +61,26 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
     private var mGoogleApiClient: GoogleApiClient? = null
     private val mLatLngBounds: LatLngBounds = LatLngBounds(LatLng(-0.0, 0.0), LatLng(0.0, 0.0))
 
-    private lateinit var mCallback: ContentListener
-
     private var mAddress: String? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        try {
-            mCallback = context as ContentListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException(
-                activity.toString()
-                        + " must implement ContentListener"
-            )
-        }
+        Log.d("0000000000000 : ", "111111111 onAttach")
     }
 
     @SuppressLint("RestrictedApi", "ClickableViewAccessibility")
     override fun setupDialog(dialog: Dialog?, style: Int) {
         super.setupDialog(dialog, style)
-
-        val rootView = View.inflate(context, R.layout.fragment_bottom_sheet, null)
+        Log.d("0000000000000 : ", "111111111 setupDialog")
+        val rootView = View.inflate(context, R.layout.second_fragment_bottom_sheet, null)
         dialog!!.setContentView(rootView)
-        mAddressSearch = rootView.findViewById(R.id.etLocationSearch)
-        mRecyclerView = rootView.findViewById(R.id.rvAddresses)
-        mTextCurrentLocation = rootView.findViewById(R.id.tvCurrentLocation)
-        mViewSeparator = rootView.findViewById(R.id.firstSeperator)
-        mLayoutParent = rootView.findViewById(R.id.layoutParent)
-        mDialogDownArrow = rootView.findViewById(R.id.ivArrowDown)
+        Log.d("555555555", "889898jfgjghdhgdsgrsgs")
+        mAddressSearch = rootView.findViewById(R.id.etLocationSearchIn)
+        mRecyclerView = rootView.findViewById(R.id.rvAddressesIn)
+        mTextCurrentLocation = rootView.findViewById(R.id.tvCurrentLocationIn)
+        mViewSeparator = rootView.findViewById(R.id.firstSeperatorIn)
+        mLayoutParent = rootView.findViewById(R.id.layoutParentIn)
+        mDialogDownArrow = rootView.findViewById(R.id.ivArrowDownIn)
 
         mAddressSearch!!.setOnTouchListener(this)
         mDialogDownArrow!!.setOnClickListener(this)
@@ -127,9 +127,11 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
                         if (places.count == 1) {
                             //Do the things here on Click.....
                             mAddress = item.description.toString()
-                            mCallback.onItemClicked(item.description.toString())
-                            Toast.makeText(context, item.description, Toast.LENGTH_SHORT)
-                                .show()
+                            sendDataToRestaurantFragment(Activity.RESULT_OK, mAddress!!)
+                            /*var fragmentTransaction = fragmentManager!!.beginTransaction()
+                            fragmentTransaction.remove(this@SecondSearchLocationFragment)
+                            fragmentTransaction.addToBackStack(null)
+                            fragmentTransaction.commit()*/
                         } else {
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
                                 .show()
@@ -229,13 +231,14 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
                 dialog.dismiss()
             }
             mTextCurrentLocation!!.id -> {
-                mCallback.onCurrentLocationClicked()
+                sendDataToRestaurantFragment(Activity.RESULT_CANCELED, null)
             }
         }
     }
 
     @Synchronized
     private fun buildGoogleApiClient() {
+        Log.d("0000000000000 : ", "111111111 buildGoogleApiClient")
         mGoogleApiClient = GoogleApiClient.Builder(context!!)
             .addConnectionCallbacks(this)
             .addOnConnectionFailedListener(this)
@@ -246,6 +249,7 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
 
     override fun onResume() {
         super.onResume()
+        Log.d("0000000000000 : ", "111111111 onResume")
         if (!mGoogleApiClient!!.isConnected && !mGoogleApiClient!!.isConnecting) {
             Log.v("Google API", "Connecting")
             mGoogleApiClient!!.connect()
@@ -254,10 +258,42 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
 
     override fun onPause() {
         super.onPause()
+        Log.d("0000000000000 : ", "111111111 onPause")
         if (mGoogleApiClient!!.isConnected) {
             Log.v("Google API", "Dis-Connecting")
             mGoogleApiClient!!.disconnect()
+            //mFusedLocationClient.removeLocationUpdates(mCallback)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("0000000000000 : ", "111111111 onStop")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("0000000000000 : ", "111111111 onStart")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("0000000000000 : ", "111111111 onDestroy")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("0000000000000 : ", "111111111 onDestroyView")
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d("0000000000000 : ", "111111111 onActivityCreated")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("0000000000000 : ", "111111111 onDetach")
     }
 
     private fun setDialogLayoutHeight() {
@@ -275,9 +311,11 @@ class SearchLocationFragment : BottomSheetDialogFragment(), GoogleApiClient.Conn
         return displayMetrics.heightPixels
     }
 
-    // Container Activity must implement this interface
-    interface ContentListener {
-        fun onItemClicked(location: String?)
-        fun onCurrentLocationClicked()
+    private fun sendDataToRestaurantFragment(resultCode: Int, address: String?) {
+        var intent = Intent()
+        //AppConstant.INTENT_KEY_SECOND_FRAGMENT_DATA
+        intent.putExtra("456", address);
+        var fragment = targetFragment
+        fragment!!.onActivityResult(100, resultCode, intent)
     }
 }
