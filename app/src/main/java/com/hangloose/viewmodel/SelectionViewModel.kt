@@ -27,10 +27,10 @@ class SelectionViewModel : ViewModel() {
     private var mRestaurantListResponse: MutableLiveData<Response<List<RestaurantList>>> = MutableLiveData()
     var isVisible = ObservableBoolean()
 
-    fun selectionListApiRequest() {
-        Log.i(TAG, """X_AUTH_TOKEN : ${ConsumerDetails.consumerData!!.headers!!}""")
-        var callActivities = HanglooseApp.getApiService()!!.getActivities(ConsumerDetails.consumerData!!.headers!!)
-        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(ConsumerDetails.consumerData!!.headers!!)
+    fun selectionListApiRequest(mHeader: String?) {
+
+        var callActivities = HanglooseApp.getApiService()!!.getActivities(mHeader!!)
+        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(mHeader!!)
 
         val disposable =
             Observable.zip(callActivities, callAdventures,
@@ -62,9 +62,12 @@ class SelectionViewModel : ViewModel() {
 
     fun restaurantListApiRequest(
         activitiesSelectedList: ArrayList<String>,
-        adventuresSelectedList: ArrayList<String>
+        adventuresSelectedList: ArrayList<String>,
+        latitude: Double, longitude: Double,
+        mHeader: String?
     ) {
-        val disposable = HanglooseApp.getApiService()!!.getRestaurants(ConsumerDetails.consumerData!!.headers!!, "VEGETERIAN")
+        val disposable = HanglooseApp.getApiService()!!.getRestaurants(mHeader!!
+            , convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

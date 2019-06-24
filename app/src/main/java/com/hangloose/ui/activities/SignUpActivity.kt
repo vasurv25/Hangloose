@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
@@ -45,15 +46,9 @@ import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.ui.model.ConsumerData
 import com.hangloose.ui.model.ConsumerDetails
-import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.utils.OTP_RECOGNIZE
-import com.hangloose.utils.PASSWORD_CONFIRM_PASSWORD_DOES_NOT_MATCH
-import com.hangloose.utils.REQUEST_PERMISSIONS
-import com.hangloose.utils.VALID_PASSWORD
-import com.hangloose.utils.VALID_PHONE
-import com.hangloose.utils.hideSoftKeyboard
-import com.hangloose.utils.requestPermissionForOtp
-import com.hangloose.utils.showSnackBar
+import com.hangloose.utils.*
+import com.hangloose.utils.PreferenceHelper.get
+import com.hangloose.utils.PreferenceHelper.set
 import com.hangloose.viewmodel.ConsumerRegisterViewModel
 import kotlinx.android.synthetic.main.activity_sign_up.btnCustomSignInFB
 import kotlinx.android.synthetic.main.activity_sign_up.btnGoogleSignIn
@@ -76,10 +71,12 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var mProfileTracker: ProfileTracker? = null
     private var mActivitySignUpBinding: ActivitySignUpBinding? = null
     private lateinit var mConsumerRegisterViewModel: ConsumerRegisterViewModel
+    private var mPreference: SharedPreferences? = null
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mPreference = PreferenceHelper.defaultPrefs(this)
         initBinding()
         intializeGoogleSignInOptions()
         signInWithFacebook()
@@ -158,6 +155,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             .observe(this, Observer<Response<ConsumerAuthDetailResponse>> { t ->
                 val consumerDetails = t!!.body()!!.consumer!!
                 val headers = t.headers()
+                mPreference!![X_AUTH_TOKEN] = headers.get("X-AUTH-TOKEN").toString()
                 var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
                 var type = typeList.get(0)
                 val consumerData = ConsumerData(
@@ -173,6 +171,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     requestPermissionForOtp(this)
                 } else {
                     Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
+                    checkHeaderToken()
                 }
             })
 
@@ -252,7 +251,9 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "Username is: " + Profile.getCurrentProfile().name)
                     getFacebookUserProfile(AccessToken.getCurrentAccessToken())
                 }
-                mProfileTracker!!.startTracking()
+                if (mProfileTracker != null) {
+                    mProfileTracker!!.startTracking()
+                }
             }
 
             override fun onCancel() {
@@ -403,5 +404,18 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {
             }
         })
+    }
+
+    private fun onNavigateSelectionScreen() {
+        var intent = Intent(this@SignUpActivity, SelectionActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun checkHeaderToken() {
+        val headerToken: String? = mPreference!![X_AUTH_TOKEN]
+        Log.i(TAG, """Header : $headerToken""")
+        if (headerToken != null) {
+            onNavigateSelectionScreen()
+        }
     }
 }
