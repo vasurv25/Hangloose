@@ -115,6 +115,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:' + google_play_services
     //Expandable TextView
     implementation 'com.ms-square:expandableTextView:0.1.4'
+    implementation 'io.apptik.widget:multislider:1.3'
 }
 
 //task ktlint(type: JavaExec, group: "verification") {
@@ -133,3 +134,4 @@ dependencies {
 //    main = "com.github.shyiko.ktlint.Main"
 //    args "-F", "src/**/*.kt"
 //}
+

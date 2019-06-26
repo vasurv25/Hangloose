@@ -81,4 +81,26 @@
     <string name="nav_home">Home</string>
     <string name="nav_search">Search</string>
     <string name="nav_profile">Profile</string>
+    <string name="music">Music</string>
+    <string name="live">Live</string>
+    <string name="soft">Soft</string>
+    <string name="live_instrument">Live Instrument</string>
+    <string name="comedy">Comedy</string>
+    <string name="live_comedy_show">Live Comedy Show</string>
+    <string name="open_mic">Open Mic</string>
+    <string name="dining">Dining</string>
+    <string name="fancy">Fancy</string>
+    <string name="casual">Casual</string>
+    <string name="daba_style">Daba Style</string>
+    <string name="something_casual">Something Casual</string>
+    <string name="something_new">Something New</string>
+    <string name="new_dish">New Dish</string>
+    <string name="new_town">New Town</string>
+    <string name="features">Features</string>
+    <string name="hookah">Hookah</string>
+    <string name="hookah_bar"><![CDATA[Hookah & Bar]]></string>
+    <string name="bar">Bar</string>
+    <string name="discount">Discount</string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="clear_filter">Clear Filter</string>
 </resources>
