@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.PopupWindow
 import android.widget.Toast
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.google.android.gms.common.api.GoogleApiClient
@@ -32,6 +33,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.hangloose.R
 import com.hangloose.model.RestaurantList
+import com.hangloose.ui.activities.FilterActivity
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
 import com.hangloose.ui.model.RestaurantData
@@ -42,12 +44,13 @@ import com.hangloose.viewmodel.LocationViewModel
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
+import kotlinx.android.synthetic.main.fragment_restaurant.*
 import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
 import org.w3c.dom.Text
 import retrofit2.Response
 
 
-class RestaurantFragment : Fragment() {
+class RestaurantFragment : Fragment(), View.OnClickListener {
 
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
@@ -70,7 +73,7 @@ class RestaurantFragment : Fragment() {
     private var mHeader: String? = null
 
     private var mPreference: SharedPreferences? = null
-    var mFragmentInstance : RestaurantFragment? = null
+    var mFragmentInstance: RestaurantFragment? = null
 
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
@@ -84,7 +87,7 @@ class RestaurantFragment : Fragment() {
         Log.d("0000000000000 : ", "111111111 onCreateRF$")
 
         // retain this fragment
-        retainInstance = true;
+        retainInstance = true
 
         mPreference = PreferenceHelper.defaultPrefs(mContext!!)
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
@@ -151,13 +154,22 @@ class RestaurantFragment : Fragment() {
             }
             Log.d(TAG, "Response")
         })
-
         return rootView
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.ibFilter -> {
+                val intent = Intent(context, FilterActivity::class.java)
+                startActivityForResult(intent, REQUEST_FILTER_ACTIVITY)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext!!)
+        mBtFilter!!.setOnClickListener(this)
     }
 
     private fun setLocationSearch(rootView: View) {
@@ -212,7 +224,7 @@ class RestaurantFragment : Fragment() {
             }
         }
 
-        //mBtFilter!!.setOnClickListener { (activity as TabsActivity).replaceFragment(FilterFragment()) }
+//        mBtFilter!!.setOnClickListener { (activity as TabsActivity).replaceFragment(FilterFragment()) }
 
         mBtRadioRealGroup!!.setOnPositionChangedListener { _, currentPosition, _ ->
             when (currentPosition) {
@@ -291,27 +303,27 @@ class RestaurantFragment : Fragment() {
         var activity = activity
         Log.d("Frag", "Context : $mContext" + "-" + isAdded)
         if (mContext != null) {
-                if (ActivityCompat.checkSelfPermission(
-                        mContext!!,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(
-                        mContext!!,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (isAdded) {
-                        requestPermissions(
-                            arrayOf(
-                                Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION
-                            ),
-                            LOCATION_REQUEST_CODE
-                        )
-                    }
-                } else if (isAdded) {
-                    enableGPS()
+            if (ActivityCompat.checkSelfPermission(
+                    mContext!!,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+                    mContext!!,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (isAdded) {
+                    requestPermissions(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ),
+                        LOCATION_REQUEST_CODE
+                    )
                 }
+            } else if (isAdded) {
+                enableGPS()
+            }
         }
     }
 
@@ -403,7 +415,8 @@ class RestaurantFragment : Fragment() {
                 if (ActivityCompat.checkSelfPermission(
                         mContext!!,
                         Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED) {
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
                     checkLocationPermission()
                 }
             }
@@ -431,16 +444,19 @@ class RestaurantFragment : Fragment() {
             100 -> {
                 if (resultCode == Activity.RESULT_OK) {
                     if (requestCode == 100) {
-                        var address = data!!.getStringExtra ("456")
+                        var address = data!!.getStringExtra("456")
                         mAddress = address
                         mEditLocation?.let {
-                            mEditLocation!!.setText(mAddress) }
+                            mEditLocation!!.setText(mAddress)
+                        }
                         mPreference!![PREFERENCE_ADDRESS] = mAddress
                         mSecondSearchLocationFragment?.let { mSecondSearchLocationFragment!!.dialog.dismiss() }
                         var addressWithLatLong = mContext?.let { getLatLongFromLocationName(it, address) }
                         Log.d(TAG, "Addresssssssssssssss : ${addressWithLatLong!!.latitude}")
-                        mLocationViewModel!!.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList
-                            , addressWithLatLong.latitude, addressWithLatLong.longitude, mHeader)
+                        mLocationViewModel!!.restaurantListApiRequest(
+                            mActivitiesSelectedList, mAdventuresSelectedList
+                            , addressWithLatLong.latitude, addressWithLatLong.longitude, mHeader
+                        )
                     }
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {

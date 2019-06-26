@@ -21,3 +21,5 @@ const val API_NOT_CONNECTED = "Google API not connected"
 const val KEY_ADDRRESS = "key_address"
 const val PREFERENCE_ADDRESS = "preference_address"
 const val KEY_HEADER = "header"
+
+const val REQUEST_FILTER_ACTIVITY = 110
