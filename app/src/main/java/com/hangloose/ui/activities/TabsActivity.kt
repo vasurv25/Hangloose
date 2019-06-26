@@ -2,6 +2,7 @@ package com.hangloose.ui.activities
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -14,16 +15,13 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import com.hangloose.R
-import com.hangloose.ui.fragment.ProfileFragment
-import com.hangloose.ui.fragment.RestaurantFragment
-import com.hangloose.ui.fragment.SearchFragment
-import com.hangloose.ui.fragment.SearchLocationFragment
+import com.hangloose.ui.fragment.*
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import kotlinx.android.synthetic.main.activity_tab.tabLayout
 
-class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
+class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, EnableLocationFragment.LocationListener, RestaurantFragment.LocationNavigationListener {
 
     private val TAG = "TabsActivity"
     private var mRestaurantData: ArrayList<RestaurantData>? = null
@@ -77,15 +75,20 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
     override fun onTabReselected(tab: TabLayout.Tab?) {
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     override fun onTabUnselected(tab: TabLayout.Tab?) {
-        tab!!.customView!!.findViewById<ImageView>(R.id.tabIcon)
-            .setColorFilter(Color.parseColor("#cccccc"), PorterDuff.Mode.SRC_IN)
-        tab.customView!!.findViewById<TextView>(R.id.tabText)
-            .setTextColor(resources.getColor(R.color.colorGrey, null))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tab!!.customView!!.findViewById<ImageView>(R.id.tabIcon)
+                .setColorFilter(Color.parseColor("#cccccc"), PorterDuff.Mode.SRC_IN)
+            tab.customView!!.findViewById<TextView>(R.id.tabText)
+                .setTextColor(resources.getColor(R.color.colorGrey, null))
+        } else {
+            tab!!.customView!!.findViewById<ImageView>(R.id.tabIcon)
+                .setColorFilter(Color.parseColor("#cccccc"), PorterDuff.Mode.SRC_IN)
+            tab.customView!!.findViewById<TextView>(R.id.tabText)
+                .setTextColor(resources.getColor(R.color.colorGrey))
+        }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     override fun onTabSelected(tab: TabLayout.Tab?) {
         when {
             tabLayout.selectedTabPosition == 0 -> {
@@ -98,10 +101,17 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
                 replaceFragment(ProfileFragment())
             }
         }
-        tab!!.customView!!.findViewById<ImageView>(R.id.tabIcon)
-            .setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
-        tab.customView!!.findViewById<TextView>(R.id.tabText)
-            .setTextColor(resources.getColor(R.color.colorPrimary, null))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tab!!.customView!!.findViewById<ImageView>(R.id.tabIcon)
+                .setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
+            tab.customView!!.findViewById<TextView>(R.id.tabText)
+                .setTextColor(resources.getColor(R.color.colorPrimary))
+        } else {
+            tab!!.customView!!.findViewById<ImageView>(R.id.tabIcon)
+                .setColorFilter(Color.parseColor("#b72125"), PorterDuff.Mode.SRC_IN)
+            tab.customView!!.findViewById<TextView>(R.id.tabText)
+                .setTextColor(resources.getColor(R.color.colorPrimary))
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -115,8 +125,37 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
     override fun onBackPressed() {}
+
+    override fun onNavigateToRestaurantFragment(restaurantData: ArrayList<RestaurantData>?) {
+        mRestaurantData = restaurantData
+        replaceFragment(RestaurantFragment())
+    }
+
+    override fun navigateToLocationActivityFromHomeFrag() {
+        var intent = Intent(this, LocationSettingActivity::class.java)
+        intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
+        intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
+        intent.putExtra(FLAG_LOCATION_NAVIGATION, 1)
+        startActivityForResult(intent, START_LOCATION_SCREEN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == START_LOCATION_SCREEN) {
+            //var data = data!!.getParcelableArrayListExtra<RestaurantData>(KEY_RESTAURANT_DATA)
+            if (data == null) {
+                Log.d(TAG, "Restaurant Data : $mRestaurantData")
+                replaceFragment(RestaurantFragment())
+            } else {
+                mRestaurantData = data.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
+                Log.d(TAG, "Restaurant Data : $mRestaurantData")
+                replaceFragment(RestaurantFragment())
+            }
+        }
+    }
 }

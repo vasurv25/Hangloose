@@ -103,4 +103,8 @@
     <string name="discount">Discount</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="clear_filter">Clear Filter</string>
+    <string name="service_not_available">Service not available</string>
+    <string name="invalid_lat_long_used">Invalid location</string>
+    <string name="no_address_found">Address not found</string>
+    <string name="address_found">Address found</string>
 </resources>

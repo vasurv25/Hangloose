@@ -36,10 +36,10 @@ class LocationViewModel : ViewModel() {
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                //isVisible.set(true)
+                isVisible.set(true)
             }
             .doFinally {
-                //isVisible.set(false)
+                isVisible.set(false)
             }
             .subscribe({ response ->
                 if (response.isSuccessful) {
@@ -47,12 +47,12 @@ class LocationViewModel : ViewModel() {
                     mRestaurantListResponse.value = response
                 } else {
                     val jObjError = JSONObject(response.errorBody()!!.string())
-                    //mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                    mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
                 }
                 mCompositeDisposable!!.dispose()
             }, {
                 Log.i(TAG, "error login")
-                //mShowErrorSnackBar.value = it.localizedMessage
+                mShowErrorSnackBar.value = it.localizedMessage
             })
         mCompositeDisposable!!.add(disposable)
     }

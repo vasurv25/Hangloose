@@ -42,7 +42,7 @@ class SelectionActivity : BaseActivity() {
     private var mActivitiesFragment: ActivitiesFragment? = null
     private var mAdventuresFragment: AdventuresFragment? = null
     private var mPreference: SharedPreferences? = null
-    var mHeader: String? =null
+    var mHeader: String? = null
 
     private var mRestaurantData = ArrayList<RestaurantData>()
 
@@ -192,14 +192,17 @@ class SelectionActivity : BaseActivity() {
         mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
         mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
         if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
+            //TODO : We can use let and run scoping function instead of if else
             val address: String? = mPreference!![PREFERENCE_ADDRESS]
             if (address == null) {
                 onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
             } else {
                 val latLongFromLocationName = getLatLongFromLocationName(this, address)
-                mSelectionViewModel.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList
+                mSelectionViewModel.restaurantListApiRequest(
+                    mActivitiesSelectedList, mAdventuresSelectedList
                     , latLongFromLocationName!!.latitude
-                    , latLongFromLocationName!!.longitude, mHeader)
+                    , latLongFromLocationName!!.longitude, mHeader
+                )
             }
         }
     }
@@ -208,10 +211,11 @@ class SelectionActivity : BaseActivity() {
         activitiesSelectedList: ArrayList<String>,
         adventuresSelectedList: ArrayList<String>
     ) {
-            val intent = Intent(this, LocationSettingActivity::class.java)
-            intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, activitiesSelectedList)
-            intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, adventuresSelectedList)
-            startActivity(intent)
+        val intent = Intent(this, LocationSettingActivity::class.java)
+        intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, activitiesSelectedList)
+        intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, adventuresSelectedList)
+        intent.putExtra(FLAG_LOCATION_NAVIGATION, 0)
+        startActivity(intent)
     }
 
     private fun onNavigateToTabsActivity() {

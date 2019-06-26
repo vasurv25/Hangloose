@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.databinding.ObservableBoolean
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -375,12 +376,21 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         spannable.setSpan(RelativeSizeSpan(1.5f), 7, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         spannable.setSpan(clickableSpan, 0, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(
-            ForegroundColorSpan(resources.getColor(android.R.color.white, null)),
-            0,
-            spannable.length,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            spannable.setSpan(
+                ForegroundColorSpan(resources.getColor(android.R.color.white, null)),
+                0,
+                spannable.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        } else {
+            spannable.setSpan(
+                ForegroundColorSpan(resources.getColor(android.R.color.white)),
+                0,
+                spannable.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
         //etPhoneNumber.setText(spannable, TextView.BufferType.NORMAL)
         //Selection.setSelection(etPhoneNumber.text, etPhoneNumber.text.length)
         //etPhoneNumber.post { etPhoneNumber.setSelection(etPhoneNumber.length()) }
