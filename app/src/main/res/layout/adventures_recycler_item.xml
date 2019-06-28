@@ -30,10 +30,11 @@
             android:id="@+id/cbSelector"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:background="@drawable/adventures_selector"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/activities_selector"
             android:button="@null"
             android:gravity="center_vertical|end"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

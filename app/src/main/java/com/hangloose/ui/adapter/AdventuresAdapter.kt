@@ -37,12 +37,17 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
         fun bindAdventuresView(contentItem: AdventuresDetails) {
             Log.i(TAG, """Image : ${contentItem.image!!}""")
             Picasso.with(context).load(contentItem.image!!).into(itemView.ivAdventure)
-            mAdventuresList!!.add(contentItem.id)
+
+            itemView.ivAdventure.setOnClickListener {
+                itemView.cbSelector.isChecked = !contentItem.checked
+            }
+
             itemView.cbSelector.setOnCheckedChangeListener { _, isChecked ->
                 contentItem.checked = isChecked
                 Log.i(TAG, "Checked : $isChecked")
                 if (isChecked) {
-                    removeItem(adapterPosition)
+                    mAdventuresList!!.add(contentItem.id)
+                } else {
                     mAdventuresList!!.remove(contentItem.id)
                 }
             }
@@ -50,23 +55,6 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
             itemView.cbSelector.isChecked = contentItem.checked
             Log.i(TAG, "Checked : ${contentItem.checked}")
         }
-    }
-
-    fun removeItem(position: Int) {
-        if (contentList.size > 1) {
-            contentList.removeAt(position)
-            // notify the item removed by position
-            // to perform recycler view delete animations
-            // NOTE: don't call notifyDataSetChanged()
-            notifyItemRemoved(position)
-        }
-    }
-
-    fun restoreList(refreshList: ArrayList<AdventuresDetails>) {
-        //contentList.add(position, item)
-        // notify item added by position
-        contentList = refreshList
-        notifyDataSetChanged()
     }
 
     fun getAdventuresList(): ArrayList<String> {

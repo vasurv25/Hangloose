@@ -9,13 +9,12 @@ import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import android.widget.Toast
+import java.io.IOException
 
 
 fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
@@ -90,8 +89,14 @@ fun dpToPx(dp: Int): Int {
 }
 
 fun getLatLongFromLocationName(activity: Activity, address: String?): Address? {
-    var geoCoder = Geocoder(activity)
-    var list = geoCoder.getFromLocationName(address, 1)
-    var address = list.get (0)
-    return address
+    var location: Address? = null
+    try {
+        var geoCoder = Geocoder(activity)
+        var list = geoCoder.getFromLocationName(address, 1)
+        location = list[0]
+    } catch (e : IOException) {
+        e.printStackTrace()
+        Toast.makeText(activity, "Location Not found", Toast.LENGTH_SHORT).show()
+    }
+    return location
 }

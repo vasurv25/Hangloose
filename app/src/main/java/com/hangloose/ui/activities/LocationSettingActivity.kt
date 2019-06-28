@@ -48,6 +48,7 @@ import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
 import kotlinx.android.synthetic.main.activity_enable_location.*
 import kotlinx.android.synthetic.main.activity_selection.*
+import kotlinx.android.synthetic.main.fragment_restaurant.*
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
@@ -241,6 +242,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
                             mAddress = item.description.toString()
                             var locationWithLatLong = getLatLongFromLocationName(this@LocationSettingActivity, mAddress)
                             Log.d(TAG, "LocationWithLatLong : $locationWithLatLong")
+                            hideSoftKeyboard(this@LocationSettingActivity)
+                            etLocationSearchLocation.setText("")
                             mLocationViewModel!!.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList
                                 , locationWithLatLong!!.latitude, locationWithLatLong.longitude, mHeaderToken)
                         } else {
@@ -399,6 +402,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
         if (address.size > 0) {
             mAddress = address[0].getAddressLine(0)
             Log.d("Fragment", "Addressssssssss : $mAddress")
+            hideSoftKeyboard(this)
             mLocationViewModel!!.restaurantListApiRequest(
                 mActivitiesSelectedList,
                 mAdventuresSelectedList,
