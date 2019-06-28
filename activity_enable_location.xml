@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="locationViewModel"
+            type="com.hangloose.viewmodel.LocationViewModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.hangloose.ui.activities.LocationSettingActivity" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layoutParentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+
+        <EditText
+            android:id="@+id/etLocationSearchLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/location_search_view"
+            android:drawableLeft="@drawable/ic_search_black"
+            android:drawableRight="@drawable/ic_cancel_black"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:hint="Search for your Location..."
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutSearchArrowBackLocation" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layoutSearchArrowBackLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBgGrey"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivArrowBackLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ic_arrow_back_black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:text="Search Location"
+                android:textColor="@android:color/black"
+                android:textColorHint="#616161"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <View
+            android:id="@+id/firstSeperatorLocation"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorBgGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etLocationSearchLocation" />
+
+        <TextView
+            android:id="@+id/tvGetCurrentLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:padding="10dp"
+            android:text="Use Current Location"
+            android:textColor="@color/colorGreen"
+            android:textColorHint="#616161"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/firstSeperatorLocation" />
+
+        <View
+            android:id="@+id/secondSeperatorLocation"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorBgGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvGetCurrentLocation" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvAddressesLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/secondSeperatorLocation" />
+
+        <include
+            android:id="@+id/pbLayout"
+            layout="@layout/activity_progress_overlay"
+            android:visibility="@{locationViewModel.isVisible? View.VISIBLE : View.GONE}" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
