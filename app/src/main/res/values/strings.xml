@@ -103,4 +103,6 @@
     <string name="discount">Discount</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="clear_filter">Clear Filter</string>
+    <string name="minDiscount">0%</string>
+    <string name="maxDiscount">100%</string>
 </resources>
