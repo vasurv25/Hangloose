@@ -21,7 +21,7 @@ import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import kotlinx.android.synthetic.main.activity_tab.tabLayout
 
-class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, EnableLocationFragment.LocationListener, RestaurantFragment.LocationNavigationListener {
+class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, RestaurantFragment.LocationNavigationListener {
 
     private val TAG = "TabsActivity"
     private var mRestaurantData: ArrayList<RestaurantData>? = null
@@ -130,11 +130,6 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, EnableLoca
     }
 
     override fun onBackPressed() {}
-
-    override fun onNavigateToRestaurantFragment(restaurantData: ArrayList<RestaurantData>?) {
-        mRestaurantData = restaurantData
-        replaceFragment(RestaurantFragment())
-    }
 
     override fun navigateToLocationActivityFromHomeFrag() {
         var intent = Intent(this, LocationSettingActivity::class.java)
