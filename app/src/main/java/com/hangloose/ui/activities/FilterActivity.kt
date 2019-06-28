@@ -26,8 +26,8 @@ class FilterActivity : AppCompatActivity() {
 
         ibFilter.setOnClickListener { finish() }
 
-        minDiscount.text = discount_range.getThumb(0).value.toString()
-        maxDiscount.text = discount_range.getThumb(1).value.toString()
+//        minDiscount.text = discount_range.getThumb(0).value.toString()
+//        maxDiscount.text = discount_range.getThumb(1).value.toString()
 
         discount_range.setOnThumbValueChangeListener(object : MultiSlider.SimpleChangeListener() {
             override fun onValueChanged(
