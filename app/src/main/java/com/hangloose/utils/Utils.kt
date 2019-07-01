@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import com.hangloose.R
 import java.io.IOException
 
 
@@ -96,7 +97,7 @@ fun getLatLongFromLocationName(activity: Activity, address: String?): Address? {
         location = list[0]
     } catch (e : IOException) {
         e.printStackTrace()
-        Toast.makeText(activity, "Location Not found", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, activity.getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
     }
     return location
 }

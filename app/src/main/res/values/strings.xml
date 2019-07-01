@@ -213,4 +213,6 @@
     <string name="invalid_lat_long_used">Invalid location</string>
     <string name="no_address_found">Address not found</string>
     <string name="address_found">Address found</string>
+    <string name="slow_internet">Slow Internet Connectivity</string>
+    <string name="location_not_found">Location Not found Please check the network connectivity</string>
 </resources>

@@ -53,11 +53,18 @@ class SelectionActivity : BaseActivity() {
         Log.i(TAG, """Header : $headerToken""")
         mHeader = headerToken
         initBinding()
+        getIntentData()
     }
 
     override fun init() {}
 
     override fun onBackPressed() {}
+
+    private fun getIntentData() {
+        mActivitiesList = intent!!.getParcelableArrayListExtra(KEY_ACTIVITIES_LIST)
+        mAdventuresList = intent!!.getParcelableArrayListExtra(KEY_ADVENTURES_LIST)
+        setFragments()
+    }
 
     private fun setFragments() {
         Log.i(TAG, "init")
@@ -96,7 +103,7 @@ class SelectionActivity : BaseActivity() {
         mActivitySelectionBinding!!.clickHandler = this
         mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
         mActivitySelectionBinding!!.selectionViewModel = mSelectionViewModel
-        mSelectionViewModel.selectionListApiRequest(mHeader)
+        //mSelectionViewModel.selectionListApiRequest(mHeader)
         mSelectionViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
             Log.i(TAG, "onChanged")
             (0 until t!!.activities.size).forEach { i ->
@@ -125,7 +132,7 @@ class SelectionActivity : BaseActivity() {
                     )
                 )
             }
-            setFragments()
+            //setFragments()
         })
 
         mSelectionViewModel.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
@@ -198,11 +205,14 @@ class SelectionActivity : BaseActivity() {
                 onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
             } else {
                 val latLongFromLocationName = getLatLongFromLocationName(this, address)
-                mSelectionViewModel.restaurantListApiRequest(
-                    mActivitiesSelectedList, mAdventuresSelectedList
-                    , latLongFromLocationName!!.latitude
-                    , latLongFromLocationName!!.longitude, mHeader
-                )
+                Log.d(TAG, "latLongFromLocationName : $latLongFromLocationName")
+                latLongFromLocationName?.let {
+                    mSelectionViewModel.restaurantListApiRequest(
+                        mActivitiesSelectedList, mAdventuresSelectedList
+                        , latLongFromLocationName.latitude
+                        , latLongFromLocationName.longitude, mHeader
+                    )
+                }
             }
         }
     }

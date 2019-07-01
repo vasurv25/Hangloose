@@ -45,8 +45,7 @@ import com.hangloose.R
 import com.hangloose.databinding.ActivitySignUpBinding
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
-import com.hangloose.ui.model.ConsumerData
-import com.hangloose.ui.model.ConsumerDetails
+import com.hangloose.ui.model.*
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
@@ -73,6 +72,8 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     private var mActivitySignUpBinding: ActivitySignUpBinding? = null
     private lateinit var mConsumerRegisterViewModel: ConsumerRegisterViewModel
     private var mPreference: SharedPreferences? = null
+    private var mActivitiesList = ArrayList<ActivitiesDetails>()
+    private var mAdventuresList = ArrayList<AdventuresDetails>()
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,6 +176,37 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     checkHeaderToken()
                 }
             })
+
+        mConsumerRegisterViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
+            Log.i(TAG, "onChanged")
+            (0 until t!!.activities.size).forEach { i ->
+                val list = t.activities
+                Log.i(TAG, "Activities : " + list[i].id!!)
+                mActivitiesList.add(
+                    ActivitiesDetails(
+                        list[i].createdAt!!,
+                        list[i].updatedAt!!,
+                        list[i].id!!,
+                        list[i].name!!,
+                        list[i].image!!
+                    )
+                )
+            }
+            (0 until t.adventures.size).forEach { i ->
+                val list = t.adventures
+                Log.i(TAG, "Adventures : " + list[i].id!!)
+                mAdventuresList.add(
+                    AdventuresDetails(
+                        list[i].createdAt!!,
+                        list[i].updatedAt!!,
+                        list[i].id!!,
+                        list[i].name!!,
+                        list[i].image!!
+                    )
+                )
+            }
+            onNavigateSelectionScreen()
+        })
 
         mConsumerRegisterViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
@@ -417,15 +449,22 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun onNavigateSelectionScreen() {
-        var intent = Intent(this@SignUpActivity, SelectionActivity::class.java)
-        startActivity(intent)
+        if (mActivitiesList != null && mAdventuresList != null) {
+            var intent = Intent(this@SignUpActivity, SelectionActivity::class.java)
+            intent.putParcelableArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesList)
+            intent.putParcelableArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresList)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Please check network connectivity & try again", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun checkHeaderToken() {
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
         Log.i(TAG, """Header : $headerToken""")
         if (headerToken != null) {
-            onNavigateSelectionScreen()
+            //onNavigateSelectionScreen()
+            mConsumerRegisterViewModel.selectionListApiRequest(headerToken)
         }
     }
 }

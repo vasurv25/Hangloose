@@ -16,6 +16,7 @@ import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -35,8 +36,7 @@ import com.hangloose.databinding.ActivitySignInBinding
 import com.hangloose.model.Consumer
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
-import com.hangloose.ui.model.ConsumerData
-import com.hangloose.ui.model.ConsumerDetails
+import com.hangloose.ui.model.*
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
@@ -55,6 +55,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     private val RC_SIGN_IN = 9001
     private var mPreference: SharedPreferences? = null
     private var mHeader: String? = null
+    private var mActivitiesList = ArrayList<ActivitiesDetails>()
+    private var mAdventuresList = ArrayList<AdventuresDetails>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,6 +125,38 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 checkHeaderToken()
 //                Toast.makeText(this, getString(R.string.user_login_msg), Toast.LENGTH_LONG).show()
             })
+
+        mConsumerLoginViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
+            Log.i(TAG, "onChanged")
+            (0 until t!!.activities.size).forEach { i ->
+                val list = t.activities
+                Log.i(TAG, "Activities : " + list[i].id!!)
+                mActivitiesList.add(
+                    ActivitiesDetails(
+                        list[i].createdAt!!,
+                        list[i].updatedAt!!,
+                        list[i].id!!,
+                        list[i].name!!,
+                        list[i].image!!
+                    )
+                )
+            }
+            (0 until t.adventures.size).forEach { i ->
+                val list = t.adventures
+                Log.i(TAG, "Adventures : " + list[i].id!!)
+                mAdventuresList.add(
+                    AdventuresDetails(
+                        list[i].createdAt!!,
+                        list[i].updatedAt!!,
+                        list[i].id!!,
+                        list[i].name!!,
+                        list[i].image!!
+                    )
+                )
+            }
+            onNavigateSelectionScreen()
+        })
+
         mConsumerLoginViewModel.mShowErrorSnackBar.observe(this, Observer { t ->
             showSnackBar(
                 ll_signin,
@@ -295,15 +329,22 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun onNavigateSelectionScreen() {
-        var intent = Intent(this@SignInActivity, SelectionActivity::class.java)
-        startActivity(intent)
+        if (mActivitiesList != null && mAdventuresList != null) {
+            var intent = Intent(this@SignInActivity, SelectionActivity::class.java)
+            intent.putParcelableArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesList)
+            intent.putParcelableArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresList)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Please check network connectivity & try again", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun checkHeaderToken() {
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
         Log.i(TAG, """Header : $headerToken""")
         if (headerToken != null) {
-            onNavigateSelectionScreen()
+            //onNavigateSelectionScreen()
+            mConsumerLoginViewModel.selectionListApiRequest(headerToken)
         }
     }
 

@@ -8,16 +8,17 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp
-import com.hangloose.model.ConsumerAuthDetailResponse
-import com.hangloose.model.ConsumerCreateRequest
-import com.hangloose.model.ConsumerLoginRequest
+import com.hangloose.model.*
+import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.AUTH_TYPE
 import com.hangloose.utils.MESSAGE_KEY
 import com.hangloose.utils.validateConfirmPassword
 import com.hangloose.utils.validatePassword
 import com.hangloose.utils.validatePhoneNumber
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import org.json.JSONObject
 import retrofit2.Response
 
@@ -35,6 +36,7 @@ class ConsumerRegisterViewModel : ViewModel() {
     var isPhoneValid = ObservableBoolean()
     var isPasswordValid = ObservableBoolean()
     var isConfirmPasswordValid = ObservableBoolean()
+    private var mSelectionList: MutableLiveData<SelectionList> = MutableLiveData()
 
     private var mPhoneNumber: String? = null
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
@@ -190,10 +192,48 @@ class ConsumerRegisterViewModel : ViewModel() {
         mCompositeDisposable!!.add(disposable)
     }
 
+    fun selectionListApiRequest(mHeader: String?) {
+
+        var callActivities = HanglooseApp.getApiService()!!.getActivities(mHeader!!)
+        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(mHeader!!)
+
+        val disposable =
+            Observable.zip(callActivities, callAdventures,
+                BiFunction<Response<List<Activities>>, Response<List<Adventures>>, SelectionList> { t1, t2 ->
+                    SelectionList(
+                        t1.body()!!,
+                        t2.body()!!
+                    )
+                })
+                .subscribeOn(HanglooseApp.subscribeScheduler())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    isVisible.set(true)
+                }
+                .doFinally {
+                    isVisible.set(false)
+                }
+                .subscribe({
+                    Log.i(TAG, "success login : $it")
+                    mSelectionList.value = it
+                }, {
+                    Log.i(TAG, """error login : ${it.localizedMessage}""")
+                    mShowErrorSnackBar.value = it.localizedMessage
+                    // TODO if error related to token mis-match navigate user to SignIn Activity
+                })
+
+        mCompositeDisposable!!.add(disposable)
+    }
+
     fun registerResponse(): MutableLiveData<Response<ConsumerAuthDetailResponse>> {
         Log.i(TAG, "Live Data")
         return mConsumerAuthDetailResponse
     }
+
+    fun getSelectionList(): MutableLiveData<SelectionList> {
+        return mSelectionList
+    }
+
 
     private fun unSubscribeFromObservable() {
         if (mCompositeDisposable != null && !mCompositeDisposable!!.isDisposed) {

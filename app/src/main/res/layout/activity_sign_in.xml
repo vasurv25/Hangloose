@@ -153,7 +153,6 @@
                 android:imeOptions="actionNext"
                 android:inputType="phone"
                 android:maxLength="10"
-                android:text="8698563289"
                 tools:text="8698563289"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
@@ -181,7 +180,6 @@
                 android:backgroundTint="@android:color/white"
                 android:hint="@string/password"
                 tools:text="123123"
-                android:text="123123"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:textColor="@android:color/white" />

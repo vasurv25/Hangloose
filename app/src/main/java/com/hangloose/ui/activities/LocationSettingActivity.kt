@@ -53,7 +53,7 @@ import kotlinx.android.synthetic.main.fragment_restaurant.*
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
 //https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
-class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApiClient.ConnectionCallbacks,
+class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener {
 
     private var TAG = "LocationSettingActivity"
@@ -194,8 +194,19 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
             (0 until data!!.size).forEach { i ->
                 mRestaurantData!!.add(
                     RestaurantData(
-                        data[i].address!!, data[i].createdAt, data[i].discount, data[i].id, data[i].images, data[i].latitude, data[i].longitude, data[i].name, data[i].offer,
-                        data[i].priceFortwo, data[i].ratings, data[i].restaurantType, data[i].updatedAt
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt
                     )
                 )
             }
@@ -217,7 +228,9 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
     private fun setArrowBackVisibilityForHome() {
         if (mFlagLocationNavigation == 0) {
             ivArrowBackLocation.visibility = View.GONE
-        } else { ivArrowBackLocation.visibility = View.VISIBLE }
+        } else {
+            ivArrowBackLocation.visibility = View.VISIBLE
+        }
     }
 
     private fun setAdapterForLocationList() {
@@ -244,10 +257,22 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
                             Log.d(TAG, "LocationWithLatLong : $locationWithLatLong")
                             hideSoftKeyboard(this@LocationSettingActivity)
                             etLocationSearchLocation.setText("")
-                            mLocationViewModel!!.restaurantListApiRequest(mActivitiesSelectedList, mAdventuresSelectedList
-                                , locationWithLatLong!!.latitude, locationWithLatLong.longitude, mHeaderToken)
+                            locationWithLatLong?.let {
+                                Log.d(
+                                    TAG,
+                                    "LatLong : " + locationWithLatLong.latitude + "-" + locationWithLatLong.longitude
+                                )
+                                mLocationViewModel!!.restaurantListApiRequest(
+                                    mActivitiesSelectedList, mAdventuresSelectedList
+                                    , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken
+                                )
+                            }
                         } else {
-                            Toast.makeText(this@LocationSettingActivity, "Something went wrong", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this@LocationSettingActivity,
+                                getString(R.string.slow_internet),
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
@@ -344,7 +369,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
         var builder = AlertDialog.Builder(this);
         builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
             .setCancelable(false)
-            .setPositiveButton("Yes"
+            .setPositiveButton(
+                "Yes"
             ) { dialog, which ->
                 startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 if (!mManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -356,7 +382,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
                     enableGPS()
                 }
             }
-            .setNegativeButton("No"
+            .setNegativeButton(
+                "No"
             ) { dialog, which -> dialog!!.cancel() }
         var alert = builder.create();
         alert.show();
@@ -403,13 +430,15 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
             mAddress = address[0].getAddressLine(0)
             Log.d("Fragment", "Addressssssssss : $mAddress")
             hideSoftKeyboard(this)
-            mLocationViewModel!!.restaurantListApiRequest(
-                mActivitiesSelectedList,
-                mAdventuresSelectedList,
-                location.latitude,
-                location.longitude,
-                mHeaderToken
-            )
+            location.let {
+                mLocationViewModel!!.restaurantListApiRequest(
+                    mActivitiesSelectedList,
+                    mAdventuresSelectedList,
+                    location.latitude,
+                    location.longitude,
+                    mHeaderToken
+                )
+            }
         }
     }
 
@@ -443,7 +472,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED) {
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
                     checkLocationPermission()
                 }
             }
@@ -464,7 +494,11 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener,  GoogleApi
                             mGoogleApiClient = null
                             mFusedLocationClient.removeLocationUpdates(mCallback)
                         }
-                        Toast.makeText(this@LocationSettingActivity, "Please enable Location service!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@LocationSettingActivity,
+                            "Please enable Location service!",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
