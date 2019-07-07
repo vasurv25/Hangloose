@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -53,7 +54,15 @@ class SelectionActivity : BaseActivity() {
         Log.i(TAG, """Header : $headerToken""")
         mHeader = headerToken
         initBinding()
-        getIntentData()
+//        if (savedInstanceState == null) {
+////            getIntentData()
+////        } else {
+////            var hmm = savedInstanceState!!.getInt("123")
+////            Log.i(TAG, "SavedInstance : " + hmm)
+////            mActivitiesList = savedInstanceState.getParcelableArrayList<ActivitiesDetails>(KEY_ACTIVITIES_LIST)
+////            mAdventuresList = savedInstanceState.getParcelableArrayList<AdventuresDetails>(KEY_ADVENTURES_LIST)
+////            setFragments()
+////        }
     }
 
     override fun init() {}
@@ -103,7 +112,11 @@ class SelectionActivity : BaseActivity() {
         mActivitySelectionBinding!!.clickHandler = this
         mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
         mActivitySelectionBinding!!.selectionViewModel = mSelectionViewModel
-        //mSelectionViewModel.selectionListApiRequest(mHeader)
+        if (intent!!.getParcelableArrayListExtra<ActivitiesDetails>(KEY_ACTIVITIES_LIST) != null) {
+            getIntentData()
+        } else {
+            mSelectionViewModel.selectionListApiRequest(mHeader)
+        }
         mSelectionViewModel.getSelectionList().observe(this, Observer<SelectionList> { t ->
             Log.i(TAG, "onChanged")
             (0 until t!!.activities.size).forEach { i ->
@@ -132,7 +145,7 @@ class SelectionActivity : BaseActivity() {
                     )
                 )
             }
-            //setFragments()
+            setFragments()
         })
 
         mSelectionViewModel.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
@@ -152,7 +165,11 @@ class SelectionActivity : BaseActivity() {
                         data[i].priceFortwo,
                         data[i].ratings,
                         data[i].restaurantType,
-                        data[i].updatedAt
+                        data[i].updatedAt,
+                        data[i].distanceFromLocation,
+                        data[i].about,
+                        data[i].tags,
+                        data[i].openCloseTime
                     )
                 )
             }
@@ -235,4 +252,21 @@ class SelectionActivity : BaseActivity() {
         intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
         startActivity(intent)
     }
+
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        var hmm = savedInstanceState!!.getInt ("123")
+//        mActivitiesList = savedInstanceState!!.getParcelableArrayList<ActivitiesDetails>(KEY_ACTIVITIES_LIST)
+//        mAdventuresList =savedInstanceState!!.getParcelableArrayList<AdventuresDetails>(KEY_ADVENTURES_LIST)
+//        Log.d(TAG, "onRestoreInstanceState : " + hmm)
+//        setFragments()
+//    }
+//
+//    override fun onSaveInstanceState(outState: Bundle?) {
+//        outState!!.putParcelableArrayList(KEY_ACTIVITIES_LIST, mActivitiesList)
+//        outState!!.putParcelableArrayList(KEY_ADVENTURES_LIST, mAdventuresList)
+//        outState!!.putInt("123", 1)
+//        Log.d(TAG, "onSaveInstanceState : " + outState)
+//        super.onSaveInstanceState(outState)
+//    }
 }

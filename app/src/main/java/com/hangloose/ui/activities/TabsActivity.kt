@@ -129,7 +129,12 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
             .commit()
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+        super.onBackPressed()
+        var intent = Intent(this, SelectionActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
 
     override fun navigateToLocationActivityFromHomeFrag() {
         var intent = Intent(this, LocationSettingActivity::class.java)

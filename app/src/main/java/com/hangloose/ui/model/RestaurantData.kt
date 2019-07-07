@@ -17,7 +17,11 @@ data class RestaurantData(
     val priceFortwo: String?,
     val ratings: String?,
     val restaurantType: String?,
-    val updatedAt: String?
+    val updatedAt: String?,
+    val distanceFromLocation: Double?,
+    val about: String?,
+    val tags: List<String>?,
+    val openCloseTime: String?
 ) : Parcelable, BaseModel() {
 
     constructor(parcel: Parcel) : this(
@@ -33,6 +37,10 @@ data class RestaurantData(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readDouble(),
+        parcel.readString(),
+        parcel.createStringArrayList(),
         parcel.readString()
     )
 
@@ -50,6 +58,10 @@ data class RestaurantData(
         parcel.writeString(ratings)
         parcel.writeString(restaurantType)
         parcel.writeString(updatedAt)
+        parcel.writeDouble(distanceFromLocation!!)
+        parcel.writeString(about)
+        parcel.writeStringList(tags)
+        parcel.writeString(openCloseTime)
     }
 
     override fun describeContents(): Int {

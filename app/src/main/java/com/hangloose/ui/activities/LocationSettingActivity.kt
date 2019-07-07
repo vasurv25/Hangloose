@@ -157,11 +157,13 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     }
 
     private fun backPressNavigation() {
+        super.onBackPressed()
         if (mFlagLocationNavigation == 1) {
-            super.onBackPressed()
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, null)
-            finish()
+        } else {
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
+        finish()
     }
 
     private fun navigateToRestaurantScreen() {
@@ -206,7 +208,11 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                         data[i].priceFortwo,
                         data[i].ratings,
                         data[i].restaurantType,
-                        data[i].updatedAt
+                        data[i].updatedAt,
+                        data[i].distanceFromLocation,
+                        data[i].about,
+                        data[i].tags,
+                        data[i].openCloseTime
                     )
                 )
             }
