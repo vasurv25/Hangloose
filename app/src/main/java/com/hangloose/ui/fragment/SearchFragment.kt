@@ -3,6 +3,7 @@ package com.hangloose.ui.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.MenuItemCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
@@ -11,15 +12,20 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.ui.adapter.SearchAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
+import kotlinx.android.synthetic.main.fragment_search.*
 
-class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
+class SearchFragment : Fragment() {
+
+//, SearchView.OnQueryTextListener {
 
     private var TAG = "SearchFragment"
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
-    //private var mSearchAdapter: SearchAdapter? = null
     private var mRestaurantSearchList: RecyclerView? = null
+    private var mSearchView: SearchView? = null
+    private var mAdpater: SearchAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,31 +36,50 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_search, null)
         mRestaurantSearchList = rootView.findViewById(R.id.rvRestaurant)
+        mSearchView = rootView.findViewById(R.id.svRestaurant)
         setUpAdapter()
+        setUpSearchView()
         return rootView
     }
 
+    private fun setUpSearchView() {
+        mSearchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null)
+                    mAdpater!!.filterSearchData(newText)
+                return true
+            }
+        })
+    }
+
     private fun setUpAdapter() {
-        //mSearchAdapter = SearchAdapter(activity!!, mRestaurantData!!)
-        //mRestaurantSearchList!!.adapter = mSearchAdapter
+        mAdpater = SearchAdapter(context!!, mRestaurantData!!, mRestaurantData!!)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        mRestaurantSearchList!!.layoutManager = layoutManager
+        mRestaurantSearchList!!.adapter = mAdpater
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater!!.inflate(R.menu.search_view, menu)
-        val item = menu!!.findItem(R.id.action_search)
-        val searchView = MenuItemCompat.getActionProvider(item) as SearchView
-        searchView.setOnQueryTextListener(this)
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        return false
-    }
-
-    override fun onQueryTextChange(query: String?): Boolean {
-        //mSearchAdapter!!.searchFilter(query!!)
-        return false
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+//        super.onCreateOptionsMenu(menu, inflater)
+//        inflater!!.inflate(R.menu.search_view, menu)
+//        val item = menu!!.findItem(R.id.action_search)
+//        val searchView = MenuItemCompat.getActionProvider(item) as SearchView
+//        searchView.setOnQueryTextListener(this)
+//    }
+//
+//    override fun onQueryTextSubmit(query: String?): Boolean {
+//        return false
+//    }
+//
+//    override fun onQueryTextChange(query: String?): Boolean {
+//        //mSearchAdapter!!.searchFilter(query!!)
+//        return false
+//    }
 }
 /*2019-06-23 00:00:41.323 2360-2360/com.hangloose.debug E/AndroidRuntime: FATAL EXCEPTION: main
     Process: com.hangloose.debug, PID: 2360
@@ -74,7 +99,6 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         at java.lang.reflect.Method.invoke(Native Method)
         at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:537)
         at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:858)*/
-
 
 
 /*
