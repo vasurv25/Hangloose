@@ -151,27 +151,29 @@ class SelectionActivity : BaseActivity() {
         mSelectionViewModel.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
             val data = t!!.body()
             (0 until data!!.size).forEach { i ->
-                mRestaurantData.add(
-                    RestaurantData(
-                        data[i].address!!,
-                        data[i].createdAt,
-                        data[i].discount,
-                        data[i].id,
-                        data[i].images,
-                        data[i].latitude,
-                        data[i].longitude,
-                        data[i].name,
-                        data[i].offer,
-                        data[i].priceFortwo,
-                        data[i].ratings,
-                        data[i].restaurantType,
-                        data[i].updatedAt,
-                        data[i].distanceFromLocation,
-                        data[i].about,
-                        data[i].tags,
-                        data[i].openCloseTime
+                if (data[i].distanceFromLocation!! <= 10) {
+                    mRestaurantData.add(
+                        RestaurantData(
+                            data[i].address!!,
+                            data[i].createdAt,
+                            data[i].discount,
+                            data[i].id,
+                            data[i].images,
+                            data[i].latitude,
+                            data[i].longitude,
+                            data[i].name,
+                            data[i].offer,
+                            data[i].priceFortwo,
+                            data[i].ratings,
+                            data[i].restaurantType,
+                            data[i].updatedAt,
+                            data[i].distanceFromLocation,
+                            data[i].about,
+                            data[i].tags,
+                            data[i].openCloseTime
+                        )
                     )
-                )
+                }
             }
             onNavigateToTabsActivity()
         })
