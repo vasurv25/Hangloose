@@ -12,6 +12,8 @@ import com.hangloose.ui.activities.SavedRestaurantActivity
 import com.hangloose.ui.activities.SignInActivity
 import com.hangloose.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.layout_profile_item.view.*
+import com.hangloose.HanglooseApp
+
 
 class ProfileAdapter(
     val context: Context,
@@ -54,10 +56,10 @@ class ProfileAdapter(
                     }
                     context.resources.getString(R.string.logout) -> {
                         mPreference!!.edit().clear().commit()
+                        HanglooseApp.getInstance().clearApplicationData()
                         var intent = Intent(context, SignInActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         context.startActivity(intent)
-                        //deleteCache(context)
                     }
                 }
             }

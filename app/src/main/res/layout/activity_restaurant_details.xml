@@ -1,283 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorBgGrey"
-            tools:context="com.hangloose.ui.activities.RestaurantDetailsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgGrey"
+    tools:context="com.hangloose.ui.activities.RestaurantDetailsActivity">
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
-                android:id="@+id/imageHeader"
-                android:layout_width="match_parent"
-                android:layout_height="175dp"
-                android:scaleType="fitXY"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/background" />
+            android:id="@+id/imageHeader"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background" />
 
         <RelativeLayout
-                android:id="@+id/layout1"
-                android:layout_width="match_parent"
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageHeader">
+
+            <TextView
+                android:id="@+id/textName"
+                style="@style/text18"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageHeader">
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                tools:text="@string/restaurant_name" />
 
             <TextView
-                    android:id="@+id/textName"
-                    style="@style/text18"
+                android:id="@+id/textPlace"
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textName"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/colorSubTitle"
+                tools:text="@string/restaurant_place" />
+
+            <TextView
+                android:id="@+id/textRating"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textPlace"
+                android:layout_marginTop="18dp"
+                android:text="@string/ratings"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textRating"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorGreen"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="2dp">
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    tools:text="@string/restaurant_name" />
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/star_icon" />
 
-            <TextView
-                    android:id="@+id/textPlace"
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textName"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/colorSubTitle"
-                    tools:text="@string/restaurant_place" />
-
-            <TextView
-                    android:id="@+id/textRating"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textPlace"
-                    android:layout_marginTop="18dp"
-                    android:text="@string/ratings"
-                    android:textColor="@color/black" />
-
-            <TextView
+                <TextView
                     android:id="@+id/textRatingValue"
                     style="@style/text16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textRating"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/rounded_rating"
-                    android:drawableStart="@android:drawable/btn_star"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:padding="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
                     android:text="@string/rating_value"
                     android:textColor="@color/white" />
 
+            </LinearLayout>
+
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textPlace"
+                android:layout_alignParentEnd="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textOpens"
+                    style="@style/text16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textPlace"
-                    android:layout_alignParentEnd="true"
-                    android:orientation="vertical">
+                    android:layout_marginTop="18dp"
+                    android:gravity="start"
+                    android:text="@string/opens"
+                    android:textColor="@color/black" />
 
                 <TextView
-                        android:id="@+id/textOpens"
-                        style="@style/text16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:gravity="start"
-                        android:text="@string/opens"
-                        android:textColor="@color/black" />
-
-                <TextView
-                        style="@style/text16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/time"
-                        android:textColor="@color/colorSubTitle" />
+                    style="@style/text16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/time"
+                    android:textColor="@color/colorSubTitle" />
             </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout2"
-                android:layout_width="match_parent"
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout1">
+
+            <TextView
+                android:id="@+id/textCharges"
+                style="@style/text16"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/charges"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textChargesValue"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textCharges"
                 android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout1">
+                android:text="@string/charges_value"
+                android:textColor="@color/colorSubTitle" />
 
             <TextView
-                    android:id="@+id/textCharges"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/charges"
-                    android:textColor="@color/black" />
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textChargesValue"
+                android:layout_marginTop="4dp"
+                android:text="@string/category_value"
+                android:textColor="@color/colorSubTitle" />
 
             <TextView
-                    android:id="@+id/textChargesValue"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textCharges"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/charges_value"
-                    android:textColor="@color/colorSubTitle" />
+                android:id="@+id/textVeg"
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textCharges"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="10dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:layout_toStartOf="@+id/textNonVeg"
+                android:drawableStart="@drawable/veg_icon"
+                android:text="@string/veg"
+                android:textColor="@color/black" />
 
             <TextView
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textChargesValue"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/category_value"
-                    android:textColor="@color/colorSubTitle" />
-
-            <TextView
-                    android:id="@+id/textVeg"
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textCharges"
-                    android:layout_marginTop="11dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_toStartOf="@+id/textNonVeg"
-                    android:drawableStart="@android:drawable/radiobutton_on_background"
-                    android:text="@string/veg"
-                    android:textColor="@color/black" />
-
-            <TextView
-                    android:id="@+id/textNonVeg"
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textCharges"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="11dp"
-                    android:drawableStart="@android:drawable/radiobutton_on_background"
-                    android:text="@string/nonveg"
-                    android:textColor="@color/black" />
+                android:id="@+id/textNonVeg"
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textCharges"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="11dp"
+                android:drawableStart="@drawable/non_veg_icon"
+                android:drawablePadding="4dp"
+                android:text="@string/nonveg"
+                android:textColor="@color/black" />
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout3"
-                android:layout_width="match_parent"
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout2">
+
+            <TextView
+                android:id="@+id/textOfferReservation"
+                style="@style/text16"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout2">
+                android:text="@string/offers_with_reservation_title"
+                android:textColor="@color/black" />
 
             <TextView
-                    android:id="@+id/textOfferReservation"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/offers_with_reservation_title"
-                    android:textColor="@color/black" />
+                android:id="@+id/textOfferReservationSubtitle"
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textOfferReservation"
+                android:layout_marginTop="4dp"
+                android:text="@string/offers_with_reservation_subtitle"
+                android:textColor="@color/colorSubTitle" />
 
             <TextView
-                    android:id="@+id/textOfferReservationSubtitle"
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textOfferReservation"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/offers_with_reservation_subtitle"
-                    android:textColor="@color/colorSubTitle" />
+                android:id="@+id/textOfferBill"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textOfferReservationSubtitle"
+                android:layout_marginTop="16dp"
+                android:text="@string/offer_on_total_bill"
+                android:textColor="@color/black" />
 
             <TextView
-                    android:id="@+id/textOfferBill"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textOfferReservationSubtitle"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/offer_on_total_bill"
-                    android:textColor="@color/black" />
+                android:id="@+id/textAddOnOffers"
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textOfferBill"
+                android:layout_marginTop="4dp"
+                android:text="@string/addon_offers"
+                android:textColor="@color/colorSubTitle" />
 
             <TextView
-                    android:id="@+id/textAddOnOffers"
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textOfferBill"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/addon_offers"
-                    android:textColor="@color/colorSubTitle" />
-
-            <TextView
-                    android:id="@+id/textAvailableNow"
-                    style="@style/text12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textAddOnOffers"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/available_now"
-                    android:textColor="@color/colorSignInBtn" />
+                android:id="@+id/textAvailableNow"
+                style="@style/text12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textAddOnOffers"
+                android:layout_marginTop="12dp"
+                android:text="@string/available_now"
+                android:textColor="@color/colorSignInBtn" />
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout3">
+            android:id="@+id/layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout3">
 
             <TextView
-                    android:id="@+id/textMenu"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/menu"
-                    android:textColor="@color/black" />
+                android:id="@+id/textMenu"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu"
+                android:textColor="@color/black" />
 
             <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textMenu"
-                    android:layout_marginTop="8dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:id="@+id/rvMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textMenu"
+                android:layout_marginTop="8dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout4">
+            android:id="@+id/layout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout4">
 
             <TextView
-                    android:id="@+id/textAbout"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about"
-                    android:textColor="@color/black" />
+                android:id="@+id/textAbout"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+                android:textColor="@color/black" />
 
             <!--<TextView-->
             <!--android:layout_width="match_parent"-->
@@ -292,135 +311,135 @@
             <!--/>-->
 
             <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
-                                                                         android:id="@+id/expand_text_view"
-                                                                         android:layout_width="match_parent"
-                                                                         android:layout_height="wrap_content"
-                                                                         android:layout_below="@+id/textAbout"
-                                                                         android:layout_marginTop="10dp"
-                                                                         expandableTextView:animDuration="200"
-                                                                         expandableTextView:maxCollapsedLines="3">
+                xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/expand_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textAbout"
+                android:layout_marginTop="10dp"
+                expandableTextView:animDuration="200"
+                expandableTextView:maxCollapsedLines="3">
 
                 <TextView
-                        android:id="@id/expandable_text"
-                        style="@style/text12"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:textColor="@color/colorSubTitle" />
+                    android:id="@id/expandable_text"
+                    style="@style/text12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/colorSubTitle" />
 
                 <ImageButton
-                        android:id="@id/expand_collapse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|bottom"
-                        android:background="@android:color/transparent"
-                        android:padding="16dp" />
+                    android:id="@id/expand_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:background="@android:color/transparent"
+                    android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout5">
+            android:id="@+id/layout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout5">
 
             <TextView
-                    android:id="@+id/textTags"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tags"
-                    android:textColor="@color/black" />
+                android:id="@+id/textTags"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tags"
+                android:textColor="@color/black" />
 
             <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvTags"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textTags"
-                    android:layout_marginTop="8dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:id="@+id/rvTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textTags"
+                android:layout_marginTop="8dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout7"
-                android:layout_width="match_parent"
+            android:id="@+id/layout7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout6">
+
+            <TextView
+                android:id="@+id/textAddressTitle"
+                style="@style/text16"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout6">
+                android:text="@string/address"
+                android:textColor="@color/black" />
 
             <TextView
-                    android:id="@+id/textAddressTitle"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/address"
-                    android:textColor="@color/black" />
+                android:id="@+id/textAddress"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textAddressTitle"
+                android:layout_marginTop="6dp"
+                android:text="@string/address_dummy"
+                android:textColor="@color/colorSubTitle" />
 
             <TextView
-                    android:id="@+id/textAddress"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textAddressTitle"
-                    android:layout_marginTop="6dp"
-                    android:text="@string/address_dummy"
-                    android:textColor="@color/colorSubTitle" />
+                android:id="@+id/textContactTitle"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textAddress"
+                android:layout_marginTop="15dp"
+                android:text="@string/contact"
+                android:textColor="@color/black" />
 
             <TextView
-                    android:id="@+id/textContactTitle"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textAddress"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/contact"
-                    android:textColor="@color/black" />
-
-            <TextView
-                    android:id="@+id/textContact"
-                    style="@style/text16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textContactTitle"
-                    android:layout_marginTop="6dp"
-                    android:text="@string/address_dummy"
-                    android:textColor="@color/colorSubTitle" />
+                android:id="@+id/textContact"
+                style="@style/text16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textContactTitle"
+                android:layout_marginTop="6dp"
+                android:text="@string/address_dummy"
+                android:textColor="@color/colorSubTitle" />
 
         </RelativeLayout>
 
         <RelativeLayout
-                android:id="@+id/layout8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:paddingStart="30dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="30dp"
-                android:paddingBottom="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/layout7">
+            android:id="@+id/layout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:paddingStart="30dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/layout7">
 
             <Button
-                    style="@style/text16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorSignInBtn"
-                    android:text="@string/check_availability"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                style="@style/text16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSignInBtn"
+                android:text="@string/check_availability"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
         </RelativeLayout>
 
     </android.support.constraint.ConstraintLayout>

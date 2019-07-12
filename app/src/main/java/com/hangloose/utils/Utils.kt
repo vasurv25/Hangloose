@@ -1,6 +1,7 @@
 package com.hangloose.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Point
 import android.location.Address
@@ -15,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import com.hangloose.R
+import java.io.File
 import java.io.IOException
 
 
@@ -95,9 +97,34 @@ fun getLatLongFromLocationName(activity: Activity, address: String?): Address? {
         var geoCoder = Geocoder(activity)
         var list = geoCoder.getFromLocationName(address, 1)
         location = list[0]
-    } catch (e : IOException) {
+    } catch (e: IOException) {
         e.printStackTrace()
         Toast.makeText(activity, activity.getString(R.string.location_not_found), Toast.LENGTH_SHORT).show()
     }
     return location
+}
+
+fun deleteCache(context: Context) {
+    try {
+        val dir = context.cacheDir
+        deleteDir(dir)
+    } catch (e: Exception) {
+    }
+}
+
+fun deleteDir(dir: File?): Boolean {
+    if (dir != null && dir.isDirectory) {
+        val children = dir.list()
+        for (i in children.indices) {
+            val success = deleteDir(File(dir, children[i]))
+            if (!success) {
+                return false
+            }
+        }
+        return dir.delete()
+    } else return if (dir != null && dir.isFile) {
+        dir.delete()
+    } else {
+        false
+    }
 }
