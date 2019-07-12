@@ -1,6 +1,7 @@
 package com.hangloose
 
 import android.app.Application
+import com.hangloose.database.RoomDBHandler
 import com.hangloose.network.ApiInf
 import com.hangloose.network.RetrofitApiHandler
 import io.reactivex.Scheduler
@@ -11,6 +12,7 @@ class HanglooseApp : Application() {
     override fun onCreate() {
         super.onCreate()
         api = RetrofitApiHandler(this).create()
+        roomDatabaseHandler = RoomDBHandler(this)
     }
 
     companion object {
@@ -32,5 +34,12 @@ class HanglooseApp : Application() {
         fun setScheduler(scheduler: Scheduler) {
             this.mScheduler = scheduler
         }
+
+        private var roomDatabaseHandler: RoomDBHandler? = null
+
+        fun getDataHandler(): RoomDBHandler? {
+            return roomDatabaseHandler
+        }
+
     }
 }

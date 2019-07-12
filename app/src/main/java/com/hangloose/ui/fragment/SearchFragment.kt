@@ -49,6 +49,21 @@ class SearchFragment : Fragment() {
                 return true
             }
         })
+
+//        mSearchView!!.setOnTouchListener(View.OnTouchListener { p0, p1 ->
+//            when (p0.id) {
+//                svRestaurant.id -> {
+//                    if (p1.action == MotionEvent.ACTION_UP) {
+//                        if (p1.rawX >= mSearchView!!.right - mSearchView!!.paddingRight) {
+//                            hideSoftKeyboard(activity as Activity)
+//                            true
+//                        }
+//                    }
+//                }
+//            }
+//            false
+//        }
+//        )
     }
 
     private fun setUpAdapter() {

@@ -32,6 +32,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.hangloose.R
+import com.hangloose.listener.RecordInsertionListener
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.activities.FilterActivity
 import com.hangloose.ui.activities.SwipeableCardView
@@ -50,7 +51,7 @@ import org.w3c.dom.Text
 import retrofit2.Response
 
 
-class RestaurantFragment : Fragment(), View.OnClickListener {
+class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionListener {
 
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
@@ -148,6 +149,10 @@ class RestaurantFragment : Fragment(), View.OnClickListener {
         super.onPause()
     }
 
+    override fun onRecordInserted(id: Long) {
+        Log.i("Hangloose", "onRecordInserted")
+    }
+
 
     private fun setSwipeableView() {
         val sideMargin = dpToPx(220)
@@ -170,7 +175,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener {
         mSwipePlaceHolderView!!.removeAllViews()
         for (data in mRestaurantData!!) {
             if (data.restaurantType.equals("VEGETERIAN")) {
-                mSwipePlaceHolderView!!.addView(SwipeableCardView(mContext!!, data, mSwipePlaceHolderView!!))
+                mSwipePlaceHolderView!!.addView(SwipeableCardView(mContext!!, data, mSwipePlaceHolderView!!, this))
             }
         }
 
@@ -188,7 +193,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener {
                                 SwipeableCardView(
                                     mContext!!,
                                     data,
-                                    mSwipePlaceHolderView!!
+                                    mSwipePlaceHolderView!!,
+                                    this
                                 )
                             )
                         }
@@ -202,7 +208,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener {
                                 SwipeableCardView(
                                     mContext!!,
                                     data,
-                                    mSwipePlaceHolderView!!
+                                    mSwipePlaceHolderView!!,
+                                    this
                                 )
                             )
                         }
@@ -216,7 +223,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener {
                                 SwipeableCardView(
                                     mContext!!,
                                     data,
-                                    mSwipePlaceHolderView!!
+                                    mSwipePlaceHolderView!!,
+                                    this
                                 )
                             )
                         }

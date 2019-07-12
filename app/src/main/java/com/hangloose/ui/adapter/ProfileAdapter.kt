@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.ui.activities.SavedRestaurantActivity
 import com.hangloose.ui.activities.SignInActivity
 import com.hangloose.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.layout_profile_item.view.*
@@ -44,13 +45,20 @@ class ProfileAdapter(
 //                ContextCompat.getDrawable(context, R.drawable.ic_right_arrow), null
 //            )
             itemView.tvProfile.setCompoundDrawablesWithIntrinsicBounds(itemIcon, 0, R.drawable.ic_right_arrow, 0)
-            if (position == 5) {
-                itemView.tvProfile.setOnClickListener {
-                    mPreference!!.edit().clear().commit()
-                    var intent = Intent(context, SignInActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    context.startActivity(intent)
-                    //deleteCache(context)
+
+            itemView.setOnClickListener {
+                when (it.tvProfile.text) {
+                    context.resources.getString(R.string.saved_restaurant) -> {
+                        val intent = Intent(context, SavedRestaurantActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                    context.resources.getString(R.string.logout) -> {
+                        mPreference!!.edit().clear().commit()
+                        var intent = Intent(context, SignInActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        context.startActivity(intent)
+                        //deleteCache(context)
+                    }
                 }
             }
         }

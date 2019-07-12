@@ -8,7 +8,9 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.hangloose.HanglooseApp.Companion.getDataHandler
 import com.hangloose.R
+import com.hangloose.listener.RecordInsertionListener
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
 import com.mindorks.placeholderview.SwipePlaceHolderView
@@ -22,7 +24,12 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOut
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState
 
 @Layout(R.layout.swipeable_card_view)
-class SwipeableCardView(val context: Context, val data: RestaurantData, val swipeView: SwipePlaceHolderView) {
+class SwipeableCardView(
+    val context: Context,
+    val data: RestaurantData,
+    val swipeView: SwipePlaceHolderView,
+    val listener: RecordInsertionListener
+) {
 
     @View(R.id.ivRestaurant)
     private val image: ImageView? = null
@@ -47,7 +54,7 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
 
     @Resolve
     private fun onResolved() {
-        Glide.with(context).load(R.drawable.ic_restaurant_view).into(image)
+        Glide.with(context).load(R.drawable.ic_restaurant_view).into(image!!)
         textRestaurantName!!.text = data.name
         textRestoAddress!!.text = data.address + " . " + data.restaurantType
         textRating!!.text = data.ratings
@@ -83,6 +90,7 @@ class SwipeableCardView(val context: Context, val data: RestaurantData, val swip
     @SwipeIn
     private fun onSwipeIn() {
         Log.d("EVENT", "onSwipedIn")
+        getDataHandler()!!.insertRestaurantData(data, listener)
     }
 
     @SwipeInState

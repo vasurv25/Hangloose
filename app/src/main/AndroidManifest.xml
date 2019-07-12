@@ -18,6 +18,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
+                android:name=".ui.activities.SavedRestaurantActivity"
+                android:theme="@style/AppThemeNoActionBar">
+        </activity>
+        <activity
                 android:name=".ui.activities.FilterActivity"
                 android:theme="@style/AppThemeNoActionBar">
         </activity>

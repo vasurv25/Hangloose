@@ -13,7 +13,15 @@ import kotlinx.android.synthetic.main.content_profile.*
 class ProfileFragment : Fragment() {
 
     private val listProfile =
-        arrayListOf("Saved Restaurant", "My Orders", "Offers", "Account Settings", "Help & Support", "Logout")
+        arrayListOf(
+            "Saved Restaurant",
+            "My Orders",
+            "Offers",
+            "Account Settings",
+            "Help & Support",
+            "Logout"
+        )
+
 
     private val listProfileIcons = arrayListOf(
         R.drawable.profile,
