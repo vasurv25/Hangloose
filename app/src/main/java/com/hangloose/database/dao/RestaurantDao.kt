@@ -12,4 +12,11 @@ abstract class RestaurantDao {
     @Transaction
     @Query("Select * from TABLE_RESTAURANT")
     abstract fun getAllSavedRestaurant(): LiveData<List<Restaurant>>
+
+    @Delete
+    abstract fun deleteUnsavedRestaurant(restaurantData: Restaurant): Int
+
+    @Transaction
+    @Query("Select saved from TABLE_RESTAURANT where _id = :id")
+    abstract fun getPersistedSavedRestaurant(id: String): LiveData<Int>
 }

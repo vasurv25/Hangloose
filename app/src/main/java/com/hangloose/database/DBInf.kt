@@ -9,4 +9,6 @@ import com.hangloose.ui.model.RestaurantData
 interface DBInf {
     fun insertRestaurantData(restaurantData: RestaurantData, listener: RecordInsertionListener)
     fun getAllSavedRestaurant(): ModelCommunicator<LiveData<List<Restaurant>>>
+    fun deleteUnsavedRestaurant(restaurantData: RestaurantData)
+    fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<Int>>
 }

@@ -33,7 +33,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.distanceFromLocation,
                     restaurantData.about,
                     restaurantData.tags,
-                    restaurantData.openCloseTime
+                    restaurantData.openCloseTime,
+                    restaurantData.saved
                 )
                 return appRoomDatabase.restaurantDao().insertSavedRestaurant(restaurant)
             }
@@ -51,6 +52,43 @@ class RoomDBHandler(context: Context) : DBInf {
         return object : ModelCommunicator<LiveData<List<Restaurant>>> {
             override fun get(): LiveData<List<Restaurant>> {
                 return appRoomDatabase.restaurantDao().getAllSavedRestaurant()
+            }
+        }
+    }
+
+    override fun deleteUnsavedRestaurant(restaurantData: RestaurantData) {
+        class deleteTask : AsyncTask<Void, Void, Int>() {
+            override fun doInBackground(vararg params: Void?): Int {
+                val restaurant = Restaurant(
+                    restaurantData.address,
+                    restaurantData.createdAt,
+                    restaurantData.discount,
+                    restaurantData.id!!,
+                    restaurantData.images,
+                    restaurantData.latitude,
+                    restaurantData.longitude,
+                    restaurantData.name,
+                    restaurantData.offer,
+                    restaurantData.priceFortwo,
+                    restaurantData.ratings,
+                    restaurantData.restaurantType,
+                    restaurantData.updatedAt,
+                    restaurantData.distanceFromLocation,
+                    restaurantData.about,
+                    restaurantData.tags,
+                    restaurantData.openCloseTime,
+                    restaurantData.saved
+                )
+                return appRoomDatabase.restaurantDao().deleteUnsavedRestaurant(restaurant)
+            }
+        }
+        deleteTask().execute()
+    }
+
+    override fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<Int>> {
+        return object : ModelCommunicator<LiveData<Int>> {
+            override fun get(): LiveData<Int> {
+                return appRoomDatabase.restaurantDao().getPersistedSavedRestaurant(id)
             }
         }
     }

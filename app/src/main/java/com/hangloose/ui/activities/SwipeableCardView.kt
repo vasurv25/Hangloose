@@ -1,7 +1,10 @@
 package com.hangloose.ui.activities
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
@@ -13,6 +16,7 @@ import com.hangloose.R
 import com.hangloose.listener.RecordInsertionListener
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
+import com.hangloose.viewmodel.SavedViewModel
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
@@ -63,16 +67,31 @@ class SwipeableCardView(
         textRating!!.text = data.ratings
         textAbout!!.text = data.about
         textOffer!!.text = data.offer
-        like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
-        like.setOnClickListener {
-            it.isSelected = !it.isSelected
-            if (it.isSelected) {
-                swipeView.doSwipe(true)
-                like.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
-            } else {
-                like.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+        //like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+        val savedViewModel = ViewModelProviders.of(context as FragmentActivity).get(SavedViewModel::class.java)
+        savedViewModel.getPersistedSavedRestaurant(data.id!!).get().observe(context, Observer<Int> { t ->
+            t?.let {
+                if (it == 1) {
+                    like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
+                } else {
+                    like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+                }
             }
-        }
+        })
+//        if (data.saved) {
+//            like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
+//        } else {
+//            like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+//        }
+//        like.setOnClickListener {
+//            it.isSelected = !it.isSelected
+//            if (it.isSelected) {
+//                swipeView.doSwipe(true)
+//                like.setImageDrawable(context.resources.getDrawable(R.drawable.ic_like, null))
+//            } else {
+//                like.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
+//            }
+//        }
         //textOffer!!.text = data.offer
         btnBookTable!!.setOnClickListener {
             val intent = Intent(context, RestaurantDetailsActivity::class.java)
@@ -85,6 +104,8 @@ class SwipeableCardView(
     private fun onSwipedOut() {
         Log.d("EVENT", "onSwipedOut")
         swipeView.addView(this)
+        data.saved = false
+        getDataHandler()!!.deleteUnsavedRestaurant(data)
     }
 
     @SwipeCancelState
@@ -95,6 +116,7 @@ class SwipeableCardView(
     @SwipeIn
     private fun onSwipeIn() {
         Log.d("EVENT", "onSwipedIn")
+        data.saved = true
         getDataHandler()!!.insertRestaurantData(data, listener)
     }
 

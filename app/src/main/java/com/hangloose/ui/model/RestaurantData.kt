@@ -22,7 +22,8 @@ data class RestaurantData(
     val about: String?,
     val tags: List<String>?,
     val openCloseTime: String?
-) : Parcelable, BaseModel() {
+) : BaseModel(), Parcelable {
+    var saved: Boolean = false
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -38,7 +39,7 @@ data class RestaurantData(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readDouble(),
+        parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readString(),
         parcel.createStringArrayList(),
         parcel.readString()
@@ -58,7 +59,7 @@ data class RestaurantData(
         parcel.writeString(ratings)
         parcel.writeString(restaurantType)
         parcel.writeString(updatedAt)
-        parcel.writeDouble(distanceFromLocation!!)
+        parcel.writeValue(distanceFromLocation)
         parcel.writeString(about)
         parcel.writeStringList(tags)
         parcel.writeString(openCloseTime)
