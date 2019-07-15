@@ -34,12 +34,6 @@ class RestaurantDetailsActivity : AppCompatActivity() {
         restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
         Log.i(TAG, restaurantData.toString())
         setUpViews()
-        val al = ArrayList<String>(4)
-        //Added 4 elements
-        al.add("Hi")
-        al.add("Hello")
-        al.add("Bye")
-        al.add("GM")
     }
 
     private fun setUpViews() {
@@ -47,8 +41,17 @@ class RestaurantDetailsActivity : AppCompatActivity() {
             textName.text = restaurantData!!.name
             textPlace.text = restaurantData!!.address
             textRatingValue.text = restaurantData!!.ratings
-            expand_text_view.text = getString(R.string.about_dummy)
+            expand_text_view.text = restaurantData!!.about
+            textOpenCloseTime.text = restaurantData!!.openCloseTime
+            textChargesValue.text = restaurantData!!.priceFortwo
             mTagList = restaurantData!!.tags
+            if (restaurantData!!.restaurantType!!.equals("VEGETERIAN")) {
+                textNonVeg.visibility = View.GONE
+            } else {
+                textNonVeg.visibility = View.VISIBLE
+            }
+            textOfferBill.text = restaurantData!!.offer
+            textAddress.text = restaurantData!!.address
             initMenuRecyclerView()
             initTagRecyclerView()
         }

@@ -68,9 +68,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/colorGreen"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
+                android:paddingLeft="8dp"
                 android:paddingTop="2dp"
-                android:paddingRight="10dp"
+                android:paddingRight="8dp"
                 android:paddingBottom="2dp">
 
                 <ImageView
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textRating"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="8dp"
                     android:text="@string/rating_value"
                     android:textColor="@color/white" />
 
@@ -110,6 +110,7 @@
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/textOpenCloseTime"
                     style="@style/text16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -119,7 +120,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,57 +138,72 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/charges"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="156" />
 
             <TextView
                 android:id="@+id/textChargesValue"
                 style="@style/text16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textCharges"
                 android:layout_marginTop="8dp"
                 android:text="@string/charges_value"
-                android:textColor="@color/colorSubTitle" />
+                android:textColor="@color/colorSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textCharges"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="399" />
 
             <TextView
+                android:id="@+id/textView7"
                 style="@style/text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textChargesValue"
                 android:layout_marginTop="4dp"
                 android:text="@string/category_value"
-                android:textColor="@color/colorSubTitle" />
+                android:textColor="@color/colorSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textChargesValue"
+                tools:layout_conversion_wrapHeight="43"
+                tools:layout_conversion_wrapWidth="311" />
 
             <TextView
                 android:id="@+id/textVeg"
                 style="@style/text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textCharges"
                 android:layout_marginTop="11dp"
                 android:layout_marginEnd="10dp"
+                android:drawableStart="@drawable/veg_icon"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:layout_toStartOf="@+id/textNonVeg"
-                android:drawableStart="@drawable/veg_icon"
                 android:text="@string/veg"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/textNonVeg"
+                app:layout_constraintTop_toBottomOf="@+id/textCharges"
+                tools:layout_conversion_wrapHeight="43"
+                tools:layout_conversion_wrapWidth="99" />
 
             <TextView
                 android:id="@+id/textNonVeg"
                 style="@style/text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textCharges"
-                android:layout_alignParentEnd="true"
                 android:layout_marginTop="11dp"
                 android:drawableStart="@drawable/non_veg_icon"
                 android:drawablePadding="4dp"
                 android:text="@string/nonveg"
-                android:textColor="@color/black" />
-        </RelativeLayout>
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textCharges"
+                tools:layout_conversion_wrapHeight="43"
+                tools:layout_conversion_wrapWidth="167" />
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -205,50 +221,66 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/offers_with_reservation_title"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="440" />
 
             <TextView
                 android:id="@+id/textOfferReservationSubtitle"
                 style="@style/text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textOfferReservation"
                 android:layout_marginTop="4dp"
                 android:text="@string/offers_with_reservation_subtitle"
-                android:textColor="@color/colorSubTitle" />
+                android:textColor="@color/colorSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textOfferReservation"
+                tools:layout_conversion_wrapHeight="43"
+                tools:layout_conversion_wrapWidth="570" />
 
             <TextView
                 android:id="@+id/textOfferBill"
                 style="@style/text16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textOfferReservationSubtitle"
                 android:layout_marginTop="16dp"
                 android:text="@string/offer_on_total_bill"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textOfferReservationSubtitle"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="320" />
 
             <TextView
                 android:id="@+id/textAddOnOffers"
                 style="@style/text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textOfferBill"
                 android:layout_marginTop="4dp"
                 android:text="@string/addon_offers"
-                android:textColor="@color/colorSubTitle" />
+                android:textColor="@color/colorSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textOfferBill"
+                tools:layout_conversion_wrapHeight="43"
+                tools:layout_conversion_wrapWidth="245" />
 
             <TextView
                 android:id="@+id/textAvailableNow"
                 style="@style/text12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textAddOnOffers"
                 android:layout_marginTop="12dp"
                 android:text="@string/available_now"
-                android:textColor="@color/colorSignInBtn" />
-        </RelativeLayout>
+                android:textColor="@color/colorSignInBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textAddOnOffers"
+                tools:layout_conversion_wrapHeight="43"
+                tools:layout_conversion_wrapWidth="198" />
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -266,19 +298,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/menu"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="106" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textMenu"
                 android:layout_marginTop="8dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textMenu"
+                tools:layout_conversion_wrapHeight="500"
+                tools:layout_conversion_wrapWidth="106" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -296,7 +335,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/about"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="114" />
 
             <!--<TextView-->
             <!--android:layout_width="match_parent"-->
@@ -315,18 +358,19 @@
                 android:id="@+id/expand_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textAbout"
                 android:layout_marginTop="10dp"
                 expandableTextView:animDuration="200"
-                expandableTextView:maxCollapsedLines="3">
+                expandableTextView:layout_constraintStart_toStartOf="parent"
+                expandableTextView:layout_constraintTop_toBottomOf="@+id/textAbout"
+                expandableTextView:maxCollapsedLines="3"
+                tools:layout_conversion_wrapHeight="0"
+                tools:layout_conversion_wrapWidth="0">
 
                 <TextView
                     android:id="@id/expandable_text"
                     style="@style/text12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:textColor="@color/colorSubTitle" />
 
                 <ImageButton
@@ -337,9 +381,9 @@
                     android:background="@android:color/transparent"
                     android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -357,18 +401,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tags"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="94" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvTags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textTags"
                 android:layout_marginTop="8dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </RelativeLayout>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTags"
+                tools:layout_conversion_wrapHeight="500"
+                tools:layout_conversion_wrapWidth="106" />
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -386,41 +437,54 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/address"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="155" />
 
             <TextView
                 android:id="@+id/textAddress"
                 style="@style/text16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textAddressTitle"
                 android:layout_marginTop="6dp"
                 android:text="@string/address_dummy"
-                android:textColor="@color/colorSubTitle" />
+                android:textColor="@color/colorSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textAddressTitle"
+                tools:layout_conversion_wrapHeight="106"
+                tools:layout_conversion_wrapWidth="366" />
 
             <TextView
                 android:id="@+id/textContactTitle"
                 style="@style/text16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textAddress"
                 android:layout_marginTop="15dp"
                 android:text="@string/contact"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textAddress"
+                tools:layout_conversion_wrapHeight="56"
+                tools:layout_conversion_wrapWidth="150" />
 
             <TextView
                 android:id="@+id/textContact"
                 style="@style/text16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textContactTitle"
                 android:layout_marginTop="6dp"
                 android:text="@string/address_dummy"
-                android:textColor="@color/colorSubTitle" />
+                android:textColor="@color/colorSubTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textContactTitle"
+                tools:layout_conversion_wrapHeight="106"
+                tools:layout_conversion_wrapWidth="366" />
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -433,14 +497,19 @@
             app:layout_constraintTop_toBottomOf="@+id/layout7">
 
             <Button
+                android:id="@+id/button5"
                 style="@style/text16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorSignInBtn"
                 android:text="@string/check_availability"
                 android:textAllCaps="false"
-                android:textColor="@color/white" />
-        </RelativeLayout>
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="126"
+                tools:layout_conversion_wrapWidth="922" />
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

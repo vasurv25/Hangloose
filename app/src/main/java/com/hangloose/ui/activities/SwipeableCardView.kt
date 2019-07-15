@@ -49,6 +49,9 @@ class SwipeableCardView(
     @View(R.id.btBookTable)
     private val btnBookTable: Button? = null
 
+    @View(R.id.tvRestoDesp)
+    private val textAbout: TextView? = null
+
     @View(R.id.ibLike)
     private val like: ImageButton? = null
 
@@ -58,6 +61,8 @@ class SwipeableCardView(
         textRestaurantName!!.text = data.name
         textRestoAddress!!.text = data.address + " . " + data.restaurantType
         textRating!!.text = data.ratings
+        textAbout!!.text = data.about
+        textOffer!!.text = data.offer
         like!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
         like.setOnClickListener {
             it.isSelected = !it.isSelected
