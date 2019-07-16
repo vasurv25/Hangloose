@@ -23,6 +23,7 @@ class FilterAdapter(val context: Context, val listFilter: List<String>) :
 
     override fun onBindViewHolder(holder: FilterViewHolder?, position: Int) {
         holder!!.bindFilterItems(listFilter[position])
+
     }
 
     inner class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,4 +38,8 @@ class FilterAdapter(val context: Context, val listFilter: List<String>) :
             }
         }
     }
+
+//    fun clearFilter() {
+//        itemView.cb_filter.isChecked = false
+//    }
 }
