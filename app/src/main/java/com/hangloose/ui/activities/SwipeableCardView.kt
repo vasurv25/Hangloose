@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.Button
@@ -59,6 +60,9 @@ class SwipeableCardView(
     @View(R.id.ibLike)
     private val like: ImageButton? = null
 
+    @View(R.id.tvSwipe)
+    private val textSwipe: TextView? = null
+
     @Resolve
     private fun onResolved() {
         Glide.with(context).load(R.drawable.ic_restaurant_view).into(image!!)
@@ -111,6 +115,7 @@ class SwipeableCardView(
     @SwipeCancelState
     private fun onSwipeCancelState() {
         Log.d("EVENT", "onSwipeCancelState")
+        textSwipe!!.visibility = android.view.View.GONE
     }
 
     @SwipeIn
@@ -123,10 +128,24 @@ class SwipeableCardView(
     @SwipeInState
     private fun onSwipeInState() {
         Log.d("EVENT", "onSwipeInState")
+        textSwipe!!.visibility = android.view.View.VISIBLE
+        textSwipe.text = context.getString(R.string.liked)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            textSwipe.setTextColor(context.resources.getColor(R.color.colorGreen, null))
+        } else {
+            textSwipe.setTextColor(context.resources.getColor(R.color.colorGreen))
+        }
     }
 
     @SwipeOutState
     private fun onSwipeOutState() {
         Log.d("EVENT", "onSwipeOutState")
+        textSwipe!!.visibility = android.view.View.VISIBLE
+        textSwipe.text = context.getString(R.string.unliked)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            textSwipe.setTextColor(context.resources.getColor(R.color.red, null))
+        } else {
+            textSwipe.setTextColor(context.resources.getColor(R.color.red))
+        }
     }
 }

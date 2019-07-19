@@ -16,7 +16,7 @@ class FilterActivity : AppCompatActivity() {
     private val musicList = arrayListOf("Live", "Soft", "Live Instrument", "DJ Night")
     private val comedyList = arrayListOf("Live Comedy Show", "Open Mic")
     private val diningList = arrayListOf("Fancy", "Casual", "Daba Style", "Something Casual")
-    private val somethingNewList = arrayListOf("New Dish", "New Town")
+    private val somethingNewList = arrayListOf("New Dish", "New In Town")
     private val featuresList = arrayListOf("Hookah", "Hookah & Bar", "Bar")
 
     private var adapterMusic: FilterAdapter? = null

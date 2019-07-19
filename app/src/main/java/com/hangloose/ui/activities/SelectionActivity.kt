@@ -92,10 +92,8 @@ class SelectionActivity : BaseActivity() {
             override fun onPageScrollStateChanged(state: Int) {
                 if (viewPager.currentItem == 0) {
                     tvSelectionHeading.text = getString(R.string.select_your_activities)
-                    btNextSelection.visibility = View.GONE
                 } else {
                     tvSelectionHeading.text = getString(R.string.select_your_adventure)
-                    btNextSelection.visibility = View.VISIBLE
                 }
             }
 

@@ -218,4 +218,6 @@
     <string name="profile">Profile</string>
     <string name="saved_restaurant">Saved Restaurant</string>
     <string name="logout">Logout</string>
+    <string name="liked">Liked</string>
+    <string name="unliked">UnLiked</string>
 </resources>

@@ -1,20 +1,9 @@
 package com.hangloose.ui.fragment
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.util.Log
@@ -23,32 +12,20 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.PopupWindow
-import android.widget.Toast
+import android.widget.*
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
 import com.hangloose.R
 import com.hangloose.listener.RecordInsertionListener
-import com.hangloose.model.RestaurantList
 import com.hangloose.ui.activities.FilterActivity
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
-import com.hangloose.utils.PreferenceHelper.set
-import com.hangloose.viewmodel.LocationViewModel
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
-import kotlinx.android.synthetic.main.fragment_restaurant.*
 import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
-import org.w3c.dom.Text
-import retrofit2.Response
 
 
 class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionListener {
