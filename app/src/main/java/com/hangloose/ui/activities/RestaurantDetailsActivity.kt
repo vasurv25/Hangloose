@@ -1,6 +1,7 @@
 package com.hangloose.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.nfc.Tag
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -24,7 +25,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
     private val TAG = "RestaurantDetails"
     private var restaurantData: RestaurantData? = null
     private var mMenuRecyclerViewAdapter: MenuRecyclerViewAdapter? = null
-    private var mMenuUrlList: List<String>? = ArrayList()
+    private var mMenuUrlList: List<Int>? = arrayListOf(R.drawable.profile, R.drawable.profile)
     private var mTagList: List<String>? = ArrayList()
     private var mTagRecyclerViewAdapter: TagRecyclerViewAdapter? = null
 
@@ -71,7 +72,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
         rvTags.adapter = mTagRecyclerViewAdapter
     }
 
-    private class MenuRecyclerViewAdapter(val context: Context, val urlList: List<String>):
+    private class MenuRecyclerViewAdapter(val context: Context, val urlList: List<Int>) :
         RecyclerView.Adapter<MenuRecyclerViewAdapter.MenuViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MenuViewHolder {
@@ -87,14 +88,19 @@ class RestaurantDetailsActivity : AppCompatActivity() {
             holder!!.bindMenuItem(urlList[position])
         }
 
-        inner class MenuViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-            fun bindMenuItem(menuUrl : String) {
-                Picasso.with(context).load(menuUrl).into(itemView.ivMenu)
+        inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bindMenuItem(menuUrl: Int) {
+//                Picasso.with(context).load(menuUrl).into(itemView.ivMenu)
+                itemView.ivMenu.setBackgroundResource(menuUrl)
+                itemView.setOnClickListener {
+                    val intent = Intent(context, MenuViewActivity::class.java)
+                    context.startActivity(intent)
+                }
             }
         }
     }
 
-    private class TagRecyclerViewAdapter(val tagList: List<String>):
+    private class TagRecyclerViewAdapter(val tagList: List<String>) :
         RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TagViewHolder {
@@ -110,8 +116,8 @@ class RestaurantDetailsActivity : AppCompatActivity() {
             holder!!.bindMenuItem(tagList[position])
         }
 
-        inner class TagViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-            fun bindMenuItem(tagText : String) {
+        inner class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bindMenuItem(tagText: String) {
                 itemView.tvTag.text = tagText
             }
         }

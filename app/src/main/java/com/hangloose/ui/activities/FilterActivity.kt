@@ -3,12 +3,10 @@ package com.hangloose.ui.activities
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import com.hangloose.R
 import com.hangloose.ui.adapter.FilterAdapter
 import io.apptik.widget.MultiSlider
 import kotlinx.android.synthetic.main.activity_filter.*
-import kotlinx.android.synthetic.main.activity_restaurant_details.*
 
 
 class FilterActivity : AppCompatActivity() {
@@ -58,6 +56,10 @@ class FilterActivity : AppCompatActivity() {
             rv_somethingNew.adapter = adapterSomethingNew
             rv_dining.adapter = adapterDining
             rv_comedy.adapter = adapterComedy
+            minDiscount.text = "0%"
+            maxDiscount.text = "100%"
+//            discount_range.set(100, false, true)
+//            discount_range.setMin(0, false, true)
         }
     }
 
