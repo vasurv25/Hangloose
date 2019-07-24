@@ -1,9 +1,14 @@
 package com.hangloose.ui.activities
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.nfc.Tag
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,18 +19,18 @@ import android.view.ViewGroup
 import com.hangloose.R
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activities_recylcer_item.view.*
 import kotlinx.android.synthetic.main.activity_restaurant_details.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 
+
 class RestaurantDetailsActivity : AppCompatActivity() {
 
+    private val REQUEST_CALL_PHONE = 11
     private val TAG = "RestaurantDetails"
     private var restaurantData: RestaurantData? = null
     private var mMenuRecyclerViewAdapter: MenuRecyclerViewAdapter? = null
-    private var mMenuUrlList: List<Int>? = arrayListOf(R.drawable.profile, R.drawable.profile)
+    private var mMenuUrlList: List<Int>? = arrayListOf(R.drawable.ic_restaurant_view, R.drawable.ic_restaurant_view)
     private var mTagList: List<String>? = ArrayList()
     private var mTagRecyclerViewAdapter: TagRecyclerViewAdapter? = null
 
@@ -53,8 +58,45 @@ class RestaurantDetailsActivity : AppCompatActivity() {
             }
             textOfferBill.text = restaurantData!!.offer
             textAddress.text = restaurantData!!.address
+            btnCall.setOnClickListener {
+
+                checkCallPermission()
+
+
+            }
             initMenuRecyclerView()
             initTagRecyclerView()
+        }
+    }
+
+    private fun checkCallPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.CALL_PHONE),
+                    REQUEST_CALL_PHONE
+                )
+
+            } else {
+                val callIntent = Intent(Intent.ACTION_CALL)
+                callIntent.data = Uri.parse("tel:" + 2839127392)//change the number.
+                startActivity(callIntent)
+            }
+        } else {
+            val callIntent = Intent(Intent.ACTION_CALL)
+            callIntent.data = Uri.parse("tel:" + 2839127392)//change the number.
+            startActivity(callIntent)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CALL_PHONE -> {
+                checkCallPermission()
+            }
         }
     }
 
@@ -91,7 +133,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
         inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bindMenuItem(menuUrl: Int) {
 //                Picasso.with(context).load(menuUrl).into(itemView.ivMenu)
-                itemView.ivMenu.setBackgroundResource(menuUrl)
+                itemView.ivMenu.setImageResource(menuUrl)
                 itemView.setOnClickListener {
                     val intent = Intent(context, MenuViewActivity::class.java)
                     context.startActivity(intent)

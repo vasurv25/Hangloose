@@ -17,13 +17,19 @@ class MenuViewActivity : AppCompatActivity() {
 
 
     var imageFragmentPagerAdapter: ImageFragmentPagerAdapter? = null
-    val IMAGE_NAME = arrayListOf<Int>(R.drawable.profile, R.drawable.profile)
+    val IMAGE_NAME = arrayListOf<Int>(R.drawable.ic_restaurant_view, R.drawable.ic_restaurant_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_view)
         imageFragmentPagerAdapter = ImageFragmentPagerAdapter(supportFragmentManager, IMAGE_NAME)
         pager.adapter = imageFragmentPagerAdapter
+        ic_next.setOnClickListener {
+            pager.currentItem = pager.currentItem + 1
+        }
+        ic_before.setOnClickListener {
+            pager.currentItem = pager.currentItem - 1
+        }
     }
 
     class ImageFragmentPagerAdapter(fm: FragmentManager, val IMAGE_NAME: ArrayList<Int>) :

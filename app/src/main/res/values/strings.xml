@@ -103,6 +103,7 @@
     <string name="discount">Discount</string>
     <string name="apply_filter">Apply Filter</string>
     <string name="clear_filter">Clear Filter</string>
+    <string name="call">Call</string>
     <string name="minDiscount">0&#37;</string>
     <string name="maxDiscount">100&#37;</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
