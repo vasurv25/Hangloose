@@ -23,6 +23,7 @@ import com.hangloose.ui.model.*
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.SelectionViewModel
+import com.mindorks.placeholderview.Utils
 import kotlinx.android.synthetic.main.activity_selection.btNextSelection
 import kotlinx.android.synthetic.main.activity_selection.indicator
 import kotlinx.android.synthetic.main.activity_selection.ll_selection
@@ -213,21 +214,45 @@ class SelectionActivity : BaseActivity() {
 
     fun oNextClick(view: View?) {
         //didClickNextButton?.invoke()
-        mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
-        mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
-        if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
-            //TODO : We can use let and run scoping function instead of if else
-            val address: String? = mPreference!![PREFERENCE_ADDRESS]
-            if (address == null) {
-                onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
-            } else {
-                val latLongFromLocationName = getLatLongFromLocationName(this, address)
-                Log.d(TAG, "latLongFromLocationName : $latLongFromLocationName")
-                latLongFromLocationName?.let {
-                    mSelectionViewModel.restaurantListApiRequest(
-                        mActivitiesSelectedList, mAdventuresSelectedList
-                        , latLongFromLocationName.latitude
-                        , latLongFromLocationName.longitude, mHeader
+        when (viewPager.currentItem) {
+            0 -> {
+                if (mActivitiesFragment!!.getSelectedActivities().size > 0) {
+                    viewPager.currentItem = 1
+                } else {
+                    showSnackBar(
+                        ll_selection,
+                        "Please Select at least one Activity!",
+                        ContextCompat.getColor(this, R.color.white),
+                        ContextCompat.getColor(this, R.color.colorPrimary)
+                    )
+                }
+
+            }
+            1 -> {
+                mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
+                mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
+                if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
+                    //TODO : We can use let and run scoping function instead of if else
+                    val address: String? = mPreference!![PREFERENCE_ADDRESS]
+                    if (address == null) {
+                        onNavigateToLocationScreen(mActivitiesSelectedList, mAdventuresSelectedList)
+                    } else {
+                        val latLongFromLocationName = getLatLongFromLocationName(this, address)
+                        Log.d(TAG, "latLongFromLocationName : $latLongFromLocationName")
+                        latLongFromLocationName?.let {
+                            mSelectionViewModel.restaurantListApiRequest(
+                                mActivitiesSelectedList, mAdventuresSelectedList
+                                , latLongFromLocationName.latitude
+                                , latLongFromLocationName.longitude, mHeader
+                            )
+                        }
+                    }
+                }else{
+                    showSnackBar(
+                        ll_selection,
+                        "Please Select at least one Adventure!",
+                        ContextCompat.getColor(this, R.color.white),
+                        ContextCompat.getColor(this, R.color.colorPrimary)
                     )
                 }
             }
