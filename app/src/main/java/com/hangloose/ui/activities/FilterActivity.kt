@@ -58,8 +58,9 @@ class FilterActivity : AppCompatActivity() {
             rv_comedy.adapter = adapterComedy
             minDiscount.text = "0%"
             maxDiscount.text = "100%"
-//            discount_range.set(100, false, true)
-//            discount_range.setMin(0, false, true)
+            discount_range.clearThumbs()
+            discount_range.addThumb(0)
+            discount_range.addThumb(100)
         }
     }
 
