@@ -164,12 +164,12 @@
                 app:layout_constraintStart_toStartOf="@+id/ibRating"
                 app:layout_constraintTop_toTopOf="@+id/ibRating"/>
 
-        <ImageButton
-                android:id="@+id/ibLike"
+        <CheckBox
+                android:id="@+id/ibSave"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/like_selector"
+                android:button="@drawable/like_selector"
                 android:contentDescription="@null"
                 app:layout_constraintBottom_toTopOf="@+id/tvRestaurantName"
                 app:layout_constraintEnd_toEndOf="@id/ivRestaurant"
@@ -216,21 +216,21 @@
                 android:id="@+id/textView8"/>
 
         <TextView
-            android:id="@+id/tvSwipe"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:text="TextView"
-            android:textColor="@color/colorGreen"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:elevation="2dp"
-            android:gravity="center"
-            android:background="#4D000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/tvSwipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:text="TextView"
+                android:textColor="@color/colorGreen"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:background="#4D000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 

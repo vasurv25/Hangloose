@@ -2,6 +2,7 @@ package com.hangloose.ui.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -58,9 +59,9 @@ class SearchFragment : Fragment(), View.OnTouchListener {
 
     private fun setUpSearchView() {
         mSearchRestaurant!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) { }
+            override fun afterTextChanged(s: Editable?) {}
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 mAdpater!!.filterSearchData(s.toString())
@@ -72,6 +73,12 @@ class SearchFragment : Fragment(), View.OnTouchListener {
         mAdpater = SearchAdapter(context!!, mRestaurantData!!, mRestaurantData!!)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRestaurantSearchList!!.layoutManager = layoutManager
+        mRestaurantSearchList!!.addItemDecoration(
+            DividerItemDecoration(
+                mRestaurantSearchList!!.context,
+                layoutManager.orientation
+            )
+        )
         mRestaurantSearchList!!.adapter = mAdpater
     }
 }

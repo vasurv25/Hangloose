@@ -15,7 +15,8 @@ import android.view.ViewGroup
 import android.widget.*
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.hangloose.R
-import com.hangloose.listener.RecordInsertionListener
+import com.hangloose.listener.LikedInsertionListener
+import com.hangloose.listener.SavedInsertionListener
 import com.hangloose.ui.activities.FilterActivity
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
@@ -28,7 +29,7 @@ import com.mindorks.placeholderview.SwipeViewBuilder
 import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
 
 
-class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionListener {
+class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListener, SavedInsertionListener {
 
     private var TAG = "RestaurantFragment"
     private var mSwipePlaceHolderView: SwipePlaceHolderView? = null
@@ -61,7 +62,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionList
         Log.i(TAG, """Header : $headerToken""")
         Log.i(TAG, """Address99999999454 : $mAddress""")
         mHeader = headerToken
-        Log.i(TAG, "Restaurant data : $mRestaurantData")
+        Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
     }
 
     override fun onAttach(context: Context?) {
@@ -126,10 +127,14 @@ class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionList
         super.onPause()
     }
 
-    override fun onRecordInserted(id: Long) {
-        Log.i("Hangloose", "onRecordInserted")
+    override fun onLikedRecordInserted(id: Long) {
+        Log.i("Hangloose", "onLikedRecordInserted")
     }
 
+    override fun onSavedRecordInserted(id: Long) {
+        Log.i("Hangloose", "onSavedRecordInserted")
+
+    }
 
     private fun setSwipeableView() {
         val sideMargin = dpToPx(220)
@@ -152,7 +157,15 @@ class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionList
         mSwipePlaceHolderView!!.removeAllViews()
         for (data in mRestaurantData!!) {
             if (data.restaurantType.equals("VEGETERIAN")) {
-                mSwipePlaceHolderView!!.addView(SwipeableCardView(mContext!!, data, mSwipePlaceHolderView!!, this))
+                mSwipePlaceHolderView!!.addView(
+                    SwipeableCardView(
+                        mContext!!,
+                        data,
+                        mSwipePlaceHolderView!!,
+                        this,
+                        this
+                    )
+                )
             }
         }
 
@@ -171,7 +184,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionList
                                     mContext!!,
                                     data,
                                     mSwipePlaceHolderView!!,
-                                    this
+                                    this, this
                                 )
                             )
                         }
@@ -186,7 +199,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionList
                                     mContext!!,
                                     data,
                                     mSwipePlaceHolderView!!,
-                                    this
+                                    this, this
                                 )
                             )
                         }
@@ -201,7 +214,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, RecordInsertionList
                                     mContext!!,
                                     data,
                                     mSwipePlaceHolderView!!,
-                                    this
+                                    this, this
                                 )
                             )
                         }

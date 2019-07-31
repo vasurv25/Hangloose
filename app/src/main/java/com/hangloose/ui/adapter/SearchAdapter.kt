@@ -20,7 +20,7 @@ class SearchAdapter(
 ) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.saved_restaurant_item, parent, false)
+        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.search_restaurant_item, parent, false)
         return SearchViewHolder(view)
     }
 
@@ -32,19 +32,6 @@ class SearchAdapter(
         SearchViewHolder(holder!!.itemView).bindSearchItems(mFilteredList[position])
     }
 
-    inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindSearchItems(itemDetails: RestaurantData) {
-//            Picasso.with(context).load(itemDetails.images).into(itemView.ivRestaurant)
-            itemView.tvRestaurantName.text = itemDetails.name
-            itemView.tvRestuarntDesc.text = itemDetails.about
-            itemView.setOnClickListener {
-                val intent = Intent(context, RestaurantDetailsActivity::class.java)
-                intent.putExtra(EXTRA_RESTAURANT_DETAILS_DATA, itemDetails)
-                context.startActivity(intent)
-            }
-        }
-    }
-
     fun filterSearchData(query: String) {
 
         repeat(mRestaurantData.size) {
@@ -52,5 +39,17 @@ class SearchAdapter(
             mFilteredList = mRestaurantData.filter { it.name!!.contains(query, true) } as ArrayList<RestaurantData>
         }
         notifyDataSetChanged()
+    }
+
+    inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindSearchItems(itemDetails: RestaurantData) {
+//            Picasso.with(context).load(itemDetails.images).into(itemView.ivRestaurant)
+            itemView.tvRestaurantName.text = itemDetails.name
+            itemView.setOnClickListener {
+                val intent = Intent(context, RestaurantDetailsActivity::class.java)
+                intent.putExtra(EXTRA_RESTAURANT_DETAILS_DATA, itemDetails)
+                context.startActivity(intent)
+            }
+        }
     }
 }

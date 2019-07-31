@@ -9,14 +9,16 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import com.hangloose.database.dao.RestaurantDao
-import com.hangloose.database.dbmodel.Restaurant
+import com.hangloose.database.dao.LikedRestaurantDao
+import com.hangloose.database.dao.SavedRestaurantDao
+import com.hangloose.database.dbmodel.LikedRestaurant
+import com.hangloose.database.dbmodel.SavedRestaurant
 import com.hangloose.utils.DB_NAME
 
 /**
  * room database class
  */
-@Database(entities = [Restaurant::class], version = 1, exportSchema = false)
+@Database(entities = [LikedRestaurant::class, SavedRestaurant::class], version = 1, exportSchema = false)
 @TypeConverters(ListConverter::class)
 abstract class AppRoomDatabase : RoomDatabase() {
 
@@ -32,5 +34,6 @@ abstract class AppRoomDatabase : RoomDatabase() {
         }
     }
 
-    internal abstract fun restaurantDao(): RestaurantDao
+    internal abstract fun likedRestaurantDao(): LikedRestaurantDao
+    internal abstract fun savedRestaurantDao(): SavedRestaurantDao
 }

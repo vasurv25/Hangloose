@@ -23,7 +23,6 @@ data class RestaurantData(
     val tags: List<String>?,
     val openCloseTime: String?
 ) : BaseModel(), Parcelable {
-    var saved: Boolean = false
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),

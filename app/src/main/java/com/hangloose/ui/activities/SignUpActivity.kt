@@ -330,7 +330,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...)
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
-            // a listener.
+            // a likedListener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         } else {

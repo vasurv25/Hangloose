@@ -13,6 +13,8 @@ import com.hangloose.ui.activities.SignInActivity
 import com.hangloose.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.layout_profile_item.view.*
 import com.hangloose.HanglooseApp
+import com.hangloose.utils.LIKED_RESTAURANT
+import com.hangloose.utils.SAVED_RESTAURANT
 
 
 class ProfileAdapter(
@@ -52,8 +54,18 @@ class ProfileAdapter(
                 when (it.tvProfile.text) {
                     context.resources.getString(R.string.saved_restaurant) -> {
                         val intent = Intent(context, SavedRestaurantActivity::class.java)
+                        intent.putExtra(SAVED_RESTAURANT, true)
+                        intent.putExtra(LIKED_RESTAURANT, false)
                         context.startActivity(intent)
                     }
+
+                    context.resources.getString(R.string.liked_restaurant) -> {
+                        val intent = Intent(context, SavedRestaurantActivity::class.java)
+                        intent.putExtra(SAVED_RESTAURANT, false)
+                        intent.putExtra(LIKED_RESTAURANT, true)
+                        context.startActivity(intent)
+                    }
+
                     context.resources.getString(R.string.logout) -> {
                         mPreference!!.edit().clear().commit()
                         HanglooseApp.getInstance().clearApplicationData()

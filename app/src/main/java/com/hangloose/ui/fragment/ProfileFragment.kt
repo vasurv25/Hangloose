@@ -15,7 +15,7 @@ class ProfileFragment : Fragment() {
     private val listProfile =
         arrayListOf(
             "Saved Restaurant",
-            "My Orders",
+            "Liked Restaurant",
             "Offers",
             "Account Settings",
             "Help & Support",

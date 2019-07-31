@@ -24,3 +24,6 @@ const val KEY_HEADER = "header"
 const val START_LOCATION_SCREEN = 1001
 const val FLAG_LOCATION_NAVIGATION = "flag_location_navigation"
 const val REQUEST_FILTER_ACTIVITY = 110
+
+const val SAVED_RESTAURANT = "SAVED_RESTAURANT"
+const val LIKED_RESTAURANT = "LIKED_RESTAURANT"

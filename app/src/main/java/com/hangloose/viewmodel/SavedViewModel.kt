@@ -5,30 +5,30 @@ import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
 import com.hangloose.HanglooseApp.Companion.getDataHandler
 import com.hangloose.database.dbmodel.ModelCommunicator
-import com.hangloose.database.dbmodel.Restaurant
+import com.hangloose.database.dbmodel.SavedRestaurant
 
 class SavedViewModel : ViewModel() {
-    fun getSavedRestaurants(): ModelCommunicator<LiveData<List<Restaurant>>> {
+    fun getSavedRestaurants(): ModelCommunicator<LiveData<List<SavedRestaurant>>> {
         return SavedRestaurantAsyncTask().execute().get()
     }
 
     @Suppress("UNCHECKED_CAST")
     private class SavedRestaurantAsyncTask :
-        AsyncTask<Void, Void, ModelCommunicator<LiveData<List<Restaurant>>>>() {
-        override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<List<Restaurant>>> {
-            return getDataHandler()!!.getAllSavedRestaurant() as ModelCommunicator<LiveData<List<Restaurant>>>
+        AsyncTask<Void, Void, ModelCommunicator<LiveData<List<SavedRestaurant>>>>() {
+        override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<List<SavedRestaurant>>> {
+            return getDataHandler()!!.getAllSavedRestaurant() as ModelCommunicator<LiveData<List<SavedRestaurant>>>
         }
     }
 
-    fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<Int>> {
-        return PersistedRestaurantAsyncTask(id).execute().get()
+    fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<SavedRestaurant>> {
+        return PersistedSavedRestaurantAsyncTask(id).execute().get()
     }
 
     @Suppress("UNCHECKED_CAST")
-    private class PersistedRestaurantAsyncTask(var id: String) :
-        AsyncTask<Void, Void, ModelCommunicator<LiveData<Int>>>() {
-        override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<Int>> {
-            return getDataHandler()!!.getPersistedSavedRestaurant(id) as ModelCommunicator<LiveData<Int>>
+    private class PersistedSavedRestaurantAsyncTask(var id: String) :
+        AsyncTask<Void, Void, ModelCommunicator<LiveData<SavedRestaurant>>>() {
+        override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<SavedRestaurant>> {
+            return getDataHandler()!!.getPersistedSavedRestaurant(id) as ModelCommunicator<LiveData<SavedRestaurant>>
         }
     }
 }

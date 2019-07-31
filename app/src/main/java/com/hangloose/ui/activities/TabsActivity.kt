@@ -48,7 +48,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
         Log.i(TAG, """Header : $headerToken""")
         mHeader = headerToken
-        Log.i(TAG, "Restaurant data : $mRestaurantData")
+        Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
         onTabSelected(tabLayout.getTabAt(0))
     }
 
@@ -115,7 +115,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        Log.i(TAG, "Restaurant data : $mRestaurantData")
+        Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
         if (fragment is RestaurantFragment || fragment is SearchFragment) {
             val args = Bundle()
             args.putStringArrayList(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
@@ -149,11 +149,11 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         if (requestCode == START_LOCATION_SCREEN) {
             //var data = data!!.getParcelableArrayListExtra<RestaurantData>(KEY_RESTAURANT_DATA)
             if (data == null) {
-                Log.d(TAG, "Restaurant Data : $mRestaurantData")
+                Log.d(TAG, "LikedRestaurant Data : $mRestaurantData")
                 replaceFragment(RestaurantFragment())
             } else {
                 mRestaurantData = data.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
-                Log.d(TAG, "Restaurant Data : $mRestaurantData")
+                Log.d(TAG, "LikedRestaurant Data : $mRestaurantData")
                 replaceFragment(RestaurantFragment())
             }
         }

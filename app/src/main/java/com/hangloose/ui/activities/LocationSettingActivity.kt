@@ -174,7 +174,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
             startActivity(intent)
         } else {
-            Log.d(TAG, "Restaurant Data : $mRestaurantData")
+            Log.d(TAG, "LikedRestaurant Data : $mRestaurantData")
             val intent = Intent()
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
             setResult(START_LOCATION_SCREEN, intent)
