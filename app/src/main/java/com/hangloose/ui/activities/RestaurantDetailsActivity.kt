@@ -37,6 +37,10 @@ class RestaurantDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_details)
+        val data = intent.data
+        if (data != null) {
+            Log.i("Anjani", data.toString())
+        }
         restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
         Log.i(TAG, restaurantData.toString())
         setUpViews()

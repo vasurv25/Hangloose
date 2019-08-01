@@ -222,4 +222,6 @@
     <string name="logout">Logout</string>
     <string name="liked">Liked</string>
     <string name="unliked">UnLiked</string>
+
+    <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
 </resources>
