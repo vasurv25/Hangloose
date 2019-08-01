@@ -4,8 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.support.v4.app.FragmentActivity
+import android.text.Html
 import android.util.Log
 import android.widget.*
 import com.bumptech.glide.Glide
@@ -64,6 +66,9 @@ class SwipeableCardView(
     @View(R.id.tvSwipe)
     private val textSwipe: TextView? = null
 
+    @View(R.id.ibShare)
+    private val btnShare: ImageButton? = null
+
     @Resolve
     private fun onResolved() {
         Glide.with(context).load(R.drawable.ic_restaurant_view).into(image!!)
@@ -114,6 +119,23 @@ class SwipeableCardView(
             }
 
         })
+        btnShare!!.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/html"
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Via")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    Html.fromHtml(
+                        "<a href= \"app://hangloose.com/restaurant?id=${data.id}\">app://hangloose.com/restaurant?id=${data.id}</a>",
+                        Html.FROM_HTML_MODE_LEGACY
+                    )
+                )
+//                intent.putExtra(Intent.EXTRA_TEXT, context.resources.getString(R.string.readyandroid))
+            }
+//            intent.data = Uri.parse("app://hangloose.com/restaurant?id=${data.id}")
+            context.startActivity(intent)
+        }
     }
 
     @SwipeOut
