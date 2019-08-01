@@ -131,9 +131,13 @@ class SwipeableCardView(
                         Html.FROM_HTML_MODE_LEGACY
                     )
                 )
-//                intent.putExtra(Intent.EXTRA_TEXT, context.resources.getString(R.string.readyandroid))
+//                intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(context.resources.getString(R.string.readyandroid)))
+            } else {
+                intent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    Html.fromHtml("<a href= \"app://hangloose.com/restaurant?id=${data.id}\">app://hangloose.com/restaurant?id=${data.id}</a>")
+                )
             }
-//            intent.data = Uri.parse("app://hangloose.com/restaurant?id=${data.id}")
             context.startActivity(intent)
         }
     }
