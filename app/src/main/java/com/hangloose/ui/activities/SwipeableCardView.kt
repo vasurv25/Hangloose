@@ -76,11 +76,7 @@ class SwipeableCardView(
         val savedViewModel = ViewModelProviders.of(context as FragmentActivity).get(SavedViewModel::class.java)
         savedViewModel.getPersistedSavedRestaurant(data.id!!).get().observe(context, Observer<SavedRestaurant> { t ->
             t?.let {
-                if (it != null) {
-                    save!!.isChecked = true
-                } else {
-                    save!!.isChecked = false
-                }
+                save!!.isChecked = true
             }
         })
 //        if (data.liked) {

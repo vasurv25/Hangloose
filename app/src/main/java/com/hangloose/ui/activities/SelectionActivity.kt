@@ -30,6 +30,8 @@ import kotlinx.android.synthetic.main.activity_selection.ll_selection
 import kotlinx.android.synthetic.main.activity_selection.tvSelectionHeading
 import kotlinx.android.synthetic.main.activity_selection.viewPager
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SelectionActivity : BaseActivity() {
 
@@ -169,7 +171,8 @@ class SelectionActivity : BaseActivity() {
                             data[i].distanceFromLocation,
                             data[i].about,
                             data[i].tags,
-                            data[i].openCloseTime
+                            data[i].openCloseTime,
+                            data[i].number
                         )
                     )
                 }

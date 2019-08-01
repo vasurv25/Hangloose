@@ -50,6 +50,7 @@ class RestaurantDetailsActivity : AppCompatActivity() {
             expand_text_view.text = restaurantData!!.about
             textOpenCloseTime.text = restaurantData!!.openCloseTime
             textChargesValue.text = restaurantData!!.priceFortwo
+            textContact.text = restaurantData!!.number
             mTagList = restaurantData!!.tags
             if (restaurantData!!.restaurantType!!.equals("VEGETERIAN")) {
                 textNonVeg.visibility = View.GONE
@@ -81,12 +82,12 @@ class RestaurantDetailsActivity : AppCompatActivity() {
 
             } else {
                 val callIntent = Intent(Intent.ACTION_CALL)
-                callIntent.data = Uri.parse("tel:" + 2839127392)//change the number.
+                callIntent.data = Uri.parse("tel:" + restaurantData!!.number)//change the number.
                 startActivity(callIntent)
             }
         } else {
             val callIntent = Intent(Intent.ACTION_CALL)
-            callIntent.data = Uri.parse("tel:" + 2839127392)//change the number.
+            callIntent.data = Uri.parse("tel:" + restaurantData!!.number)//change the number.
             startActivity(callIntent)
         }
     }

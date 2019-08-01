@@ -62,7 +62,8 @@ class SavedRestaurantActivity : AppCompatActivity() {
                         it.distanceFromLocation,
                         it.about,
                         it.tags,
-                        it.openCloseTime
+                        it.openCloseTime,
+                        it.number
                     )
                 }
                 setUpAdapter()
@@ -93,7 +94,8 @@ class SavedRestaurantActivity : AppCompatActivity() {
                         it.distanceFromLocation,
                         it.about,
                         it.tags,
-                        it.openCloseTime
+                        it.openCloseTime,
+                        it.number
                     )
                 }
                 setUpAdapter()

@@ -58,5 +58,8 @@ data class SavedRestaurant(
     val tags: List<String>?,
 
     @ColumnInfo(name = "openCloseTime")
-    val openCloseTime: String?
+    val openCloseTime: String?,
+
+    @ColumnInfo(name = "number")
+    val number: String?
 )

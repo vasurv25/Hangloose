@@ -104,6 +104,7 @@ data class RestaurantList(
     @SerializedName("distanceFromLocation") var distanceFromLocation: Double?,
     @SerializedName("about") var about: String?,
     @SerializedName("tags") var tags: List<String>?,
-    @SerializedName("openCloseTime") var openCloseTime: String?
+    @SerializedName("openCloseTime") var openCloseTime: String?,
+    @SerializedName("number") var number: String?
 
 ) : BaseModel()

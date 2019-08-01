@@ -1,10 +1,13 @@
 package com.hangloose.ui.fragment
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
@@ -15,6 +18,8 @@ import android.view.ViewGroup
 import android.widget.*
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.hangloose.R
+import com.hangloose.database.dbmodel.LikedRestaurant
+import com.hangloose.database.dbmodel.SavedRestaurant
 import com.hangloose.listener.LikedInsertionListener
 import com.hangloose.listener.SavedInsertionListener
 import com.hangloose.ui.activities.FilterActivity
@@ -23,6 +28,8 @@ import com.hangloose.ui.activities.TabsActivity
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
+import com.hangloose.viewmodel.LikedViewModel
+import com.hangloose.viewmodel.SavedViewModel
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
@@ -42,6 +49,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     private var mActivitiesSelectedList = ArrayList<String>()
     private var mAdventuresSelectedList = ArrayList<String>()
     private var mHeader: String? = null
+    private var mLikeViewModel: LikedViewModel? = null
 
     private lateinit var mListenerCallback: LocationNavigationListener
 
@@ -57,6 +65,9 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mActivitiesSelectedList = arguments!!.getStringArrayList(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = arguments!!.getStringArrayList(KEY_ADVENTURES_LIST)
+
+        mRestaurantData!!.sortBy { it.distanceFromLocation }
+
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
         mAddress = mPreference!![PREFERENCE_ADDRESS]
         Log.i(TAG, """Header : $headerToken""")
@@ -88,6 +99,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mBtRadioRealGroup = rootView.findViewById(R.id.segmentedButtonGroup) as RadioRealButtonGroup
         mEditLocation = rootView.findViewById(R.id.editLocation) as EditText
         mBtFilter!!.setOnClickListener(this)
+        mLikeViewModel = ViewModelProviders.of(mContext!!).get(LikedViewModel::class.java)
         setSwipeableView()
         setLocationSearch(rootView)
         if (!TextUtils.isEmpty(mAddress)) {
@@ -154,21 +166,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
                     .setRelativeScale(0.01f)
                     .setSwipeMaxChangeAngle(2f)
             )
-        mSwipePlaceHolderView!!.removeAllViews()
-        for (data in mRestaurantData!!) {
-            if (data.restaurantType.equals("VEGETERIAN")) {
-                mSwipePlaceHolderView!!.addView(
-                    SwipeableCardView(
-                        mContext!!,
-                        data,
-                        mSwipePlaceHolderView!!,
-                        this,
-                        this
-                    )
-                )
-            }
-        }
-
+        setVisibleRestaurantView("VEGETERIAN", mRestaurantData)
 //        mBtFilter!!.setOnClickListener { (activity as TabsActivity).replaceFragment(FilterFragment()) }
 
         mBtRadioRealGroup!!.setOnPositionChangedListener { _, currentPosition, _ ->
@@ -176,51 +174,37 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
                 0 -> {
                     var one = mRestaurantData!!.map { it.restaurantType }.filter { it.equals("VEGETARIAN") }
                     Log.i(TAG, "VEG : $one")
-                    mSwipePlaceHolderView!!.removeAllViews()
-                    for (data in mRestaurantData!!) {
-                        if (data.restaurantType.equals("VEGETERIAN")) {
-                            mSwipePlaceHolderView!!.addView(
-                                SwipeableCardView(
-                                    mContext!!,
-                                    data,
-                                    mSwipePlaceHolderView!!,
-                                    this, this
-                                )
-                            )
-                        }
-                    }
+                    setVisibleRestaurantView("VEGETERIAN", mRestaurantData)
                 }
                 1 -> {
                     mSwipePlaceHolderView!!.removeAllViews()
-                    for (data in mRestaurantData!!) {
-                        if (data.restaurantType.equals("NON_VEGETERIAN")) {
-                            mSwipePlaceHolderView!!.addView(
-                                SwipeableCardView(
-                                    mContext!!,
-                                    data,
-                                    mSwipePlaceHolderView!!,
-                                    this, this
-                                )
-                            )
-                        }
-                    }
+                    setVisibleRestaurantView("NON_VEGETERIAN", mRestaurantData)
                 }
                 else -> {
                     mSwipePlaceHolderView!!.removeAllViews()
-                    for (data in mRestaurantData!!) {
-                        if (data.restaurantType.equals("BAR")) {
-                            mSwipePlaceHolderView!!.addView(
-                                SwipeableCardView(
-                                    mContext!!,
-                                    data,
-                                    mSwipePlaceHolderView!!,
-                                    this, this
-                                )
-                            )
-                        }
-                    }
+                    setVisibleRestaurantView("BAR", mRestaurantData)
                 }
             }
+        }
+    }
+
+    private fun setVisibleRestaurantView(restaurantType: String, restaurantData: ArrayList<RestaurantData>?) {
+        mSwipePlaceHolderView!!.removeAllViews()
+        for (data in restaurantData!!) {
+            mLikeViewModel!!.getPersistedLikedRestaurant(data.id!!).get()
+                .observe(mContext!!, Observer<LikedRestaurant> { t ->
+                    Log.d(TAG, "IT ------" + t)
+                    if (t == null && data.restaurantType.equals(restaurantType)) {
+                        mSwipePlaceHolderView!!.addView(
+                            SwipeableCardView(
+                                mContext!!,
+                                data,
+                                mSwipePlaceHolderView!!,
+                                this, this
+                            )
+                        )
+                    }
+                })
         }
     }
 }

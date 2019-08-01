@@ -213,7 +213,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                             data[i].distanceFromLocation,
                             data[i].about,
                             data[i].tags,
-                            data[i].openCloseTime
+                            data[i].openCloseTime,
+                            data[i].number
                         )
                     )
                 }

@@ -35,7 +35,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.distanceFromLocation,
                     restaurantData.about,
                     restaurantData.tags,
-                    restaurantData.openCloseTime
+                    restaurantData.openCloseTime,
+                    restaurantData.number
                 )
                 return appRoomDatabase.savedRestaurantDao().insertSavedRestaurant(restaurant)
             }
@@ -77,7 +78,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.distanceFromLocation,
                     restaurantData.about,
                     restaurantData.tags,
-                    restaurantData.openCloseTime
+                    restaurantData.openCloseTime,
+                    restaurantData.number
                 )
                 return appRoomDatabase.savedRestaurantDao().deleteUnSaveddRestaurant(restaurant)
             }
@@ -113,7 +115,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.distanceFromLocation,
                     restaurantData.about,
                     restaurantData.tags,
-                    restaurantData.openCloseTime
+                    restaurantData.openCloseTime,
+                    restaurantData.number
                 )
                 return appRoomDatabase.likedRestaurantDao().insertLikedRestaurant(restaurant)
             }
@@ -154,7 +157,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.distanceFromLocation,
                     restaurantData.about,
                     restaurantData.tags,
-                    restaurantData.openCloseTime
+                    restaurantData.openCloseTime,
+                    restaurantData.number
                 )
                 return appRoomDatabase.likedRestaurantDao().deleteUnlikedRestaurant(restaurant)
             }

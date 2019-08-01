@@ -21,7 +21,8 @@ data class RestaurantData(
     val distanceFromLocation: Double?,
     val about: String?,
     val tags: List<String>?,
-    val openCloseTime: String?
+    val openCloseTime: String?,
+    val number:String?
 ) : BaseModel(), Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -41,6 +42,7 @@ data class RestaurantData(
         parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readString(),
         parcel.createStringArrayList(),
+        parcel.readString(),
         parcel.readString()
     )
 
@@ -62,6 +64,7 @@ data class RestaurantData(
         parcel.writeString(about)
         parcel.writeStringList(tags)
         parcel.writeString(openCloseTime)
+        parcel.writeString(number)
     }
 
     override fun describeContents(): Int {
