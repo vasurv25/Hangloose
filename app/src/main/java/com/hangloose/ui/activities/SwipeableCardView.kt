@@ -117,23 +117,10 @@ class SwipeableCardView(
         })
         btnShare!!.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/html"
+            intent.type = "text/plain"
+            val url = "http://hangloose.com/restaurant?id=${data.id}"
             intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Via")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    Html.fromHtml(
-                        "<a href= \"app://hangloose.com/restaurant?id=${data.id}\">app://hangloose.com/restaurant?id=${data.id}</a>",
-                        Html.FROM_HTML_MODE_LEGACY
-                    )
-                )
-//                intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(context.resources.getString(R.string.readyandroid)))
-            } else {
-                intent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    Html.fromHtml("<a href= \"app://hangloose.com/restaurant?id=${data.id}\">app://hangloose.com/restaurant?id=${data.id}</a>")
-                )
-            }
+            intent.putExtra(Intent.EXTRA_TEXT, "Check Out: $url ")
             context.startActivity(intent)
         }
     }
