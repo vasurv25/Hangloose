@@ -25,6 +25,7 @@ class SelectionViewModel : ViewModel() {
     var mShowErrorSnackBar: MutableLiveData<String> = MutableLiveData()
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
     private var mRestaurantListResponse: MutableLiveData<Response<List<RestaurantList>>> = MutableLiveData()
+    private var mRestaurantByIdResponse: MutableLiveData<Response<RestaurantList>> = MutableLiveData()
     var isVisible = ObservableBoolean()
 
     fun selectionListApiRequest(mHeader: String?) {
@@ -91,6 +92,27 @@ class SelectionViewModel : ViewModel() {
         mCompositeDisposable!!.add(disposable)
     }
 
+    fun restaurantDetailsByIdApiRequest(restaurantId: String) {
+        val disposable = HanglooseApp.getApiService()!!.getRestaurantById(restaurantId)
+            .subscribeOn(HanglooseApp.subscribeScheduler())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { isVisible.set(true) }
+            .doFinally { isVisible.set(false) }
+            .subscribe({ response ->
+                if (response.isSuccessful) {
+                    mRestaurantByIdResponse.value = response
+                } else {
+                    val jObjError = JSONObject(response.errorBody()!!.string())
+                    mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
+                }
+                mCompositeDisposable!!.dispose()
+            }, {
+                Log.i(TAG, "error login")
+                mShowErrorSnackBar.value = it.localizedMessage
+            })
+        mCompositeDisposable!!.add(disposable)
+    }
+
     private fun unSubscribeFromObservable() {
         if (mCompositeDisposable != null && !mCompositeDisposable!!.isDisposed) {
             mCompositeDisposable!!.dispose()
@@ -103,6 +125,10 @@ class SelectionViewModel : ViewModel() {
 
     fun getRestaurantList(): MutableLiveData<Response<List<RestaurantList>>> {
         return mRestaurantListResponse
+    }
+
+    fun getRestaurantById(): MutableLiveData<Response<RestaurantList>> {
+        return mRestaurantByIdResponse
     }
 
     fun reset() {

@@ -224,4 +224,5 @@
     <string name="unliked">UnLiked</string>
 
     <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
+    <string name="my_link"><a href="app://hangloose.com/restaurant?id=${data.id}">app://hangloose.com/restaurant?id=${data.id}</a></string>
 </resources>

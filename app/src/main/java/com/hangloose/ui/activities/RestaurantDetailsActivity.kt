@@ -1,13 +1,14 @@
 package com.hangloose.ui.activities
 
 import android.Manifest
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -17,12 +18,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
+import com.hangloose.model.RestaurantList
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
+import com.hangloose.viewmodel.SelectionViewModel
 import kotlinx.android.synthetic.main.activity_restaurant_details.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
-
+import retrofit2.Response
 
 class RestaurantDetailsActivity : AppCompatActivity() {
 
@@ -33,17 +36,47 @@ class RestaurantDetailsActivity : AppCompatActivity() {
     private var mMenuUrlList: List<Int>? = arrayListOf(R.drawable.ic_restaurant_view, R.drawable.ic_restaurant_view)
     private var mTagList: List<String>? = ArrayList()
     private var mTagRecyclerViewAdapter: TagRecyclerViewAdapter? = null
+    private var mSelectionViewModel: SelectionViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_details)
+        mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
+
         val data = intent.data
-        if (data != null) {
-            Log.i("Anjani", data.toString())
+        if (data == null) {
+            restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
+            Log.i(TAG, restaurantData.toString())
+            setUpViews()
+        } else {
+            val id = data.getQueryParameter("id")
+            Log.i("Anjani", id)
+            mSelectionViewModel!!.restaurantDetailsByIdApiRequest(id)
+            mSelectionViewModel!!.getRestaurantById().observe(this, Observer<Response<RestaurantList>> { t ->
+                val data = t!!.body()
+                restaurantData = RestaurantData(
+                    data!!.address!!,
+                    data.createdAt,
+                    data.discount,
+                    data.id,
+                    data.images,
+                    data.latitude,
+                    data.longitude,
+                    data.name,
+                    data.offer,
+                    data.priceFortwo,
+                    data.ratings,
+                    data.restaurantType,
+                    data.updatedAt,
+                    data.distanceFromLocation,
+                    data.about,
+                    data.tags,
+                    data.openCloseTime,
+                    data.number
+                )
+                setUpViews()
+            })
         }
-        restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
-        Log.i(TAG, restaurantData.toString())
-        setUpViews()
     }
 
     private fun setUpViews() {
