@@ -30,7 +30,7 @@ class SavedRestaurantActivity : AppCompatActivity() {
         isLiked = intent.getBooleanExtra(LIKED_RESTAURANT, false)
 
         if (isSaved!!) {
-            tvSelectionHeading.text = resources.getString(R.string.saved_restaurant)
+            tvSelectionHeading.text = resources.getString(R.string.favourites)
             getSavedData()
         }
         if (isLiked!!) {

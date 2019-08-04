@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="@string/explore"
           android:drawableStart="@drawable/profile"
+          android:background="?android:attr/selectableItemBackground"
           android:textColor="@color/black"
           style="@style/text16"
+          fontPath="fonts/segoe_ui_semi_bold.ttf"
           android:gravity="start|center_vertical"
           android:drawablePadding="20dp"
           android:id="@+id/tvProfile"
           android:padding="24dp"
-          android:drawableEnd="@drawable/ic_right_arrow"/>
+          android:drawableEnd="@drawable/ic_right_arrow"
+          tools:ignore="MissingPrefix"/>

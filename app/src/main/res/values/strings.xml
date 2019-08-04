@@ -217,7 +217,7 @@
     <string name="slow_internet">Slow Internet Connectivity</string>
     <string name="location_not_found">Location Not found Please check the network connectivity</string>
     <string name="profile">Profile</string>
-    <string name="saved_restaurant">Saved Restaurant</string>
+    <string name="favourites">Favourites</string>
     <string name="liked_restaurant">Liked Restaurant</string>
     <string name="logout">Logout</string>
     <string name="liked">Liked</string>
@@ -225,4 +225,5 @@
 
     <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
     <string name="my_link"><a href="app://hangloose.com/restaurant?id=${data.id}">app://hangloose.com/restaurant?id=${data.id}</a></string>
+    <string name="more_details">More Details</string>
 </resources>

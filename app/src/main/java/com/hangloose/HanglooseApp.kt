@@ -7,8 +7,8 @@ import com.hangloose.network.ApiInf
 import com.hangloose.network.RetrofitApiHandler
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import java.io.File
-
 
 class HanglooseApp : Application() {
 
@@ -17,6 +17,11 @@ class HanglooseApp : Application() {
         api = RetrofitApiHandler(this).create()
         roomDatabaseHandler = RoomDBHandler(this)
         instance = this
+        CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
+            .setDefaultFontPath("fonts/segoe_ui.ttf")
+            .setFontAttrId(R.attr.fontPath)
+            .build()
+        )
     }
 
     companion object {

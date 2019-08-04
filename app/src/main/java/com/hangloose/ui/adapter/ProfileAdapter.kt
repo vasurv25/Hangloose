@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.facebook.login.LoginManager
 import com.hangloose.R
 import com.hangloose.ui.activities.SavedRestaurantActivity
 import com.hangloose.ui.activities.SignInActivity
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.layout_profile_item.view.*
 import com.hangloose.HanglooseApp
 import com.hangloose.utils.LIKED_RESTAURANT
 import com.hangloose.utils.SAVED_RESTAURANT
-
+import com.facebook.AccessToken
 
 class ProfileAdapter(
     val context: Context,
@@ -52,7 +53,7 @@ class ProfileAdapter(
 
             itemView.setOnClickListener {
                 when (it.tvProfile.text) {
-                    context.resources.getString(R.string.saved_restaurant) -> {
+                    context.resources.getString(R.string.favourites) -> {
                         val intent = Intent(context, SavedRestaurantActivity::class.java)
                         intent.putExtra(SAVED_RESTAURANT, true)
                         intent.putExtra(LIKED_RESTAURANT, false)
@@ -67,6 +68,11 @@ class ProfileAdapter(
                     }
 
                     context.resources.getString(R.string.logout) -> {
+                        if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null) {
+                                //log out
+                                LoginManager.getInstance().logOut()
+
+                        }
                         mPreference!!.edit().clear().commit()
                         HanglooseApp.getInstance().clearApplicationData()
                         var intent = Intent(context, SignInActivity::class.java)

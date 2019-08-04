@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.hangloose.HanglooseApp
 import com.hangloose.R
 import com.hangloose.ui.activities.RestaurantDetailsActivity
 import com.hangloose.ui.model.RestaurantData
@@ -40,6 +41,7 @@ class SavedAdapter(
                 intent.putExtra(EXTRA_RESTAURANT_DETAILS_DATA, itemDetails)
                 context.startActivity(intent)
             }
+            itemView.ibDelete.setOnClickListener { HanglooseApp.getDataHandler()!!.deleteUnsavedRestaurant(itemDetails) }
         }
     }
 }

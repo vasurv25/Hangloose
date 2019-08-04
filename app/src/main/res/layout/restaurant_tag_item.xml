@@ -19,6 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="12sp"
+            fontPath="fonts/segoe_ui_bold.ttf"
             android:textColor="@color/white"
-            tools:text="TextView" />
+            tools:text="TextView"
+            tools:ignore="MissingPrefix"/>
 </android.support.v7.widget.CardView>

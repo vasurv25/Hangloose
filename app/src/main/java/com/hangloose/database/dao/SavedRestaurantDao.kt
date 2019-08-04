@@ -14,7 +14,7 @@ abstract class SavedRestaurantDao {
     abstract fun getAllSavedRestaurant(): LiveData<List<SavedRestaurant>>
 
     @Delete
-    abstract fun deleteUnSaveddRestaurant(savedRestaurantData: SavedRestaurant): Int
+    abstract fun deleteUnSavedRestaurant(savedRestaurantData: SavedRestaurant): Int
 
     @Transaction
     @Query("Select * from SAVED_TABLE_RESTAURANT where _id = :id")

@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
+        tools:ignore="MissingPrefix"
         tools:context="com.hangloose.ui.fragment.ProfileFragment">
 
     <android.support.design.widget.AppBarLayout
@@ -66,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvName"
                     style="@style/text20"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
                     android:layout_marginStart="26dp"
                     android:layout_marginEnd="26dp"
                     android:textColor="@color/white"
@@ -77,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvEmailId"
                     style="@style/text12"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
                     android:layout_toEndOf="@+id/ivAvtar"
                     android:layout_below="@+id/tvName"
                     android:layout_marginTop="8dp"

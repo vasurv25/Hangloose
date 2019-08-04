@@ -81,7 +81,7 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.openCloseTime,
                     restaurantData.number
                 )
-                return appRoomDatabase.savedRestaurantDao().deleteUnSaveddRestaurant(restaurant)
+                return appRoomDatabase.savedRestaurantDao().deleteUnSavedRestaurant(restaurant)
             }
         }
         deleteTask().execute()

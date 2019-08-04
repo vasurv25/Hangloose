@@ -101,17 +101,20 @@
         <Button
                 android:id="@+id/btBookTable"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/ic_book_table"
+                android:background="@drawable/check"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                android:text="@string/more_details"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                style="@style/text16"/>
 
         <ImageButton
                 android:id="@+id/ibShare"

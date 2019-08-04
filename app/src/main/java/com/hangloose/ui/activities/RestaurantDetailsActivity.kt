@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_restaurant_details.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 import retrofit2.Response
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class RestaurantDetailsActivity : AppCompatActivity() {
 
