@@ -2,17 +2,14 @@
 <android.support.v4.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/fragment_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.hangloose.ui.fragment.ProfileFragment">
-
+        tools:context=".ui.activities.TabsActivity">
 
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/rv_profile"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"/>
