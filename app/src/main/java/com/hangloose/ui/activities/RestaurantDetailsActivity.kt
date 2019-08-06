@@ -28,7 +28,10 @@ import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 import retrofit2.Response
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
-class RestaurantDetailsActivity : AppCompatActivity() {
+class RestaurantDetailsActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private val REQUEST_CALL_PHONE = 11
     private val TAG = "RestaurantDetails"

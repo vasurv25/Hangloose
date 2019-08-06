@@ -24,7 +24,10 @@ import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.Intent
 import com.hangloose.utils.hideSoftKeyboard
 
-class ResetActivity : AppCompatActivity() {
+class ResetActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private var TAG = "ResetActivity"
     private var mActivityResetBinding: ActivityResetBinding? = null

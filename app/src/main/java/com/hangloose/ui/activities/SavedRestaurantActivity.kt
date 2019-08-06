@@ -16,7 +16,10 @@ import com.hangloose.viewmodel.LikedViewModel
 import com.hangloose.viewmodel.SavedViewModel
 import kotlinx.android.synthetic.main.activity_saved_restaurant.*
 
-class SavedRestaurantActivity : AppCompatActivity() {
+class SavedRestaurantActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private var mAdpater: SavedAdapter? = null
     private var mRestaurantData = ArrayList<RestaurantData>()

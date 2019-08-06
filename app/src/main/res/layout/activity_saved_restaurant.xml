@@ -16,7 +16,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:gravity="center"
-            fontPath="fonts/segoe_ui_bold_italic.ttf.ttf"
+            fontPath="fonts/segoe_ui_bold_italic.ttf"
             android:background="@color/colorBgGrey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

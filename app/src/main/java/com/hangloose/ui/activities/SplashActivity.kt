@@ -10,7 +10,10 @@ import com.hangloose.utils.PreferenceHelper
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.X_AUTH_TOKEN
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private var mDelayHandler: Handler? = null
     private val SPLASH_DELAY: Long = 3000 //3 seconds

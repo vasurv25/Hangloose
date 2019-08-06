@@ -26,7 +26,10 @@ import kotlinx.android.synthetic.main.activity_forgot_password.llForgotPass
 import kotlinx.android.synthetic.main.activity_forgot_password.textLayoutPhone
 import retrofit2.Response
 
-class ForgotPasswordActivity : AppCompatActivity() {
+class ForgotPasswordActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private val TAG: String = "ForgotPasswordActivity"
     private var mActivityForgotPasswordBinding: ActivityForgotPasswordBinding? = null

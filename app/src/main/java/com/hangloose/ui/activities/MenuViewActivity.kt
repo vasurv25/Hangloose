@@ -13,7 +13,10 @@ import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_menu_view.*
 
 
-class MenuViewActivity : AppCompatActivity() {
+class MenuViewActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
 
     var imageFragmentPagerAdapter: ImageFragmentPagerAdapter? = null

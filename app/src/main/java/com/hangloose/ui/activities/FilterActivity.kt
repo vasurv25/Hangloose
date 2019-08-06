@@ -9,7 +9,10 @@ import io.apptik.widget.MultiSlider
 import kotlinx.android.synthetic.main.activity_filter.*
 
 
-class FilterActivity : AppCompatActivity() {
+class FilterActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private val musicList = arrayListOf("Live", "Soft", "Live Instrument", "DJ Night")
     private val comedyList = arrayListOf("Live Comedy Show", "Open Mic")
