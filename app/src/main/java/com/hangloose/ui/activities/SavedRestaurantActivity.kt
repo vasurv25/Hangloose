@@ -3,7 +3,6 @@ package com.hangloose.ui.activities
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.hangloose.R
 import com.hangloose.database.dbmodel.LikedRestaurant
@@ -69,7 +68,7 @@ class SavedRestaurantActivity : BaseActivity() {
                         it.number
                     )
                 }
-                setUpAdapter()
+                setUpAdapter(getString(R.string.key_liked))
             }
         })
     }
@@ -101,13 +100,13 @@ class SavedRestaurantActivity : BaseActivity() {
                         it.number
                     )
                 }
-                setUpAdapter()
+                setUpAdapter(getString(R.string.key_saved))
             }
         })
     }
 
-    private fun setUpAdapter() {
-        mAdpater = SavedAdapter(this, mRestaurantData)
+    private fun setUpAdapter(type: String) {
+        mAdpater = SavedAdapter(this, mRestaurantData, type)
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rvSavedRestaurant!!.layoutManager = layoutManager
         rvSavedRestaurant!!.adapter = mAdpater

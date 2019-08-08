@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.saved_restaurant_item.view.*
 
 class SavedAdapter(
     val context: Context,
-    val mRestaurantData: ArrayList<RestaurantData>
+    val mRestaurantData: ArrayList<RestaurantData>,
+    val type: String
 ) :
     RecyclerView.Adapter<SavedAdapter.SavedViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SavedViewHolder {
@@ -34,6 +35,11 @@ class SavedAdapter(
     inner class SavedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindSearchItems(itemDetails: RestaurantData) {
 //            Picasso.with(context).load(itemDetails.images).into(itemView.ivRestaurant)
+            if (type.equals(context.resources.getString(R.string.key_saved))) {
+                itemView.ibDelete.visibility = View.VISIBLE
+            } else {
+                itemView.ibDelete.visibility = View.GONE
+            }
             itemView.tvRestaurantName.text = itemDetails.name
             itemView.tvRestuarntDesc.text = itemDetails.about
             itemView.setOnClickListener {

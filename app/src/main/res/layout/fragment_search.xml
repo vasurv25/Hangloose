@@ -2,11 +2,14 @@
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
 
     <TextView
         android:id="@+id/tvSearchRestros"
+        fontPath="fonts/segoe_ui_bold_italic.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBgGrey"
@@ -26,14 +29,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        fontPath="fonts/segoe_ui.ttf"
         android:background="@drawable/location_search_view"
         android:drawableLeft="@drawable/ic_search_black"
         android:drawableRight="@drawable/ic_cancel_black"
         android:drawablePadding="10dp"
-        android:singleLine="true"
         android:hint="Search for your Restaurant..."
         android:inputType="textPersonName"
         android:padding="10dp"
+        android:singleLine="true"
         android:textCursorDrawable="@null"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

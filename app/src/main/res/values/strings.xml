@@ -226,4 +226,6 @@
     <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
     <string name="my_link"><a href="app://hangloose.com/restaurant?id=${data.id}">app://hangloose.com/restaurant?id=${data.id}</a></string>
     <string name="more_details">More Details</string>
+    <string name="key_saved">Saved</string>
+    <string name="key_liked">Liked</string>
 </resources>

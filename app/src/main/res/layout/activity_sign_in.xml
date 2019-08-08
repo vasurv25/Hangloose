@@ -40,6 +40,7 @@
         <TextView
             android:id="@+id/textView"
             style="@style/text16"
+            fontPath="fonts/segoe_ui.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -144,6 +145,7 @@
 
             <EditText
                 android:id="@+id/editPhone"
+                fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:addTextChangedListener="@{consumerLoginViewModel.phoneWatcher}"
@@ -153,9 +155,9 @@
                 android:imeOptions="actionNext"
                 android:inputType="phone"
                 android:maxLength="10"
-                tools:text="8698563289"
                 android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white" />
+                android:textColorHint="@android:color/white"
+                tools:text="8698563289" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -174,20 +176,22 @@
 
             <EditText
                 android:id="@+id/editPassword"
+                fontPath="fonts/segoe_ui.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:addTextChangedListener="@{consumerLoginViewModel.passwordWatcher}"
                 android:backgroundTint="@android:color/white"
                 android:hint="@string/password"
-                tools:text="123123"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                tools:text="123123" />
 
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/textForgotPassword"
+            fontPath="fonts/segoe_ui.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/forget_password"
@@ -198,6 +202,7 @@
 
         <Button
             android:id="@+id/btnApplyFilter"
+            fontPath="fonts/segoe_ui.ttf"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginStart="40dp"
@@ -215,6 +220,7 @@
         <TextView
             android:id="@+id/textView4"
             style="@style/text16"
+            fontPath="fonts/segoe_ui.ttf"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -234,10 +240,6 @@
             app:layout_constraintTop_toBottomOf="@+id/btnApplyFilter"
             app:layout_constraintVertical_bias="0.45" />
 
-        <include
-            android:id="@+id/pbLayout"
-            layout="@layout/activity_progress_overlay"
-            android:visibility="@{consumerLoginViewModel.isVisible? View.VISIBLE : View.GONE}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

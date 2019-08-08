@@ -6,11 +6,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import com.hangloose.R
@@ -23,14 +21,11 @@ import com.hangloose.ui.model.*
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.SelectionViewModel
-import com.mindorks.placeholderview.Utils
-import kotlinx.android.synthetic.main.activity_selection.btNextSelection
 import kotlinx.android.synthetic.main.activity_selection.indicator
 import kotlinx.android.synthetic.main.activity_selection.ll_selection
 import kotlinx.android.synthetic.main.activity_selection.tvSelectionHeading
 import kotlinx.android.synthetic.main.activity_selection.viewPager
 import retrofit2.Response
-import java.util.*
 import kotlin.collections.ArrayList
 
 class SelectionActivity : BaseActivity() {
