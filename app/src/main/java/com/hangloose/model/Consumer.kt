@@ -105,6 +105,15 @@ data class RestaurantList(
     @SerializedName("about") var about: String?,
     @SerializedName("tags") var tags: List<String>?,
     @SerializedName("openCloseTime") var openCloseTime: String?,
-    @SerializedName("number") var number: String?
+    @SerializedName("number") var number: String?,
+    @SerializedName("documents") var documents: List<Document>?
+) : BaseModel()
 
+data class Document(
+    @SerializedName("createdAt") var createdAt: String?,
+    @SerializedName("updatedAt") var updatedAt: String?,
+    @SerializedName("id") var id: String?,
+    @SerializedName("location") var location: String?,
+    @SerializedName("ownerId") var ownerId: String?,
+    @SerializedName("documentType") var documentType: String?
 ) : BaseModel()
