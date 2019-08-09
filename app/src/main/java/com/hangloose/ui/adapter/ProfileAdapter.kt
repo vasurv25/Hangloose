@@ -76,7 +76,7 @@ class ProfileAdapter(
                         mPreference!!.edit().clear().commit()
                         HanglooseApp.getInstance().clearApplicationData()
                         var intent = Intent(context, SignInActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         context.startActivity(intent)
                     }
                 }

@@ -61,10 +61,17 @@ class SearchFragment : Fragment(), View.OnTouchListener {
         mSearchRestaurant!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (mRestaurantSearchList!!.visibility != View.INVISIBLE) {
+                    mRestaurantSearchList!!.visibility = View.INVISIBLE
+                }
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                mAdpater!!.filterSearchData(s.toString())
+                if (mRestaurantSearchList!!.visibility != View.VISIBLE && s.toString() != "") {
+                    mRestaurantSearchList!!.visibility = View.VISIBLE
+                    mAdpater!!.filterSearchData(s.toString())
+                }
             }
         })
     }
