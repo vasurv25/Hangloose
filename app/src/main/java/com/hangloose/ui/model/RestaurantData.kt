@@ -23,9 +23,10 @@ data class RestaurantData(
     val tags: List<String>?,
     val openCloseTime: String?,
     val number: String?,
-    val document: Document
+    val logo: String?,
+    val ambienceList: List<String>?,
+    val menuList: List<String>?
 ) : BaseModel(), Parcelable {
-
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -45,8 +46,11 @@ data class RestaurantData(
         parcel.createStringArrayList(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readParcelable(Document::class.java.classLoader)
-    )
+        parcel.readString(),
+        parcel.createStringArrayList(),
+        parcel.createStringArrayList()
+    ) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(address)
@@ -67,7 +71,9 @@ data class RestaurantData(
         parcel.writeStringList(tags)
         parcel.writeString(openCloseTime)
         parcel.writeString(number)
-        parcel.writeParcelable(document, flags)
+        parcel.writeString(logo)
+        parcel.writeStringList(ambienceList)
+        parcel.writeStringList(menuList)
     }
 
     override fun describeContents(): Int {

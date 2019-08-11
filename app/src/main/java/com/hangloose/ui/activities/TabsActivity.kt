@@ -35,6 +35,8 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     private val navIcons =
         intArrayOf(R.drawable.home, R.drawable.search, R.drawable.profile)
 
+    private var isBackPressed = false
+
     var mHeader : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +44,10 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         setContentView(R.layout.activity_tab)
 
         mPreference = PreferenceHelper.defaultPrefs(this)
-        mRestaurantData = intent.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
+
         mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
+        mRestaurantData = intent.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
         Log.i(TAG, """Header : $headerToken""")
         mHeader = headerToken
@@ -95,10 +98,20 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
                 replaceFragment(RestaurantFragment())
             }
             tabLayout.selectedTabPosition == 1 -> {
-                replaceFragment(SearchFragment())
+                if (isBackPressed) {
+                    isBackPressed = false
+                    tabLayout.getTabAt(0)!!.select()
+                } else {
+                    replaceFragment(SearchFragment())
+                }
             }
             tabLayout.selectedTabPosition == 2 -> {
-                replaceFragment(ProfileFragment())
+                if (isBackPressed) {
+                    isBackPressed = false
+                    tabLayout.getTabAt(0)!!.select()
+                } else {
+                    replaceFragment(ProfileFragment())
+                }
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -131,9 +144,14 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
 
     override fun onBackPressed() {
         super.onBackPressed()
-        var intent = Intent(this, SelectionActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
+        if (tabLayout.selectedTabPosition != 0) {
+            isBackPressed = true
+            onTabSelected(tabLayout.getTabAt(0))
+        } else {
+            var intent = Intent(this, SelectionActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 
     override fun navigateToLocationActivityFromHomeFrag() {

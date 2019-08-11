@@ -65,7 +65,10 @@ class SavedRestaurantActivity : BaseActivity() {
                         it.about,
                         it.tags,
                         it.openCloseTime,
-                        it.number
+                        it.number,
+                        it.logo,
+                        it.ambience!!,
+                        it.menu!!
                     )
                 }
                 setUpAdapter(getString(R.string.key_liked))
@@ -97,7 +100,10 @@ class SavedRestaurantActivity : BaseActivity() {
                         it.about,
                         it.tags,
                         it.openCloseTime,
-                        it.number
+                        it.number,
+                        it.logo,
+                        it.ambience!!,
+                        it.menu!!
                     )
                 }
                 setUpAdapter(getString(R.string.key_saved))

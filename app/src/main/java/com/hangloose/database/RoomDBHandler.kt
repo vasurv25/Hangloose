@@ -36,7 +36,10 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.about,
                     restaurantData.tags,
                     restaurantData.openCloseTime,
-                    restaurantData.number
+                    restaurantData.number,
+                    restaurantData.logo,
+                    restaurantData.ambienceList,
+                    restaurantData.menuList
                 )
                 return appRoomDatabase.savedRestaurantDao().insertSavedRestaurant(restaurant)
             }
@@ -79,7 +82,10 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.about,
                     restaurantData.tags,
                     restaurantData.openCloseTime,
-                    restaurantData.number
+                    restaurantData.number,
+                    restaurantData.logo,
+                    restaurantData.ambienceList,
+                    restaurantData.menuList
                 )
                 return appRoomDatabase.savedRestaurantDao().deleteUnSavedRestaurant(restaurant)
             }
@@ -116,7 +122,10 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.about,
                     restaurantData.tags,
                     restaurantData.openCloseTime,
-                    restaurantData.number
+                    restaurantData.number,
+                    restaurantData.logo,
+                    restaurantData.ambienceList,
+                    restaurantData.menuList
                 )
                 return appRoomDatabase.likedRestaurantDao().insertLikedRestaurant(restaurant)
             }
@@ -158,7 +167,10 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.about,
                     restaurantData.tags,
                     restaurantData.openCloseTime,
-                    restaurantData.number
+                    restaurantData.number,
+                    restaurantData.logo,
+                    restaurantData.ambienceList,
+                    restaurantData.menuList
                 )
                 return appRoomDatabase.likedRestaurantDao().deleteUnlikedRestaurant(restaurant)
             }

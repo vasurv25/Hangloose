@@ -195,6 +195,19 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             val data = t!!.body()
             (0 until data!!.size).forEach { i ->
                 if (data[i].distanceFromLocation!! <= 10) {
+                    var logo: String? = null
+                    var ambienceList: ArrayList<String>? = ArrayList()
+                    var menuList: ArrayList<String>? = ArrayList()
+                    (0 until data[i].documents!!.size).forEach { j ->
+                        if (data[i].documents!![j].documentType.equals("LOGO")) {
+                            Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                            logo = data[i].documents!![j].location
+                        } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                            ambienceList!!.add(data[i].documents!![j].location!!)
+                        } else {
+                            menuList!!.add(data[i].documents!![j].location!!)
+                        }
+                    }
                     mRestaurantData!!.add(
                         RestaurantData(
                             data[i].address!!,
@@ -214,7 +227,10 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                             data[i].about,
                             data[i].tags,
                             data[i].openCloseTime,
-                            data[i].number
+                            data[i].number,
+                            logo,
+                            ambienceList,
+                            menuList
                         )
                     )
                 }

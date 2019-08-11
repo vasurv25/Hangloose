@@ -71,7 +71,7 @@ class SwipeableCardView(
 
     @Resolve
     private fun onResolved() {
-        Glide.with(context).load(R.drawable.ic_restaurant_view).into(image!!)
+        Glide.with(context).load(data.logo).into(image!!)
         textRestaurantName!!.text = data.name
         textRestoAddress!!.text = data.address + " . " + data.restaurantType
         textRating!!.text = data.ratings
@@ -150,9 +150,9 @@ class SwipeableCardView(
         textSwipe!!.visibility = android.view.View.VISIBLE
         textSwipe.text = context.getString(R.string.liked)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textSwipe.setTextColor(context.resources.getColor(R.color.colorGreen, null))
+            textSwipe.setTextColor(context.resources.getColor(R.color.colorFb, null))
         } else {
-            textSwipe.setTextColor(context.resources.getColor(R.color.colorGreen))
+            textSwipe.setTextColor(context.resources.getColor(R.color.colorFb))
         }
     }
 

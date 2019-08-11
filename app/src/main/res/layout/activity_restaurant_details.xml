@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBgGrey"
-    tools:context="com.hangloose.ui.activities.RestaurantDetailsActivity"
-    tools:ignore="MissingPrefix">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBgGrey"
+            android:visibility="visible"
+            android:id="@+id/layoutScroll"
+            tools:context="com.hangloose.ui.activities.RestaurantDetailsActivity"
+            tools:ignore="MissingPrefix">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageHeader"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpAmbience"
             android:layout_width="match_parent"
             android:layout_height="175dp"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/background" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/ambienceIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/white"
+            app:ci_drawable="@drawable/current_page_indicator"
+            app:ci_drawable_unselected="@drawable/next_page_indicator"
+            app:ci_gravity="center"
+            app:ci_height="7dp"
+            app:ci_margin="10dp"
+            app:ci_width="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <RelativeLayout
             android:id="@+id/layout1"
@@ -31,7 +47,7 @@
             android:paddingTop="16dp"
             android:paddingEnd="30dp"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageHeader">
+            app:layout_constraintTop_toBottomOf="@+id/vpAmbience">
 
             <TextView
                 android:id="@+id/textName"
@@ -42,7 +58,7 @@
                 android:letterSpacing="0.03"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
-                tools:text="@string/restaurant_name" />
+                tools:text="@string/restaurant_name"/>
 
             <TextView
                 android:id="@+id/textPlace"
@@ -54,7 +70,7 @@
                 android:layout_marginTop="3dp"
                 android:letterSpacing="0.03"
                 android:textColor="@color/colorSubTitle"
-                tools:text="@string/restaurant_place" />
+                tools:text="@string/restaurant_place"/>
 
             <TextView
                 android:id="@+id/textRating"
@@ -66,7 +82,7 @@
                 android:layout_marginTop="18dp"
                 android:letterSpacing="0.02"
                 android:text="@string/ratings"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -84,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/star_icon" />
+                    android:background="@drawable/star_icon"/>
 
                 <TextView
                     android:id="@+id/textRatingValue"
@@ -97,7 +113,7 @@
                     android:layout_marginLeft="8dp"
                     android:letterSpacing="0.02"
                     android:text="@string/rating_value"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
 
@@ -118,7 +134,7 @@
                     android:gravity="start"
                     android:letterSpacing="0.02"
                     android:text="@string/opens"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/textOpenCloseTime"
@@ -129,7 +145,7 @@
                     android:layout_marginTop="5dp"
                     android:letterSpacing="0.02"
                     android:text="@string/time"
-                    android:textColor="@color/colorSubTitle" />
+                    android:textColor="@color/colorSubTitle"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -157,7 +173,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="156" />
+                tools:layout_conversion_wrapWidth="156"/>
 
             <TextView
                 android:id="@+id/textChargesValue"
@@ -172,7 +188,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textCharges"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="399" />
+                tools:layout_conversion_wrapWidth="399"/>
 
             <!--<TextView
                 android:id="@+id/textView7"
@@ -204,7 +220,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/textNonVeg"
                 app:layout_constraintTop_toBottomOf="@+id/textCharges"
                 tools:layout_conversion_wrapHeight="43"
-                tools:layout_conversion_wrapWidth="99" />
+                tools:layout_conversion_wrapWidth="99"/>
 
             <TextView
                 android:id="@+id/textNonVeg"
@@ -221,7 +237,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textCharges"
                 tools:layout_conversion_wrapHeight="43"
-                tools:layout_conversion_wrapWidth="167" />
+                tools:layout_conversion_wrapWidth="167"/>
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -248,7 +264,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="440" />
+                tools:layout_conversion_wrapWidth="440"/>
 
             <TextView
                 android:id="@+id/textOfferReservationSubtitle"
@@ -263,7 +279,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textOfferReservation"
                 tools:layout_conversion_wrapHeight="43"
-                tools:layout_conversion_wrapWidth="570" />
+                tools:layout_conversion_wrapWidth="570"/>
 
             <TextView
                 android:id="@+id/textOfferBill"
@@ -278,7 +294,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textOfferReservationSubtitle"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="320" />
+                tools:layout_conversion_wrapWidth="320"/>
 
             <!--<TextView
                 android:id="@+id/textAddOnOffers"
@@ -333,7 +349,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="106" />
+                tools:layout_conversion_wrapWidth="106"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvMenu"
@@ -344,7 +360,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textMenu"
                 tools:layout_conversion_wrapHeight="500"
-                tools:layout_conversion_wrapWidth="106" />
+                tools:layout_conversion_wrapWidth="106"/>
 
         </android.support.constraint.ConstraintLayout>
 
@@ -372,7 +388,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="114" />
+                tools:layout_conversion_wrapWidth="114"/>
 
             <!--<TextView-->
             <!--android:layout_width="match_parent"-->
@@ -387,17 +403,17 @@
             <!--/>-->
 
             <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/expand_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                expandableTextView:animDuration="200"
-                expandableTextView:layout_constraintStart_toStartOf="parent"
-                expandableTextView:layout_constraintTop_toBottomOf="@+id/textAbout"
-                expandableTextView:maxCollapsedLines="3"
-                tools:layout_conversion_wrapHeight="0"
-                tools:layout_conversion_wrapWidth="0">
+                                                                         xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                                                                         android:id="@+id/expand_text_view"
+                                                                         android:layout_width="match_parent"
+                                                                         android:layout_height="wrap_content"
+                                                                         android:layout_marginTop="10dp"
+                                                                         expandableTextView:animDuration="200"
+                                                                         expandableTextView:layout_constraintStart_toStartOf="parent"
+                                                                         expandableTextView:layout_constraintTop_toBottomOf="@+id/textAbout"
+                                                                         expandableTextView:maxCollapsedLines="3"
+                                                                         tools:layout_conversion_wrapHeight="0"
+                                                                         tools:layout_conversion_wrapWidth="0">
 
                 <TextView
                     android:id="@id/expandable_text"
@@ -406,7 +422,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:letterSpacing="0.03"
-                    android:textColor="@color/colorSubTitle" />
+                    android:textColor="@color/colorSubTitle"/>
 
                 <ImageButton
                     android:id="@id/expand_collapse"
@@ -414,7 +430,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|bottom"
                     android:background="@android:color/transparent"
-                    android:padding="16dp" />
+                    android:padding="16dp"/>
             </com.ms.square.android.expandabletextview.ExpandableTextView>
         </android.support.constraint.ConstraintLayout>
 
@@ -442,7 +458,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="94" />
+                tools:layout_conversion_wrapWidth="94"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvTags"
@@ -453,7 +469,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textTags"
                 tools:layout_conversion_wrapHeight="500"
-                tools:layout_conversion_wrapWidth="106" />
+                tools:layout_conversion_wrapWidth="106"/>
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -480,7 +496,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="155" />
+                tools:layout_conversion_wrapWidth="155"/>
 
             <TextView
                 android:id="@+id/textAddress"
@@ -495,7 +511,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textAddressTitle"
                 tools:layout_conversion_wrapHeight="106"
-                tools:layout_conversion_wrapWidth="366" />
+                tools:layout_conversion_wrapWidth="366"/>
 
             <TextView
                 android:id="@+id/textContactTitle"
@@ -510,7 +526,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textAddress"
                 tools:layout_conversion_wrapHeight="56"
-                tools:layout_conversion_wrapWidth="150" />
+                tools:layout_conversion_wrapWidth="150"/>
 
             <TextView
                 android:id="@+id/textContact"
@@ -525,7 +541,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textContactTitle"
                 tools:layout_conversion_wrapHeight="106"
-                tools:layout_conversion_wrapWidth="366" />
+                tools:layout_conversion_wrapWidth="366"/>
 
         </android.support.constraint.ConstraintLayout>
 
@@ -556,7 +572,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_wrapHeight="126"
-                tools:layout_conversion_wrapWidth="922" />
+                tools:layout_conversion_wrapWidth="922"/>
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

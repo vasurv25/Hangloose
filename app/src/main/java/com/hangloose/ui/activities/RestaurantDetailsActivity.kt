@@ -10,7 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -19,14 +19,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.hangloose.R
 import com.hangloose.model.RestaurantList
+import com.hangloose.ui.adapter.AmbienceImageAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
 import com.hangloose.viewmodel.SelectionViewModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_restaurant_details.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 import retrofit2.Response
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 class RestaurantDetailsActivity : BaseActivity() {
     override fun init() {
@@ -37,10 +38,11 @@ class RestaurantDetailsActivity : BaseActivity() {
     private val TAG = "RestaurantDetails"
     private var restaurantData: RestaurantData? = null
     private var mMenuRecyclerViewAdapter: MenuRecyclerViewAdapter? = null
-    private var mMenuUrlList: List<Int>? = arrayListOf(R.drawable.ic_restaurant_view, R.drawable.ic_restaurant_view)
     private var mTagList: List<String>? = ArrayList()
     private var mTagRecyclerViewAdapter: TagRecyclerViewAdapter? = null
     private var mSelectionViewModel: SelectionViewModel? = null
+
+    private var mAmbienceAdapter: AmbienceImageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
         val data = intent.data
         if (data == null) {
+            layoutScroll.visibility = View.VISIBLE
             restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
             Log.i(TAG, restaurantData.toString())
             setUpViews()
@@ -58,8 +61,20 @@ class RestaurantDetailsActivity : BaseActivity() {
             mSelectionViewModel!!.restaurantDetailsByIdApiRequest(id)
             mSelectionViewModel!!.getRestaurantById().observe(this, Observer<Response<RestaurantList>> { t ->
                 val data = t!!.body()
+                var logo: String? = null
+                var ambienceList: ArrayList<String>? = null
+                var menuList: ArrayList<String>? = null
+                (0 until data!!.documents!!.size).forEach { i->
+                    if (data.documents!![i].documentType.equals("LOGO")) {
+                        logo = data.documents!![i].location
+                    } else if (data.documents!![i].documentType.equals("AMBIENCE")) {
+                        ambienceList!!.add(data.documents!![i].location!!)
+                    } else {
+                        menuList!!.add(data.documents!![i].location!!)
+                    }
+                }
                 restaurantData = RestaurantData(
-                    data!!.address!!,
+                    data.address!!,
                     data.createdAt,
                     data.discount,
                     data.id,
@@ -76,8 +91,12 @@ class RestaurantDetailsActivity : BaseActivity() {
                     data.about,
                     data.tags,
                     data.openCloseTime,
-                    data.number
+                    data.number,
+                    logo,
+                    ambienceList!!,
+                    menuList!!
                 )
+                layoutScroll.visibility = View.VISIBLE
                 setUpViews()
             })
         }
@@ -85,6 +104,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     private fun setUpViews() {
         if (restaurantData != null) {
+            setUpAmbienceViewAdapter(restaurantData!!.ambienceList)
             textName.text = restaurantData!!.name
             textPlace.text = restaurantData!!.address
             textRatingValue.text = restaurantData!!.ratings
@@ -106,9 +126,27 @@ class RestaurantDetailsActivity : BaseActivity() {
 
 
             }
-            initMenuRecyclerView()
+            val menuList = restaurantData!!.menuList
+            menuList?.let { initMenuRecyclerView(menuList) }
             initTagRecyclerView()
         }
+    }
+
+    private fun setUpAmbienceViewAdapter(ambienceList: List<String>?) {
+        mAmbienceAdapter = AmbienceImageAdapter(this, ambienceList as ArrayList<String>)
+        vpAmbience.adapter = mAmbienceAdapter
+        vpAmbience.currentItem = 0
+        ambienceIndicator.setViewPager(vpAmbience)
+        vpAmbience.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+        })
     }
 
     private fun checkCallPermission() {
@@ -142,10 +180,10 @@ class RestaurantDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun initMenuRecyclerView() {
+    private fun initMenuRecyclerView(menuList: List<String>?) {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvMenu.layoutManager = layoutManager
-        mMenuRecyclerViewAdapter = mMenuUrlList?.let { MenuRecyclerViewAdapter(this, it) }
+        mMenuRecyclerViewAdapter = menuList?.let { MenuRecyclerViewAdapter(this, it) }
         rvMenu.adapter = mMenuRecyclerViewAdapter
     }
 
@@ -156,7 +194,7 @@ class RestaurantDetailsActivity : BaseActivity() {
         rvTags.adapter = mTagRecyclerViewAdapter
     }
 
-    private class MenuRecyclerViewAdapter(val context: Context, val urlList: List<Int>) :
+    private class MenuRecyclerViewAdapter(val context: Context, val urlList: List<String>) :
         RecyclerView.Adapter<MenuRecyclerViewAdapter.MenuViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MenuViewHolder {
@@ -173,11 +211,11 @@ class RestaurantDetailsActivity : BaseActivity() {
         }
 
         inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bindMenuItem(menuUrl: Int) {
-//                Picasso.with(context).load(menuUrl).into(itemView.ivMenu)
-                itemView.ivMenu.setImageResource(menuUrl)
+            fun bindMenuItem(menuUrl: String) {
+                Picasso.with(context).load(menuUrl).into(itemView.ivMenu)
                 itemView.setOnClickListener {
                     val intent = Intent(context, MenuViewActivity::class.java)
+                    intent.putStringArrayListExtra("IMAGE", urlList as java.util.ArrayList<String>?)
                     context.startActivity(intent)
                 }
             }
