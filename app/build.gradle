@@ -102,8 +102,6 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     // Page indicator for ViewPager
     implementation 'me.relex:circleindicator:1.2.2@aar'
-    //Picasso
-    implementation 'com.squareup.picasso:picasso:2.5.2'
     //Segmented buttons
     implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
     implementation 'info.hoang8f:android-segmented:1.0.6'

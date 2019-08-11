@@ -17,13 +17,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.hangloose.R
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.AmbienceImageAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
 import com.hangloose.viewmodel.SelectionViewModel
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_restaurant_details.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
@@ -212,7 +212,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
         inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bindMenuItem(menuUrl: String) {
-                Picasso.with(context).load(menuUrl).into(itemView.ivMenu)
+                Glide.with(context).load(menuUrl).into(itemView.ivMenu)
                 itemView.setOnClickListener {
                     val intent = Intent(context, MenuViewActivity::class.java)
                     intent.putStringArrayListExtra("IMAGE", urlList as java.util.ArrayList<String>?)
