@@ -35,9 +35,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     private val navIcons =
         intArrayOf(R.drawable.home, R.drawable.search, R.drawable.profile)
 
-    private var isBackPressed = false
-
-    var mHeader : String? = null
+    var mHeader: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,20 +96,10 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
                 replaceFragment(RestaurantFragment())
             }
             tabLayout.selectedTabPosition == 1 -> {
-                if (isBackPressed) {
-                    isBackPressed = false
-                    tabLayout.getTabAt(0)!!.select()
-                } else {
-                    replaceFragment(SearchFragment())
-                }
+                replaceFragment(SearchFragment())
             }
             tabLayout.selectedTabPosition == 2 -> {
-                if (isBackPressed) {
-                    isBackPressed = false
-                    tabLayout.getTabAt(0)!!.select()
-                } else {
-                    replaceFragment(ProfileFragment())
-                }
+                replaceFragment(ProfileFragment())
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -145,17 +133,16 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     override fun onBackPressed() {
         super.onBackPressed()
         if (tabLayout.selectedTabPosition != 0) {
-            isBackPressed = true
-            onTabSelected(tabLayout.getTabAt(0))
+            tabLayout.getTabAt(0)!!.select()
         } else {
-            var intent = Intent(this, SelectionActivity::class.java)
+            val intent = Intent(this, SelectionActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
     }
 
     override fun navigateToLocationActivityFromHomeFrag() {
-        var intent = Intent(this, LocationSettingActivity::class.java)
+        val intent = Intent(this, LocationSettingActivity::class.java)
         intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
         intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
         intent.putExtra(FLAG_LOCATION_NAVIGATION, 1)
