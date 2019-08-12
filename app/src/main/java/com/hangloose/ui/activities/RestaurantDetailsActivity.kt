@@ -135,7 +135,7 @@ class RestaurantDetailsActivity : BaseActivity() {
     private fun setUpAmbienceViewAdapter(ambienceList: List<String>?) {
         mAmbienceAdapter = AmbienceImageAdapter(this, ambienceList as ArrayList<String>)
         vpAmbience.adapter = mAmbienceAdapter
-        vpAmbience.currentItem = 0
+//        vpAmbience.currentItem = 0
         ambienceIndicator.setViewPager(vpAmbience)
         vpAmbience.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

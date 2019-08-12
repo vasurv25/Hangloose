@@ -27,7 +27,7 @@ class AmbienceImageAdapter(val context: Context, val imageList: ArrayList<String
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val itemView = layoutInflater!!.inflate(R.layout.ambience_image_item, parent, false)
-        Glide.with(context!!).load(imageList[position]).into(itemView.ivAmbience)
+        Glide.with(context).load(imageList[position]).into(itemView.ivAmbience)
         parent.addView(itemView.ivAmbience)
         return itemView
     }
