@@ -17,7 +17,6 @@
             android:id="@+id/ivAdventure"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/morning_meal"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="H,16:9"

@@ -20,7 +20,7 @@ class ProfileFragment : Fragment() {
         arrayListOf(
             "Favourites",
             "Liked Restaurant",
-            "Offers",
+            //"Offers",
             "Account Settings",
             "Help & Support",
             "Logout"
@@ -31,7 +31,7 @@ class ProfileFragment : Fragment() {
     private val listProfileIcons = arrayListOf(
         R.drawable.saved_icon,
         R.drawable.order_icon,
-        R.drawable.offers_icon,
+        //R.drawable.offers_icon,
         R.drawable.settings_icon,
         R.drawable.help_icon,
         R.drawable.logout_icon
