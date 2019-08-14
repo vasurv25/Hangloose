@@ -9,6 +9,7 @@ import android.os.Build
 import android.support.v4.app.FragmentActivity
 import android.text.Html
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.hangloose.HanglooseApp.Companion.getDataHandler
@@ -20,6 +21,7 @@ import com.hangloose.listener.SavedInsertionListener
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
 import com.hangloose.viewmodel.SavedViewModel
+import com.mindorks.placeholderview.Animation
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
@@ -63,11 +65,20 @@ class SwipeableCardView(
     @View(R.id.ibSave)
     private val save: CheckBox? = null
 
-    @View(R.id.tvSwipe)
-    private val textSwipe: TextView? = null
+    @View(R.id.tvLikeSwipe)
+    private val textLikeSwipe: TextView? = null
+
+    @View(R.id.tvUnLikeSwipe)
+    private val textUnLikeSwipe: TextView? = null
+
+    @View(R.id.swipeLayout)
+    private val swipeLayout: FrameLayout? = null
 
     @View(R.id.ibShare)
     private val btnShare: ImageButton? = null
+
+    private var likeCount = 0
+    private var unLikeCount = 0
 
     @Resolve
     private fun onResolved() {
@@ -135,7 +146,13 @@ class SwipeableCardView(
     @SwipeCancelState
     private fun onSwipeCancelState() {
         Log.d("EVENT", "onSwipeCancelState")
-        textSwipe!!.visibility = android.view.View.GONE
+        textLikeSwipe!!.visibility = android.view.View.GONE
+        textUnLikeSwipe!!.visibility = android.view.View.GONE
+        swipeLayout!!.visibility = android.view.View.GONE
+        textLikeSwipe.clearAnimation()
+        textUnLikeSwipe.clearAnimation()
+        likeCount = 0
+        unLikeCount = 0
     }
 
     @SwipeIn
@@ -147,24 +164,26 @@ class SwipeableCardView(
     @SwipeInState
     private fun onSwipeInState() {
         Log.d("EVENT", "onSwipeInState")
-        textSwipe!!.visibility = android.view.View.VISIBLE
-        textSwipe.text = context.getString(R.string.liked)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textSwipe.setTextColor(context.resources.getColor(R.color.colorFb, null))
-        } else {
-            textSwipe.setTextColor(context.resources.getColor(R.color.colorFb))
+        textLikeSwipe!!.visibility = android.view.View.VISIBLE
+        textLikeSwipe.text = context.getString(R.string.liked)
+        textUnLikeSwipe!!.visibility = android.view.View.GONE
+        swipeLayout!!.visibility = android.view.View.VISIBLE
+        if (likeCount==0) {
+            textLikeSwipe!!.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         }
+        likeCount = 1
     }
 
     @SwipeOutState
     private fun onSwipeOutState() {
         Log.d("EVENT", "onSwipeOutState")
-        textSwipe!!.visibility = android.view.View.VISIBLE
-        textSwipe.text = context.getString(R.string.unliked)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textSwipe.setTextColor(context.resources.getColor(R.color.red, null))
-        } else {
-            textSwipe.setTextColor(context.resources.getColor(R.color.red))
+        textUnLikeSwipe!!.visibility = android.view.View.VISIBLE
+        textUnLikeSwipe.text = context.getString(R.string.unliked)
+        textLikeSwipe!!.visibility = android.view.View.GONE
+        swipeLayout!!.visibility = android.view.View.VISIBLE
+        if (unLikeCount==0) {
+            textUnLikeSwipe!!.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         }
+        unLikeCount = 1
     }
 }
