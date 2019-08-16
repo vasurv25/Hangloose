@@ -165,11 +165,10 @@ class SwipeableCardView(
     private fun onSwipeInState() {
         Log.d("EVENT", "onSwipeInState")
         textLikeSwipe!!.visibility = android.view.View.VISIBLE
-        textLikeSwipe.text = context.getString(R.string.liked)
         textUnLikeSwipe!!.visibility = android.view.View.GONE
         swipeLayout!!.visibility = android.view.View.VISIBLE
-        if (likeCount==0) {
-            textLikeSwipe!!.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        if (likeCount == 0) {
+            textLikeSwipe.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         }
         likeCount = 1
     }
@@ -178,11 +177,10 @@ class SwipeableCardView(
     private fun onSwipeOutState() {
         Log.d("EVENT", "onSwipeOutState")
         textUnLikeSwipe!!.visibility = android.view.View.VISIBLE
-        textUnLikeSwipe.text = context.getString(R.string.unliked)
         textLikeSwipe!!.visibility = android.view.View.GONE
         swipeLayout!!.visibility = android.view.View.VISIBLE
-        if (unLikeCount==0) {
-            textUnLikeSwipe!!.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        if (unLikeCount == 0) {
+            textUnLikeSwipe.animation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         }
         unLikeCount = 1
     }

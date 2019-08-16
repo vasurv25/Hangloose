@@ -4,7 +4,7 @@
     <string name="fb_login_protocol_scheme">fb570529616729330</string>
 
     <string name="SHA1">CF:5F:B2:B8:94:33:7D:D6:34:98:52:7B:34:B3:2F:0C:7B:DD:96:12</string>
-    <string name="server_client_id">430634342873-unvagf3q4qkttp8jgoksj8vnj2gv2kh3.apps.googleusercontent.com</string>
+    <string name="server_client_id">430634342873-bo6fsrgss1sgqps1b7ems2js03hbhsl2.apps.googleusercontent.com</string>
     <string name="client_secret">Ux2SShMhe6AFaRmKh2IVihOA</string>
 
     <string name="Web_client_id">430634342873-unvagf3q4qkttp8jgoksj8vnj2gv2kh3.apps.googleusercontent.com</string>
@@ -220,8 +220,8 @@
     <string name="favourites">Favourites</string>
     <string name="liked_restaurant">Liked Restaurant</string>
     <string name="logout">Logout</string>
-    <string name="liked">Liked</string>
-    <string name="unliked">UnLiked</string>
+    <string name="like">Like</string>
+    <string name="unlike">UnLike</string>
 
     <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
     <string name="my_link"><a href="app://hangloose.com/restaurant?id=${data.id}">app://hangloose.com/restaurant?id=${data.id}</a></string>
