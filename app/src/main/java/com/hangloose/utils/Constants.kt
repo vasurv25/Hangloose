@@ -15,6 +15,10 @@ const val KEY_ADVENTURES_LIST = "key_adventures"
 const val KEY_RESTAURANT_DATA = "key_restaurant_data"
 const val KEY_DATA = "key_data"
 const val X_AUTH_TOKEN = "x_auth_token"
+const val KEY_USER_NAME = "user_name"
+const val KEY_EMAIL_ID = "email_id"
+const val KEY_ENTIRE_RESTAURANT_DATA = "key_entire_restaurant_data"
+const val KEY_API_HIT_FLAG = "key_api_hit_flag"
 
 const val EXTRA_RESTAURANT_DETAILS_DATA = "EXTRA_RESTAURANT_DETAILS_DATA"
 const val API_NOT_CONNECTED = "Google API not connected"
@@ -27,3 +31,7 @@ const val REQUEST_FILTER_ACTIVITY = 110
 
 const val SAVED_RESTAURANT = "SAVED_RESTAURANT"
 const val LIKED_RESTAURANT = "LIKED_RESTAURANT"
+
+const val KEY_LATITUDE = "key_latitude"
+const val KEY_LONGTITUDE = "key_longtitude"
+

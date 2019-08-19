@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySelectionBinding
 import com.hangloose.model.RestaurantList
@@ -44,6 +45,11 @@ class SelectionActivity : BaseActivity() {
     var mHeader: String? = null
 
     private var mRestaurantData = ArrayList<RestaurantData>()
+    private var mEntireRestaurantData = ArrayList<RestaurantData>()
+
+    private var mLatitude: Double? = null
+    private var mLongitude: Double? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,7 +153,7 @@ class SelectionActivity : BaseActivity() {
         mSelectionViewModel.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
             val data = t!!.body()
             (0 until data!!.size).forEach { i ->
-                if (data[i].distanceFromLocation!! <= 10) {
+                if (data[i].distanceFromLocation!! <= 50) {
                     var logo: String? = null
                     var ambienceList: ArrayList<String>? = ArrayList()
                     var menuList: ArrayList<String>? = ArrayList()
@@ -186,6 +192,44 @@ class SelectionActivity : BaseActivity() {
                         )
                     )
                 }
+
+                var logo: String? = null
+                val ambienceList: ArrayList<String>? = ArrayList()
+                val menuList: ArrayList<String>? = ArrayList()
+                (0 until data[i].documents!!.size).forEach { j->
+                    if (data[i].documents!![j].documentType.equals("LOGO")) {
+                        logo = data[i].documents!![j].location
+                    } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                        ambienceList?.add(data[i].documents!![j].location!!)
+                    } else {
+                        menuList?.add(data[i].documents!![j].location!!)
+                    }
+                }
+                mEntireRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt,
+                        data[i].distanceFromLocation,
+                        data[i].about,
+                        data[i].tags,
+                        data[i].openCloseTime,
+                        data[i].number,
+                        logo,
+                        ambienceList,
+                        menuList
+                    )
+                )
             }
             onNavigateToTabsActivity()
         })
@@ -242,6 +286,8 @@ class SelectionActivity : BaseActivity() {
 
             }
             1 -> {
+                mActivitiesSelectedList.clear()
+                mAdventuresSelectedList.clear()
                 mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
                 mAdventuresSelectedList.addAll(mAdventuresFragment!!.getSelectedAdventures())
                 if (mActivitiesSelectedList.size != 0 && mAdventuresSelectedList.size != 0) {
@@ -253,6 +299,8 @@ class SelectionActivity : BaseActivity() {
                         val latLongFromLocationName = getLatLongFromLocationName(this, address)
                         Log.d(TAG, "latLongFromLocationName : $latLongFromLocationName")
                         latLongFromLocationName?.let {
+                            mLatitude = latLongFromLocationName.latitude
+                            mLongitude = latLongFromLocationName.longitude
                             mSelectionViewModel.restaurantListApiRequest(
                                 mActivitiesSelectedList, mAdventuresSelectedList
                                 , latLongFromLocationName.latitude
@@ -261,12 +309,28 @@ class SelectionActivity : BaseActivity() {
                         }
                     }
                 }else{
-                    showSnackBar(
-                        ll_selection,
-                        "Please Select at least one Adventure!",
-                        ContextCompat.getColor(this, R.color.white),
-                        ContextCompat.getColor(this, R.color.colorPrimary)
-                    )
+                    if (mActivitiesSelectedList.size == 0  && mAdventuresSelectedList.size == 0) {
+                        showSnackBar(
+                            ll_selection,
+                            "Please Select at least one Activities and Adventure!",
+                            ContextCompat.getColor(this, R.color.white),
+                            ContextCompat.getColor(this, R.color.colorPrimary)
+                        )
+                    } else if (mActivitiesSelectedList.size == 0) {
+                        showSnackBar(
+                            ll_selection,
+                            "Please Select at least one Activities!",
+                            ContextCompat.getColor(this, R.color.white),
+                            ContextCompat.getColor(this, R.color.colorPrimary)
+                        )
+                    } else {
+                        showSnackBar(
+                            ll_selection,
+                            "Please Select at least one Adventure!",
+                            ContextCompat.getColor(this, R.color.white),
+                            ContextCompat.getColor(this, R.color.colorPrimary)
+                        )
+                    }
                 }
             }
         }
@@ -288,6 +352,9 @@ class SelectionActivity : BaseActivity() {
         intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
         intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
         intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+        intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
+        intent.putExtra(KEY_LATITUDE, mLatitude)
+        intent.putExtra(KEY_LONGTITUDE, mLongitude)
         startActivity(intent)
     }
 

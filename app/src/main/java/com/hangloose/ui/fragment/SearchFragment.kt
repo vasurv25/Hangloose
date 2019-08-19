@@ -16,20 +16,21 @@ import com.hangloose.R
 import com.hangloose.ui.adapter.SearchAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.KEY_DATA
+import com.hangloose.utils.KEY_ENTIRE_RESTAURANT_DATA
 import com.hangloose.utils.hideSoftKeyboard
 
 
 class SearchFragment : Fragment(), View.OnTouchListener {
 
     private var TAG = "SearchFragment"
-    private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
+    private var mEntireRestaurantData: ArrayList<RestaurantData>? = ArrayList()
     private var mRestaurantSearchList: RecyclerView? = null
     private var mSearchRestaurant: EditText? = null
     private var mAdpater: SearchAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
+        mEntireRestaurantData = arguments!!.getParcelableArrayList(KEY_ENTIRE_RESTAURANT_DATA)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -77,7 +78,7 @@ class SearchFragment : Fragment(), View.OnTouchListener {
     }
 
     private fun setUpAdapter() {
-        mAdpater = SearchAdapter(context!!, mRestaurantData!!, mRestaurantData!!)
+        mAdpater = SearchAdapter(context!!, mEntireRestaurantData!!, mEntireRestaurantData!!)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         mRestaurantSearchList!!.layoutManager = layoutManager
         mRestaurantSearchList!!.addItemDecoration(

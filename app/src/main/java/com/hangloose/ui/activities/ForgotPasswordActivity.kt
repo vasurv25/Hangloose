@@ -38,10 +38,12 @@ class ForgotPasswordActivity : BaseActivity() {
     var isPhoneValid = ObservableBoolean()
     private var mConsumerResendOtpRequest: ConsumerResendOtpRequest? =
         ConsumerResendOtpRequest(AUTH_TYPE.MOBILE.name, null, "VERIFY_MOBILE")
+    private var mNavigationFlag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
+        mNavigationFlag = intent.getIntExtra("flag", 0)
     }
 
     private fun initBinding() {
@@ -116,6 +118,7 @@ class ForgotPasswordActivity : BaseActivity() {
         var intent = Intent(this@ForgotPasswordActivity, OTPActivity::class.java)
         intent.putExtra(getString(R.string.key_otp_recognize), OTP_RECOGNIZE.RESET_OTP.name)
         intent.putExtra(getString(R.string.key_mobile_no), mConsumerResendOtpRequest!!.id)
+        intent.putExtra("flag", mNavigationFlag)
         startActivity(intent)
     }
 }

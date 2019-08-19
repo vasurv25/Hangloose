@@ -37,7 +37,6 @@ class AmbienceImageAdapter(val context: Context, val imageList: ArrayList<String
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        super.destroyItem(container, position, `object`)
         container.removeView(`object` as View?)
     }
 }

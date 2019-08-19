@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.hangloose.HanglooseApp
 import com.hangloose.R
 import com.hangloose.ui.activities.RestaurantDetailsActivity
@@ -34,12 +35,14 @@ class SavedAdapter(
 
     inner class SavedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindSearchItems(itemDetails: RestaurantData) {
-//            Picasso.with(context).load(itemDetails.images).into(itemView.ivRestaurant)
             if (type.equals(context.resources.getString(R.string.key_saved))) {
                 itemView.ibDelete.visibility = View.VISIBLE
             } else {
                 itemView.ibDelete.visibility = View.GONE
             }
+            itemDetails.logo?.let {
+                itemView.ivRestaurant.visibility = View.VISIBLE
+                Glide.with(context).load(itemDetails.logo).into(itemView.ivRestaurant) }
             itemView.tvRestaurantName.text = itemDetails.name
             itemView.tvRestuarntDesc.text = itemDetails.about
             itemView.setOnClickListener {

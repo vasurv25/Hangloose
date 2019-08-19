@@ -68,7 +68,7 @@ class SelectionViewModel : ViewModel() {
         mHeader: String?
     ) {
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(mHeader!!
-            , convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 10)
+            , convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 50)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.facebook.login.LoginManager
 import com.hangloose.R
 import com.hangloose.ui.activities.SavedRestaurantActivity
@@ -17,11 +18,16 @@ import com.hangloose.HanglooseApp
 import com.hangloose.utils.LIKED_RESTAURANT
 import com.hangloose.utils.SAVED_RESTAURANT
 import com.facebook.AccessToken
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
+import com.hangloose.ui.activities.ForgotPasswordActivity
 
 class ProfileAdapter(
     val context: Context,
     private val listProfile: List<String>,
-    private val listProfileIcons: List<Int>
+    private val listProfileIcons: List<Int>,
+    private val mGoogleApiClient: GoogleApiClient?
 ) :
     RecyclerView.Adapter<ProfileAdapter.FilterViewHolder>() {
 
@@ -60,11 +66,17 @@ class ProfileAdapter(
                         context.startActivity(intent)
                     }
 
-                    context.resources.getString(R.string.liked_restaurant) -> {
+                    context.resources.getString(R.string.liked_restaurants) -> {
                         val intent = Intent(context, SavedRestaurantActivity::class.java)
                         intent.putExtra(SAVED_RESTAURANT, false)
                         intent.putExtra(LIKED_RESTAURANT, true)
                         context.startActivity(intent)
+                    }
+
+                    context.resources.getString(R.string.account_settings) -> {
+                        /*var intent = Intent(context, ForgotPasswordActivity::class.java)
+                        intent.putExtra("flag", 1)
+                        context.startActivity(intent)*/
                     }
 
                     context.resources.getString(R.string.logout) -> {
@@ -72,6 +84,11 @@ class ProfileAdapter(
                                 //log out
                                 LoginManager.getInstance().logOut()
 
+                        }
+                        if (mGoogleApiClient!!.isConnected) {
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback {
+                                Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         mPreference!!.edit().clear().commit()
                         HanglooseApp.getInstance().clearApplicationData()

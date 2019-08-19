@@ -53,9 +53,6 @@ class SwipeableCardView(
     @View(R.id.tvRating)
     private val textRating: TextView? = null
 
-    @View(R.id.tvOffer)
-    private val textOffer: TextView? = null
-
     @View(R.id.btBookTable)
     private val btnBookTable: Button? = null
 
@@ -87,7 +84,6 @@ class SwipeableCardView(
         textRestoAddress!!.text = data.address + " . " + data.restaurantType
         textRating!!.text = data.ratings
         textAbout!!.text = data.about
-        textOffer!!.text = data.offer
         //save!!.setImageDrawable(context.resources.getDrawable(R.drawable.ic_unlike, null))
         val savedViewModel = ViewModelProviders.of(context as FragmentActivity).get(SavedViewModel::class.java)
         savedViewModel.getPersistedSavedRestaurant(data.id!!).get().observe(context, Observer<SavedRestaurant> { t ->

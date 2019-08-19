@@ -112,6 +112,13 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 val headers = t.headers()
                 mHeader = headers.get("X-AUTH-TOKEN").toString()
                 mPreference!![X_AUTH_TOKEN] = headers.get("X-AUTH-TOKEN").toString()
+                if (consumerDetails.firstName != null && consumerDetails.email != null) {
+                    mPreference!![KEY_USER_NAME] = consumerDetails.firstName
+                    mPreference!![KEY_EMAIL_ID] = consumerDetails.email
+                }
+                if (consumerDetails.mobile != null) {
+                    mPreference!![KEY_USER_NAME] = consumerDetails.mobile
+                }
                 val typeList = t.body()!!.consumerAuths!!.map { it.type }
                 val type = typeList[0]
                 val consumerData = ConsumerData(

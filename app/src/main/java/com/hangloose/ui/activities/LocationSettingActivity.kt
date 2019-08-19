@@ -79,6 +79,10 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
 
     private var mActivityLocationBinding: ActivityEnableLocationBinding? = null
 
+    private var mEntireRestaurantData = ArrayList<RestaurantData>()
+    private var mLatitude: Double? = null
+    private var mLongitude: Double? = null
+
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
@@ -172,11 +176,16 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+            intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
+            intent.putExtra(KEY_LATITUDE, mLatitude)
+            intent.putExtra(KEY_LONGTITUDE, mLongitude)
             startActivity(intent)
         } else {
             Log.d(TAG, "LikedRestaurant Data : $mRestaurantData")
             val intent = Intent()
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+            intent.putExtra(KEY_LATITUDE, mLatitude)
+            intent.putExtra(KEY_LONGTITUDE, mLongitude)
             setResult(START_LOCATION_SCREEN, intent)
             finish()
         }
@@ -194,7 +203,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
         mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
             val data = t!!.body()
             (0 until data!!.size).forEach { i ->
-                if (data[i].distanceFromLocation!! <= 10) {
+                if (data[i].distanceFromLocation!! <= 50) {
                     var logo: String? = null
                     var ambienceList: ArrayList<String>? = ArrayList()
                     var menuList: ArrayList<String>? = ArrayList()
@@ -234,6 +243,45 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                         )
                     )
                 }
+
+                var logo: String? = null
+                val ambienceList: ArrayList<String>? = ArrayList()
+                val menuList: ArrayList<String>? = ArrayList()
+                (0 until data[i].documents!!.size).forEach { j ->
+                    if (data[i].documents!![j].documentType.equals("LOGO")) {
+                        Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                        logo = data[i].documents!![j].location
+                    } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                        ambienceList!!.add(data[i].documents!![j].location!!)
+                    } else {
+                        menuList!!.add(data[i].documents!![j].location!!)
+                    }
+                }
+                mEntireRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt,
+                        data[i].distanceFromLocation,
+                        data[i].about,
+                        data[i].tags,
+                        data[i].openCloseTime,
+                        data[i].number,
+                        logo,
+                        ambienceList,
+                        menuList
+                    )
+                )
             }
             Log.d(TAG, "Response")
             mPreference!![PREFERENCE_ADDRESS] = mAddress
@@ -287,6 +335,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                                     TAG,
                                     "LatLong : " + locationWithLatLong.latitude + "-" + locationWithLatLong.longitude
                                 )
+                                mLatitude = locationWithLatLong.latitude
+                                mLongitude = locationWithLatLong.longitude
                                 mLocationViewModel!!.restaurantListApiRequest(
                                     mActivitiesSelectedList, mAdventuresSelectedList
                                     , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken
@@ -456,6 +506,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             Log.d("Fragment", "Addressssssssss : $mAddress")
             hideSoftKeyboard(this)
             location.let {
+                mLatitude = location.latitude
+                mLongitude = location.longitude
                 mLocationViewModel!!.restaurantListApiRequest(
                     mActivitiesSelectedList,
                     mAdventuresSelectedList,

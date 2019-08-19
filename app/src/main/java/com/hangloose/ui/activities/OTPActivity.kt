@@ -45,6 +45,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
     private var mOtpNavigation: String? = null
     private var mPhoneNumber: String? = null
     private var mSmsOtpMessage: String? = null
+    private var mNavigationFlag = 0
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -68,6 +69,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_otp)
         mOtpNavigation = intent.getStringExtra(getString(R.string.key_otp_recognize))
         mPhoneNumber = intent.getStringExtra(getString(R.string.key_mobile_no))
+        mNavigationFlag = intent.getIntExtra("flag", 0)
         if (mOtpNavigation!!.equals(OTP_RECOGNIZE.REGISTER_OTP)) {
             tvMobileNumber.text = ConsumerDetails.consumerData!!.mobile
         } else {
@@ -234,6 +236,7 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
 
     private fun onNavigateResetPasswordScreen() {
         var intent = Intent(this@OTPActivity, ResetActivity::class.java)
+        intent.putExtra("flag", mNavigationFlag)
         startActivity(intent)
     }
 

@@ -36,7 +36,7 @@ class SavedRestaurantActivity : BaseActivity() {
             getSavedData()
         }
         if (isLiked!!) {
-            tvSelectionHeading.text = resources.getString(R.string.liked_restaurant)
+            tvSelectionHeading.text = resources.getString(R.string.liked_restaurants)
             getLikedData()
         }
     }

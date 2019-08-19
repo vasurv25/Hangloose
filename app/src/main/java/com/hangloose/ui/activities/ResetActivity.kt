@@ -32,10 +32,12 @@ class ResetActivity : BaseActivity() {
     private var TAG = "ResetActivity"
     private var mActivityResetBinding: ActivityResetBinding? = null
     private lateinit var mResetPasswordViewModel: ResetPasswordViewModel
+    private var mNavigationFlag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
+        mNavigationFlag = intent.getIntExtra("flag", 0)
     }
 
     private fun initBinding() {
@@ -85,9 +87,15 @@ class ResetActivity : BaseActivity() {
     }
 
     private fun onNavigateToSignInScreen() {
-        val intent = Intent(this@ResetActivity, SignInActivity::class.java)
-        intent.flags = FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        if (mNavigationFlag == 0) {
+            val intent = Intent(this@ResetActivity, SignInActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        } else {
+            val intent = Intent(this@ResetActivity, TabsActivity::class.java)
+            intent.flags = FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
     }
     /**
      * method to dismiss keyboard on outside touch

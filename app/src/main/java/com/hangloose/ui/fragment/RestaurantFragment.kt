@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
@@ -19,7 +18,6 @@ import android.widget.*
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.hangloose.R
 import com.hangloose.database.dbmodel.LikedRestaurant
-import com.hangloose.database.dbmodel.SavedRestaurant
 import com.hangloose.listener.LikedInsertionListener
 import com.hangloose.listener.SavedInsertionListener
 import com.hangloose.ui.activities.FilterActivity
@@ -29,7 +27,7 @@ import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.LikedViewModel
-import com.hangloose.viewmodel.SavedViewModel
+import com.hangloose.viewmodel.LocationViewModel
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
@@ -54,6 +52,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     private lateinit var mListenerCallback: LocationNavigationListener
 
     private var mPreference: SharedPreferences? = null
+    private var mLocationViewModel: LocationViewModel? = null
+    private var mEntireRestaurantData = ArrayList<RestaurantData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,16 +65,118 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mActivitiesSelectedList = arguments!!.getStringArrayList(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = arguments!!.getStringArrayList(KEY_ADVENTURES_LIST)
-
-        mRestaurantData!!.sortBy { it.distanceFromLocation }
+        var latitude = arguments!!.getDouble(KEY_LATITUDE)
+        var longitude = arguments!!.getDouble(KEY_LONGTITUDE)
 
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
+
         mAddress = mPreference!![PREFERENCE_ADDRESS]
         Log.i(TAG, """Header : $headerToken""")
         Log.i(TAG, """Address99999999454 : $mAddress""")
         mHeader = headerToken
+
+        mRestaurantData!!.sortBy { it.distanceFromLocation }
         Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
+
+//        if (apiHitFlag == 1) {
+//            refreshRestaurantData(latitude, longitude, headerToken)
+//        }
     }
+
+    /*private fun refreshRestaurantData(latitude: Double, longitude: Double, headerToken: String?) {
+        mLocationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
+        mLocationViewModel!!.restaurantListApiRequest(
+            mActivitiesSelectedList, mAdventuresSelectedList
+            , latitude, longitude, headerToken
+        )
+        mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
+            val data = t!!.body()
+            (0 until data!!.size).forEach { i ->
+                if (data[i].distanceFromLocation!! <= 50) {
+                    var logo: String? = null
+                    var ambienceList: ArrayList<String>? = ArrayList()
+                    var menuList: ArrayList<String>? = ArrayList()
+                    (0 until data[i].documents!!.size).forEach { j ->
+                        if (data[i].documents!![j].documentType.equals("LOGO")) {
+                            Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                            logo = data[i].documents!![j].location
+                        } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                            ambienceList!!.add(data[i].documents!![j].location!!)
+                        } else {
+                            menuList!!.add(data[i].documents!![j].location!!)
+                        }
+                    }
+                    mRestaurantData!!.add(
+                        RestaurantData(
+                            data[i].address!!,
+                            data[i].createdAt,
+                            data[i].discount,
+                            data[i].id,
+                            data[i].images,
+                            data[i].latitude,
+                            data[i].longitude,
+                            data[i].name,
+                            data[i].offer,
+                            data[i].priceFortwo,
+                            data[i].ratings,
+                            data[i].restaurantType,
+                            data[i].updatedAt,
+                            data[i].distanceFromLocation,
+                            data[i].about,
+                            data[i].tags,
+                            data[i].openCloseTime,
+                            data[i].number,
+                            logo,
+                            ambienceList,
+                            menuList
+                        )
+                    )
+                }
+
+                var logo: String? = null
+                val ambienceList: ArrayList<String>? = ArrayList()
+                val menuList: ArrayList<String>? = ArrayList()
+                (0 until data[i].documents!!.size).forEach { j ->
+                    if (data[i].documents!![j].documentType.equals("LOGO")) {
+                        Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                        logo = data[i].documents!![j].location
+                    } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                        ambienceList!!.add(data[i].documents!![j].location!!)
+                    } else {
+                        menuList!!.add(data[i].documents!![j].location!!)
+                    }
+                }
+                mEntireRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt,
+                        data[i].distanceFromLocation,
+                        data[i].about,
+                        data[i].tags,
+                        data[i].openCloseTime,
+                        data[i].number,
+                        logo,
+                        ambienceList,
+                        menuList
+                    )
+                )
+            }
+        }
+        )
+        mRestaurantData!!.sortBy { it.distanceFromLocation }
+        Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
+    }*/
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
