@@ -223,7 +223,7 @@
     <string name="account_settings">Account Settings</string>
     <string name="like">Like</string>
     <string name="unlike">UnLike</string>
-
+    <string name="queries_suggestions">Queries &amp; Suggestions</string>
     <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
     <string name="my_link"><a href="app://hangloose.com/restaurant?id=${data.id}">app://hangloose.com/restaurant?id=${data.id}</a></string>
     <string name="more_details">More Details</string>
@@ -231,4 +231,9 @@
     <string name="key_liked">Liked</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
+    <string name="queries">Queries</string>
+    <string name="email">Email-ID</string>
+    <string name="username">Username</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="send">Send</string>
 </resources>
