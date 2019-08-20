@@ -81,7 +81,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editQueries"
-                android:text=" "
                 fontPath="fonts/segoe_ui.ttf"
                 android:lines="5"
                 android:hint="@string/queries"/>
@@ -103,7 +102,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editSuggestions"
-                android:text=" "
                 fontPath="fonts/segoe_ui.ttf"
                 android:lines="5"
                 android:hint="@string/suggestions"/>
