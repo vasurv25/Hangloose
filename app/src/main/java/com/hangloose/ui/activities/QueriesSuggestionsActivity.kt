@@ -28,7 +28,7 @@ class QueriesSuggestionsActivity : AppCompatActivity() {
                 val subject = resources.getString(R.string.queries_suggestions)
                 val bodyText = resources.getString(R.string.queries) + ":" +
                         editQueries.text.toString() + "   "
-                        resources.getString(R.string.suggestions) + ":" +
+                resources.getString(R.string.suggestions) + ":" +
                         editSuggestions.text.toString()
 
                 val i = Intent(Intent.ACTION_SEND)
@@ -37,7 +37,7 @@ class QueriesSuggestionsActivity : AppCompatActivity() {
                 i.putExtra(Intent.EXTRA_SUBJECT, subject)
                 i.putExtra(Intent.EXTRA_TEXT, bodyText)
 
-                startActivity(Intent.createChooser(i, "Send mail..."));
+                startActivity(Intent.createChooser(i, "Send mail..."))
             } else {
                 showSnackBar(
                     llQueriesSuggestions,

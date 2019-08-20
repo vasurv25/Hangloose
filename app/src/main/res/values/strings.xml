@@ -221,6 +221,7 @@
     <string name="liked_restaurants">Liked Restaurants</string>
     <string name="logout">Logout</string>
     <string name="account_settings">Account Settings</string>
+    <string name="help_support">Help &amp; Support</string>
     <string name="like">Like</string>
     <string name="unlike">UnLike</string>
     <string name="queries_suggestions">Queries &amp; Suggestions</string>

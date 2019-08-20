@@ -80,7 +80,7 @@ class ProfileAdapter(
                         context.startActivity(intent)*/
                     }
 
-                    context.resources.getString(R.string.queries_suggestions) -> {
+                    context.resources.getString(R.string.help_support) -> {
                         val intent = Intent(context, QueriesSuggestionsActivity::class.java)
                         context.startActivity(intent)
                     }

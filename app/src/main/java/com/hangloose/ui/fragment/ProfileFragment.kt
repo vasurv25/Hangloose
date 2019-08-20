@@ -29,7 +29,6 @@ class ProfileFragment : Fragment() {
             "Liked Restaurants",
             //"Offers",
             "Account Settings",
-            "Queries & Suggestions",
             "Help & Support",
             "Logout"
         )
@@ -41,7 +40,6 @@ class ProfileFragment : Fragment() {
         R.drawable.order_icon,
         //R.drawable.offers_icon,
         R.drawable.settings_icon,
-        R.drawable.offers_icon,
         R.drawable.help_icon,
         R.drawable.logout_icon
     )
