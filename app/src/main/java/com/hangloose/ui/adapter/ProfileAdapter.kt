@@ -21,6 +21,7 @@ import com.facebook.AccessToken
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
+import com.hangloose.ui.activities.AccountSettingsActivity
 import com.hangloose.ui.activities.ForgotPasswordActivity
 import com.hangloose.ui.activities.QueriesSuggestionsActivity
 
@@ -75,9 +76,9 @@ class ProfileAdapter(
                     }
 
                     context.resources.getString(R.string.account_settings) -> {
-                        /*var intent = Intent(context, ForgotPasswordActivity::class.java)
+                        var intent = Intent(context, AccountSettingsActivity::class.java)
                         intent.putExtra("flag", 1)
-                        context.startActivity(intent)*/
+                        context.startActivity(intent)
                     }
 
                     context.resources.getString(R.string.help_support) -> {

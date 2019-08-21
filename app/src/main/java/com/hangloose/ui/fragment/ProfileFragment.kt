@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
         val textEmail = rootView.findViewById<TextView>(R.id.tvEmailId)
         textName.text = name
         textEmail.text = email
-
+        retainInstance = true
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()

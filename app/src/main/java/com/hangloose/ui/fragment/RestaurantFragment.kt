@@ -200,6 +200,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mBtFilter = rootView.findViewById(R.id.ibFilter) as ImageButton
         mBtRadioRealGroup = rootView.findViewById(R.id.segmentedButtonGroup) as RadioRealButtonGroup
         mEditLocation = rootView.findViewById(R.id.editLocation) as EditText
+        retainInstance = true
         mBtFilter!!.setOnClickListener(this)
         mLikeViewModel = ViewModelProviders.of(mContext!!).get(LikedViewModel::class.java)
         setSwipeableView()

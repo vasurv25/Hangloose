@@ -37,6 +37,7 @@ class SearchFragment : Fragment(), View.OnTouchListener {
         val rootView = inflater.inflate(R.layout.fragment_search, null)
         mRestaurantSearchList = rootView.findViewById(R.id.rvRestaurant)
         mSearchRestaurant = rootView.findViewById(R.id.etRestaurantSearch)
+        retainInstance = true
         mSearchRestaurant!!.setOnTouchListener(this)
         setUpAdapter()
         setUpSearchView()
