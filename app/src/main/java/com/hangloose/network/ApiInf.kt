@@ -53,7 +53,10 @@ interface ApiInf {
         ) activityIds: String, @Query(
             "adventureIds",
             encoded = true
-        ) adventureIds: String, @Query("latitude") latitude: Double, @Query("longitude") longitude: Double,@Query("distance") distance: Int): Observable<Response<List<RestaurantList>>>
+        ) adventureIds: String, @Query("latitude") latitude: Double, @Query("longitude") longitude: Double,@Query("distance") distance: Int, @Query(
+            "tags",
+            encoded = true
+        ) tags: String): Observable<Response<List<RestaurantList>>>
 
     @GET("restaurants/{restaurantId}")
     fun getRestaurantById(@Path("restaurantId") restaurantId: String): Observable<Response<RestaurantList>>

@@ -32,7 +32,7 @@ class LocationViewModel : ViewModel() {
         Log.i(TAG, "Adeventures List : $adventuresSelectedList")
         Log.i(TAG, "Consumer Deatils$mHeader")
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(
-            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 10)
+            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 50, "")
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
