@@ -101,13 +101,15 @@ class FilterActivity : BaseActivity() {
         }
 
         btnApplyFilter.setOnClickListener {
+            //clearTagList()
             Log.d(TAG, "Tag List : " + getAllSelectedTagsList())
             doApiCallForTags(mLocationViewModel!!.convertToCSV(getAllSelectedTagsList()))
         }
     }
 
     private fun doApiCallForTags(tagsList: String) {
-
+        mRestaurantData!!.clear()
+        mEntireRestaurantData.clear()
         mLocationViewModel!!.restaurantListApiRequest(
             mActivitiesSelectedList, mAdventuresSelectedList
             , mLatitude!!, mLongitude!!, mHeaderToken, tagsList)
@@ -244,5 +246,14 @@ class FilterActivity : BaseActivity() {
         mSelectedTagList.addAll(adapterFeatures!!.getTagsList())
 
         return mSelectedTagList
+    }
+
+    private fun clearTagList() {
+        adapterMusic!!.getTagsList().clear()
+        adapterComedy!!.getTagsList().clear()
+        adapterDining!!.getTagsList().clear()
+        adapterSomethingNew!!.getTagsList().clear()
+        adapterFeatures!!.getTagsList().clear()
+        mSelectedTagList.clear()
     }
 }

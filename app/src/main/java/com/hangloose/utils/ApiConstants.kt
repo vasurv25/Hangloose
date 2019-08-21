@@ -26,7 +26,7 @@ enum class OTP_RECOGNIZE(val type: Int) {
 
 val OTP_REQUEST_REASON = "VERIFY_MOBILE"
 
-enum class LIKE_UNLIKE(val type: String) {
+enum class LIKE_DISLIKE(val type: String) {
     LIKE("LIKE"),
-    UNLIKE("UNLIKE")
+    DISLIKE("DISLIKE")
 }

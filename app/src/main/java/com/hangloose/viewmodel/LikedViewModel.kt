@@ -55,10 +55,10 @@ class LikedViewModel : ViewModel() {
                 if (it.code() == STATUS_OK || it.code() == STATUS_CREATED || it.code() == STATUS_NOCONTENT) {
                     Log.i(TAG, "success register${it.code()}")
                     when (restaurantConsumerRating.ratingAction) {
-                        LIKE_UNLIKE.LIKE.name -> {
+                        LIKE_DISLIKE.LIKE.name -> {
                             getDataHandler()!!.insertLikedRestaurantData(data, likedListener)
                         }
-                        LIKE_UNLIKE.UNLIKE.name -> {
+                        LIKE_DISLIKE.DISLIKE.name -> {
                             getDataHandler()!!.deletelikedRestaurant(data)
                         }
                     }
