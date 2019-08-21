@@ -7,6 +7,9 @@ import android.util.Log
 import com.hangloose.HanglooseApp
 import com.hangloose.model.ConsumerResendOtpRequest
 import com.hangloose.utils.MESSAGE_KEY
+import com.hangloose.utils.STATUS_CREATED
+import com.hangloose.utils.STATUS_NOCONTENT
+import com.hangloose.utils.STATUS_OK
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONObject
@@ -35,7 +38,7 @@ class ForgotPasswordViewModel : ViewModel() {
                 isVisible.set(false)
             }
             .subscribe({
-                if (it.code() == 200 || it.code() == 201 || it.code() == 204) {
+                if (it.code() == STATUS_OK || it.code() == STATUS_CREATED || it.code() == STATUS_NOCONTENT) {
                     Log.i(TAG, "success register${it.code()}")
                     mConsumerResendOTPResponse.value = it
                 } else {

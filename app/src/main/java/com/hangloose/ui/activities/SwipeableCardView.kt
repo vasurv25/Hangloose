@@ -4,24 +4,21 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.support.v4.app.FragmentActivity
-import android.text.Html
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.hangloose.HanglooseApp.Companion.getDataHandler
 import com.hangloose.R
-import com.hangloose.database.dbmodel.LikedRestaurant
 import com.hangloose.database.dbmodel.SavedRestaurant
 import com.hangloose.listener.LikedInsertionListener
 import com.hangloose.listener.SavedInsertionListener
+import com.hangloose.model.RestaurantConsumerRating
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
+import com.hangloose.utils.*
+import com.hangloose.viewmodel.LikedViewModel
 import com.hangloose.viewmodel.SavedViewModel
-import com.mindorks.placeholderview.Animation
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
@@ -38,7 +35,8 @@ class SwipeableCardView(
     val data: RestaurantData,
     val swipeView: SwipePlaceHolderView,
     val likedListener: LikedInsertionListener,
-    val savedListener: SavedInsertionListener
+    val savedListener: SavedInsertionListener,
+    val mLikedViewModel: LikedViewModel
 ) {
 
     @View(R.id.ivRestaurant)
@@ -136,7 +134,16 @@ class SwipeableCardView(
     private fun onSwipedOut() {
         Log.d("EVENT", "onSwipedOut")
         swipeView.addView(this)
-        getDataHandler()!!.deleteUnlikedRestaurant(data)
+//        getDataHandler()!!.deletelikedRestaurant(data)
+        val mPreference = PreferenceHelper.defaultPrefs(context)
+        val consumerID = mPreference.getString(KEY_CONSUMER_ID, null)
+        if (consumerID != null) {
+            mLikedViewModel.syncLikeUnlikeRestaurants(
+                data,
+                RestaurantConsumerRating(consumerID, LIKE_UNLIKE.UNLIKE.name, data.id),
+                likedListener
+            )
+        }
     }
 
     @SwipeCancelState
@@ -154,7 +161,16 @@ class SwipeableCardView(
     @SwipeIn
     private fun onSwipeIn() {
         Log.d("EVENT", "onSwipedIn")
-        getDataHandler()!!.insertLikedRestaurantData(data, likedListener)
+//        getDataHandler()!!.insertLikedRestaurantData(data, likedListener)
+        val mPreference = PreferenceHelper.defaultPrefs(context)
+        val consumerID = mPreference.getString(KEY_CONSUMER_ID, null)
+        if (consumerID != null) {
+            mLikedViewModel.syncLikeUnlikeRestaurants(
+                data,
+                RestaurantConsumerRating(consumerID, LIKE_UNLIKE.LIKE.name, data.id),
+                likedListener
+            )
+        }
     }
 
     @SwipeInState

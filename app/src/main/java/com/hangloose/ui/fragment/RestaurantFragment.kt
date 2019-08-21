@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
@@ -31,6 +32,7 @@ import com.hangloose.viewmodel.LocationViewModel
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
+import kotlinx.android.synthetic.main.fragment_restaurant.*
 import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
 
 
@@ -208,6 +210,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         if (!TextUtils.isEmpty(mAddress)) {
             mEditLocation!!.setText(mAddress)
         }
+
         return rootView
     }
 
@@ -246,9 +249,27 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         Log.i("Hangloose", "onLikedRecordInserted")
     }
 
+    override fun onLikedRecordError(msg: String, data: RestaurantData) {
+
+        mSwipePlaceHolderView!!.addView(
+            SwipeableCardView(
+                mContext!!,
+                data,
+                mSwipePlaceHolderView!!,
+                this, this, mLikeViewModel!!
+            )
+        )
+
+        showSnackBar(
+            layout_constraint,
+            msg,
+            ContextCompat.getColor(context!!, R.color.white),
+            ContextCompat.getColor(context!!, R.color.colorPrimary)
+        )
+    }
+
     override fun onSavedRecordInserted(id: Long) {
         Log.i("Hangloose", "onSavedRecordInserted")
-
     }
 
     private fun setSwipeableView() {
@@ -281,7 +302,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
                 }
                 1 -> {
                     mSwipePlaceHolderView!!.removeAllViews()
-                    setVisibleRestaurantView("NON_VEGETERIAN", mRestaurantData)
+                    setVisibleRestaurantView("NON_VEGETARIAN", mRestaurantData)
                 }
                 else -> {
                     mSwipePlaceHolderView!!.removeAllViews()
@@ -303,7 +324,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
                                 mContext!!,
                                 data,
                                 mSwipePlaceHolderView!!,
-                                this, this
+                                this, this, mLikeViewModel!!
                             )
                         )
                     }

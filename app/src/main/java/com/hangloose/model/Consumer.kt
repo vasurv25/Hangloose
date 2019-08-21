@@ -117,3 +117,9 @@ data class Document(
     @SerializedName("ownerId") var ownerId: String?,
     @SerializedName("documentType") var documentType: String?
 ) : BaseModel()
+
+data class RestaurantConsumerRating(
+    @SerializedName("consumerId") var consumerId: String?,
+    @SerializedName("ratingAction") var ratingAction: String?,
+    @SerializedName("restaurantId") var restaurantId: String?
+) : BaseModel()
