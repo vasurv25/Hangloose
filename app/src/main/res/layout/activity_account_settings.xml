@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+                name="forgotPasswordViewModel"
+                type="com.hangloose.viewmodel.ForgotPasswordViewModel"/>
+
+        <variable
+                name="clickHandler"
+                type="com.hangloose.ui.activities.AccountSettingsActivity"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/llForgotPass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/img_background"
+            android:onClick="@{clickHandler::onOutsideTouch}"
+            tools:context="com.hangloose.ui.activities.ForgotPasswordActivity">
+
+        <TextView
+                android:id="@+id/textView5"
+                style="@style/text20"
+                fontPath="fonts/segoe_ui.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="8dp"
+                android:text="Account Settings"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/textLayoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:textColorHint="@android:color/white"
+                app:errorTextAppearance="@style/errorStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+            <EditText
+                    android:id="@+id/editName"
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/white"
+                    android:maxLines="1"
+                    android:enabled="false"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/textLayoutEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:textColorHint="@android:color/white"
+                app:errorTextAppearance="@style/errorStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutName">
+
+            <EditText
+                    android:id="@+id/editEmail"
+                    fontPath="fonts/segoe_ui.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/white"
+                    android:hint="Email"
+                    android:maxLines="1"
+                    android:enabled="false"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/close"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{clickHandler::onCloseClick}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_close"/>
+
+        <TextView android:id="@+id/tvResetPassword"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  fontPath="fonts/segoe_ui.ttf"
+                  android:text="Reset Password"
+                  android:padding="10dp"
+                  android:gravity="center"
+                  android:textSize="18sp"
+                  android:onClick="@{clickHandler::onNextClick}"
+                  android:textColor="@color/colorPrimary"
+                  tools:layout_editor_absoluteX="40dp"
+                  app:layout_constraintTop_toBottomOf="@+id/textLayoutEmail"
+                  android:layout_marginTop="24dp"/>
+
+        <!--<include
+            android:id="@+id/pbLayout"
+            layout="@layout/activity_progress_overlay"
+            android:visibility="@{forgotPasswordViewModel.isVisible? View.VISIBLE : View.GONE}" />
+-->
+    </android.support.constraint.ConstraintLayout>
+</layout>
