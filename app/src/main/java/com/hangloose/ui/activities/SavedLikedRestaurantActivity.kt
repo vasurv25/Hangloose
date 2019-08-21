@@ -15,7 +15,7 @@ import com.hangloose.viewmodel.LikedViewModel
 import com.hangloose.viewmodel.SavedViewModel
 import kotlinx.android.synthetic.main.activity_saved_restaurant.*
 
-class SavedRestaurantActivity : BaseActivity() {
+class SavedLikedRestaurantActivity : BaseActivity() {
     override fun init() {
 
     }

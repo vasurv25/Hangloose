@@ -162,6 +162,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 if (consumerDetails.firstName != null && consumerDetails.email != null) {
                     mPreference!![KEY_USER_NAME] = consumerDetails.firstName
                     mPreference!![KEY_EMAIL_ID] = consumerDetails.email
+                    mPreference!![KEY_CONSUMER_ID] = consumerDetails.id
                 }
                 var type = typeList.get(0)
                 val consumerData = ConsumerData(

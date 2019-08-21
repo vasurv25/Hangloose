@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.facebook.login.LoginManager
 import com.hangloose.R
-import com.hangloose.ui.activities.SavedRestaurantActivity
+import com.hangloose.ui.activities.SavedLikedRestaurantActivity
 import com.hangloose.ui.activities.SignInActivity
 import com.hangloose.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.layout_profile_item.view.*
@@ -19,10 +19,8 @@ import com.hangloose.utils.LIKED_RESTAURANT
 import com.hangloose.utils.SAVED_RESTAURANT
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
-import com.hangloose.ui.activities.AccountSettingsActivity
-import com.hangloose.ui.activities.ForgotPasswordActivity
+//import com.hangloose.ui.activities.AccountSettingsActivity
 import com.hangloose.ui.activities.QueriesSuggestionsActivity
 
 class ProfileAdapter(
@@ -62,23 +60,23 @@ class ProfileAdapter(
             itemView.setOnClickListener {
                 when (it.tvProfile.text) {
                     context.resources.getString(R.string.favourites) -> {
-                        val intent = Intent(context, SavedRestaurantActivity::class.java)
+                        val intent = Intent(context, SavedLikedRestaurantActivity::class.java)
                         intent.putExtra(SAVED_RESTAURANT, true)
                         intent.putExtra(LIKED_RESTAURANT, false)
                         context.startActivity(intent)
                     }
 
                     context.resources.getString(R.string.liked_restaurants) -> {
-                        val intent = Intent(context, SavedRestaurantActivity::class.java)
+                        val intent = Intent(context, SavedLikedRestaurantActivity::class.java)
                         intent.putExtra(SAVED_RESTAURANT, false)
                         intent.putExtra(LIKED_RESTAURANT, true)
                         context.startActivity(intent)
                     }
 
                     context.resources.getString(R.string.account_settings) -> {
-                        var intent = Intent(context, AccountSettingsActivity::class.java)
-                        intent.putExtra("flag", 1)
-                        context.startActivity(intent)
+//                        var intent = Intent(context, AccountSettingsActivity::class.java)
+//                        intent.putExtra("flag", 1)
+//                        context.startActivity(intent)
                     }
 
                     context.resources.getString(R.string.help_support) -> {

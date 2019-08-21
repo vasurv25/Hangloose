@@ -17,6 +17,7 @@ const val KEY_DATA = "key_data"
 const val X_AUTH_TOKEN = "x_auth_token"
 const val KEY_USER_NAME = "user_name"
 const val KEY_EMAIL_ID = "email_id"
+const val KEY_CONSUMER_ID = "consumer_id"
 const val KEY_ENTIRE_RESTAURANT_DATA = "key_entire_restaurant_data"
 const val KEY_API_HIT_FLAG = "key_api_hit_flag"
 

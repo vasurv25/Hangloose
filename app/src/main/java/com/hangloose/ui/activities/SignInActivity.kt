@@ -115,9 +115,11 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                 if (consumerDetails.firstName != null && consumerDetails.email != null) {
                     mPreference!![KEY_USER_NAME] = consumerDetails.firstName
                     mPreference!![KEY_EMAIL_ID] = consumerDetails.email
+                    mPreference!![KEY_CONSUMER_ID] = consumerDetails.id
                 }
                 if (consumerDetails.mobile != null) {
                     mPreference!![KEY_USER_NAME] = consumerDetails.mobile
+                    mPreference!![KEY_CONSUMER_ID] = consumerDetails.id
                 }
                 val typeList = t.body()!!.consumerAuths!!.map { it.type }
                 val type = typeList[0]

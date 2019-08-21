@@ -21,6 +21,6 @@ interface SavedDBInf {
 interface LikedDBInf {
     fun insertLikedRestaurantData(restaurantData: RestaurantData, listener: LikedInsertionListener)
     fun getAllLikedRestaurant(): ModelCommunicator<LiveData<List<LikedRestaurant>>>
-    fun deleteUnlikedRestaurant(restaurantData: RestaurantData)
+    fun deletelikedRestaurant(restaurantData: RestaurantData)
     fun getPersistedLikedRestaurant(id: String): ModelCommunicator<LiveData<LikedRestaurant>>
 }
