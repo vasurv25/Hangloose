@@ -32,6 +32,7 @@
         </activity>
         <activity
                 android:name=".ui.activities.FilterActivity"
+                android:launchMode="singleTask"
                 android:theme="@style/AppThemeNoActionBar">
         </activity>
         <activity

@@ -47,7 +47,7 @@ android {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [appName: "$project.APPLICATION_NAME" + "_Debug"]
             signingConfig android.signingConfigs.hangLooseDebug
-            buildConfigField "String", "BASE_URL", '"http://dev.hangloose.in"'
+            buildConfigField "String", "BASE_URL", '"http://dev.hangloose.in/"'
         }
     }
 

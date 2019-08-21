@@ -56,6 +56,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     private var mPreference: SharedPreferences? = null
     private var mLocationViewModel: LocationViewModel? = null
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
+    private var mLatitude: Double? = null
+    private var mLongitude: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +69,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mActivitiesSelectedList = arguments!!.getStringArrayList(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = arguments!!.getStringArrayList(KEY_ADVENTURES_LIST)
-        var latitude = arguments!!.getDouble(KEY_LATITUDE)
-        var longitude = arguments!!.getDouble(KEY_LONGTITUDE)
+        mLatitude = arguments!!.getDouble(KEY_LATITUDE)
+        mLongitude = arguments!!.getDouble(KEY_LONGTITUDE)
 
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]
 
@@ -218,7 +220,11 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         when (v!!.id) {
             R.id.ibFilter -> {
                 val intent = Intent(context, FilterActivity::class.java)
-                startActivityForResult(intent, REQUEST_FILTER_ACTIVITY)
+                intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
+                intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
+                intent.putExtra(KEY_LATITUDE, mLatitude)
+                intent.putExtra(KEY_LONGTITUDE, mLongitude)
+                startActivity(intent)
             }
         }
     }

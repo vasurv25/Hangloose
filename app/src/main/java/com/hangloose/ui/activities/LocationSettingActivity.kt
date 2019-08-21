@@ -339,8 +339,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                                 mLongitude = locationWithLatLong.longitude
                                 mLocationViewModel!!.restaurantListApiRequest(
                                     mActivitiesSelectedList, mAdventuresSelectedList
-                                    , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken
-                                )
+                                    , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken,"")
                             }
                         } else {
                             Toast.makeText(
@@ -513,8 +512,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                     mAdventuresSelectedList,
                     location.latitude,
                     location.longitude,
-                    mHeaderToken
-                )
+                    mHeaderToken, "")
             }
         }
     }

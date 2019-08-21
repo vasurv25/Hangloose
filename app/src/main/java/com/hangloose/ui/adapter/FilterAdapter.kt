@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.layout_filter_item.view.*
 class FilterAdapter(val context: Context, val listFilter: List<String>) :
     RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
+    private var mTagsList: ArrayList<String> = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FilterViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(R.layout.layout_filter_item, parent, false)
         return FilterViewHolder(view)
@@ -31,12 +33,18 @@ class FilterAdapter(val context: Context, val listFilter: List<String>) :
             itemView.cb_filter.text = item
             itemView.cb_filter.setOnCheckedChangeListener { button, b ->
                 if (button.isChecked) {
+                    mTagsList.add(item)
                     button.setTextColor(ContextCompat.getColor(context, R.color.white))
                 } else {
+                    mTagsList.remove(item)
                     button.setTextColor(ContextCompat.getColor(context, R.color.black))
                 }
             }
         }
+    }
+
+    fun getTagsList(): ArrayList<String> {
+        return mTagsList
     }
 
 //    fun clearFilter() {

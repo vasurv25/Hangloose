@@ -1,12 +1,22 @@
 package com.hangloose.ui.activities
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import com.hangloose.utils.PreferenceHelper.get
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.hangloose.R
+import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.FilterAdapter
+import com.hangloose.ui.model.RestaurantData
+import com.hangloose.utils.*
+import com.hangloose.viewmodel.LocationViewModel
 import io.apptik.widget.MultiSlider
 import kotlinx.android.synthetic.main.activity_filter.*
+import retrofit2.Response
 
 
 class FilterActivity : BaseActivity() {
@@ -14,6 +24,7 @@ class FilterActivity : BaseActivity() {
 
     }
 
+    private var TAG = "FilterActivity"
     private val musicList = arrayListOf("Live", "Soft", "Live Instrument", "DJ Night")
     private val comedyList = arrayListOf("Live Comedy Show", "Open Mic")
     private val diningList = arrayListOf("Fancy", "Casual", "Daba Style", "Something Casual")
@@ -26,13 +37,33 @@ class FilterActivity : BaseActivity() {
     private var adapterSomethingNew: FilterAdapter? = null
     private var adapterFeatures: FilterAdapter? = null
 
+    private var mLatitude: Double? = null
+    private var mLongitude: Double? = null
+    private var mActivitiesSelectedList = ArrayList<String>()
+    private var mAdventuresSelectedList = ArrayList<String>()
+
+    private var mLocationViewModel: LocationViewModel? = null
+    private var mPreference: SharedPreferences? = null
+    private var mHeaderToken: String? = null
+    private var mEntireRestaurantData = ArrayList<RestaurantData>()
+    private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
+    private var mSelectedTagList: ArrayList<String> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
         setSupportActionBar(findViewById(R.id.my_toolbar))
 
-        setAdapters()
+        mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
+        mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
+        mLatitude = intent.getDoubleExtra(KEY_LATITUDE, 0.0)
+        mLongitude = intent.getDoubleExtra(KEY_LONGTITUDE, 0.0)
+        mPreference = PreferenceHelper.defaultPrefs(this)
+        mHeaderToken = mPreference!![X_AUTH_TOKEN]
 
+        mLocationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
+
+        setAdapters()
         ibFilter.setOnClickListener { finish() }
 
 //        minDiscount.text = discount_range.getThumb(0).value.toString()
@@ -64,7 +95,113 @@ class FilterActivity : BaseActivity() {
             discount_range.clearThumbs()
             discount_range.addThumb(0)
             discount_range.addThumb(100)
+            mSelectedTagList.clear()
+            doApiCallForTags("")
+
         }
+
+        btnApplyFilter.setOnClickListener {
+            Log.d(TAG, "Tag List : " + getAllSelectedTagsList())
+            doApiCallForTags(mLocationViewModel!!.convertToCSV(getAllSelectedTagsList()))
+        }
+    }
+
+    private fun doApiCallForTags(tagsList: String) {
+
+        mLocationViewModel!!.restaurantListApiRequest(
+            mActivitiesSelectedList, mAdventuresSelectedList
+            , mLatitude!!, mLongitude!!, mHeaderToken, tagsList)
+
+        mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
+            val data = t!!.body()
+            (0 until data!!.size).forEach { i ->
+                if (data[i].distanceFromLocation!! <= 50) {
+                    var logo: String? = null
+                    var ambienceList: ArrayList<String>? = ArrayList()
+                    var menuList: ArrayList<String>? = ArrayList()
+                    (0 until data[i].documents!!.size).forEach { j ->
+                        if (data[i].documents!![j].documentType.equals("LOGO")) {
+                            Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                            logo = data[i].documents!![j].location
+                        } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                            ambienceList!!.add(data[i].documents!![j].location!!)
+                        } else {
+                            menuList!!.add(data[i].documents!![j].location!!)
+                        }
+                    }
+                    mRestaurantData!!.add(
+                        RestaurantData(
+                            data[i].address!!,
+                            data[i].createdAt,
+                            data[i].discount,
+                            data[i].id,
+                            data[i].images,
+                            data[i].latitude,
+                            data[i].longitude,
+                            data[i].name,
+                            data[i].offer,
+                            data[i].priceFortwo,
+                            data[i].ratings,
+                            data[i].restaurantType,
+                            data[i].updatedAt,
+                            data[i].distanceFromLocation,
+                            data[i].about,
+                            data[i].tags,
+                            data[i].openCloseTime,
+                            data[i].number,
+                            logo,
+                            ambienceList,
+                            menuList
+                        )
+                    )
+                }
+
+                var logo: String? = null
+                val ambienceList: ArrayList<String>? = ArrayList()
+                val menuList: ArrayList<String>? = ArrayList()
+                (0 until data[i].documents!!.size).forEach { j ->
+                    if (data[i].documents!![j].documentType.equals("LOGO")) {
+                        Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                        logo = data[i].documents!![j].location
+                    } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
+                        ambienceList!!.add(data[i].documents!![j].location!!)
+                    } else {
+                        menuList!!.add(data[i].documents!![j].location!!)
+                    }
+                }
+                mEntireRestaurantData.add(
+                    RestaurantData(
+                        data[i].address!!,
+                        data[i].createdAt,
+                        data[i].discount,
+                        data[i].id,
+                        data[i].images,
+                        data[i].latitude,
+                        data[i].longitude,
+                        data[i].name,
+                        data[i].offer,
+                        data[i].priceFortwo,
+                        data[i].ratings,
+                        data[i].restaurantType,
+                        data[i].updatedAt,
+                        data[i].distanceFromLocation,
+                        data[i].about,
+                        data[i].tags,
+                        data[i].openCloseTime,
+                        data[i].number,
+                        logo,
+                        ambienceList,
+                        menuList
+                    )
+                )
+            }
+            var intent = Intent(this, TabsActivity::class.java)
+            intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
+            intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
+            intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+            intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
+            startActivity(intent)
+        })
     }
 
     private fun setAdapters() {
@@ -92,5 +229,20 @@ class FilterActivity : BaseActivity() {
         adapterFeatures = FilterAdapter(this, featuresList)
         rv_features.layoutManager = lLMFeatures
         rv_features.adapter = adapterFeatures
+    }
+
+    private fun getAllSelectedTagsList(): ArrayList<String> {
+        adapterMusic!!.getTagsList()
+        adapterComedy!!.getTagsList()
+        adapterDining!!.getTagsList()
+        adapterSomethingNew!!.getTagsList()
+        adapterFeatures!!.getTagsList()
+        mSelectedTagList.addAll(adapterMusic!!.getTagsList())
+        mSelectedTagList.addAll(adapterComedy!!.getTagsList())
+        mSelectedTagList.addAll(adapterDining!!.getTagsList())
+        mSelectedTagList.addAll(adapterSomethingNew!!.getTagsList())
+        mSelectedTagList.addAll(adapterFeatures!!.getTagsList())
+
+        return mSelectedTagList
     }
 }

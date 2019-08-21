@@ -26,13 +26,13 @@ class LocationViewModel : ViewModel() {
         adventuresSelectedList: ArrayList<String>,
         latitude: Double,
         longitude: Double,
-        mHeader: String?
+        mHeader: String?, tagsList: String
     ) {
         Log.i(TAG, "Actvities List : $activitiesSelectedList")
         Log.i(TAG, "Adeventures List : $adventuresSelectedList")
         Log.i(TAG, "Consumer Deatils$mHeader")
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(
-            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 50, "")
+            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 50, tagsList)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -61,7 +61,7 @@ class LocationViewModel : ViewModel() {
         return mRestaurantListResponse
     }
 
-    private fun convertToCSV(list : ArrayList<String>) : String {
+    public fun convertToCSV(list : ArrayList<String>) : String {
         var listInString = StringBuilder()
 
         for (name in list) {
