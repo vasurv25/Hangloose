@@ -134,7 +134,7 @@ class SwipeableCardView(
     private fun onSwipedOut() {
         Log.d("EVENT", "onSwipedOut")
         //swipeView.addView(this)
-//        getDataHandler()!!.deletelikedRestaurant(data)
+//        getDataHandler()!!.deletelikeUnlikeRestaurant(data)
         val mPreference = PreferenceHelper.defaultPrefs(context)
         val consumerID = mPreference.getString(KEY_CONSUMER_ID, null)
         if (consumerID != null) {
@@ -161,7 +161,7 @@ class SwipeableCardView(
     @SwipeIn
     private fun onSwipeIn() {
         Log.d("EVENT", "onSwipedIn")
-//        getDataHandler()!!.insertLikedRestaurantData(data, likedListener)
+//        getDataHandler()!!.insertLikeUnlikeRestaurantData(data, likedListener)
         val mPreference = PreferenceHelper.defaultPrefs(context)
         val consumerID = mPreference.getString(KEY_CONSUMER_ID, null)
         if (consumerID != null) {

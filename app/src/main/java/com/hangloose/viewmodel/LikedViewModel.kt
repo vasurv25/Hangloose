@@ -1,7 +1,6 @@
 package com.hangloose.viewmodel
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
 import android.util.Log
@@ -56,10 +55,10 @@ class LikedViewModel : ViewModel() {
                     Log.i(TAG, "success register${it.code()}")
                     when (restaurantConsumerRating.ratingAction) {
                         LIKE_DISLIKE.LIKE.name -> {
-                            getDataHandler()!!.insertLikedRestaurantData(data, likedListener)
+                            getDataHandler()!!.insertLikeUnlikeRestaurantData(data, true, likedListener)
                         }
                         LIKE_DISLIKE.DISLIKE.name -> {
-                            getDataHandler()!!.deletelikedRestaurant(data)
+                            getDataHandler()!!.insertLikeUnlikeRestaurantData(data, false, likedListener)
                         }
                     }
                 } else {

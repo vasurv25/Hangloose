@@ -107,7 +107,11 @@ class RoomDBHandler(context: Context) : DBInf {
         }
     }
 
-    override fun insertLikedRestaurantData(restaurantData: RestaurantData, listener: LikedInsertionListener) {
+    override fun insertLikeUnlikeRestaurantData(
+        restaurantData: RestaurantData,
+        isLike: Boolean,
+        listener: LikedInsertionListener
+    ) {
 
         class InsertTask : AsyncTask<Void, Void, Long>() {
             override fun doInBackground(vararg params: Void): Long {
@@ -132,7 +136,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.number,
                     restaurantData.logo,
                     restaurantData.ambienceList,
-                    restaurantData.menuList
+                    restaurantData.menuList,
+                    isLike
                 )
                 return appRoomDatabase.likedRestaurantDao().insertLikedRestaurant(restaurant)
             }
@@ -153,7 +158,7 @@ class RoomDBHandler(context: Context) : DBInf {
         }
     }
 
-    override fun deletelikedRestaurant(restaurantData: RestaurantData) {
+    override fun deletelikeUnlikeRestaurant(restaurantData: RestaurantData, isLike: Boolean) {
         class deleteTask : AsyncTask<Void, Void, Int>() {
             override fun doInBackground(vararg params: Void?): Int {
                 val restaurant = LikedRestaurant(
@@ -177,7 +182,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.number,
                     restaurantData.logo,
                     restaurantData.ambienceList,
-                    restaurantData.menuList
+                    restaurantData.menuList,
+                    isLike
                 )
                 return appRoomDatabase.likedRestaurantDao().deleteUnlikedRestaurant(restaurant)
             }
@@ -188,7 +194,7 @@ class RoomDBHandler(context: Context) : DBInf {
     override fun getPersistedLikedRestaurant(id: String): ModelCommunicator<LiveData<LikedRestaurant>> {
         return object : ModelCommunicator<LiveData<LikedRestaurant>> {
             override fun get(): LiveData<LikedRestaurant> {
-                return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(id)
+                return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(id, true)
             }
         }
     }

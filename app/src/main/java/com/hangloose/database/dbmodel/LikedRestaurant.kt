@@ -70,5 +70,8 @@ data class LikedRestaurant(
     val ambience: List<String>?,
 
     @ColumnInfo(name = "menu")
-    val menu: List<String>?
+    val menu: List<String>?,
+
+    @ColumnInfo(name = "isLike")
+    val isLike: Boolean
 )
