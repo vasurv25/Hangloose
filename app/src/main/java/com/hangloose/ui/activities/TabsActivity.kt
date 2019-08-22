@@ -74,7 +74,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         val intent = Intent(this, LikedDBService::class.java)
-        val pendingIntent = PendingIntent.getService(this, REQUEST_CODE_DB_DELETE, intent, 0)
+        val pendingIntent = PendingIntent.getService(this, REQUEST_CODE_DB_DELETE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
         val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }

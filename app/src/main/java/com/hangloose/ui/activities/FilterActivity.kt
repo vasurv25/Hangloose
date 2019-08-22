@@ -95,7 +95,7 @@ class FilterActivity : BaseActivity() {
             discount_range.clearThumbs()
             discount_range.addThumb(0)
             discount_range.addThumb(100)
-            mSelectedTagList.clear()
+            clearTagList()
             doApiCallForTags("")
 
         }
@@ -197,7 +197,8 @@ class FilterActivity : BaseActivity() {
                     )
                 )
             }
-            var intent = Intent(this, TabsActivity::class.java)
+            mSelectedTagList.clear()
+            val intent = Intent(this, TabsActivity::class.java)
             intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)

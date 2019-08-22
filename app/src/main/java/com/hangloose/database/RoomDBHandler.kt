@@ -200,7 +200,7 @@ class RoomDBHandler(context: Context) : DBInf {
     override fun getPersistedLikedRestaurant(id: String): ModelCommunicator<LiveData<LikedRestaurant>> {
         return object : ModelCommunicator<LiveData<LikedRestaurant>> {
             override fun get(): LiveData<LikedRestaurant> {
-                return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(id, true)
+                return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(id, true, false)
             }
         }
     }

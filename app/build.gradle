@@ -41,7 +41,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [appName: project.APPLICATION_NAME]
             signingConfig android.signingConfigs.hangLooseRelease
-            buildConfigField "String", "BASE_URL", '"http://hangloose.ap-south-1.elasticbeanstalk.com/"'
+            buildConfigField "String", "BASE_URL", '"http://api.hangloose.in/"'
         }
         debug {
             applicationIdSuffix ".debug"

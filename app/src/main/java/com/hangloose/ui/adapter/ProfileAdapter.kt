@@ -20,7 +20,7 @@ import com.hangloose.utils.SAVED_RESTAURANT
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
-//import com.hangloose.ui.activities.AccountSettingsActivity
+import com.hangloose.ui.activities.AccountSettingsActivity
 import com.hangloose.ui.activities.QueriesSuggestionsActivity
 
 class ProfileAdapter(
@@ -74,9 +74,9 @@ class ProfileAdapter(
                     }
 
                     context.resources.getString(R.string.account_settings) -> {
-//                        var intent = Intent(context, AccountSettingsActivity::class.java)
-//                        intent.putExtra("flag", 1)
-//                        context.startActivity(intent)
+                        var intent = Intent(context, AccountSettingsActivity::class.java)
+                        intent.putExtra("flag", 1)
+                        context.startActivity(intent)
                     }
 
                     context.resources.getString(R.string.help_support) -> {
