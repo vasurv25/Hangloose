@@ -134,7 +134,7 @@ class SwipeableCardView(
     private fun onSwipedOut() {
         Log.d("EVENT", "onSwipedOut")
         //swipeView.addView(this)
-//        getDataHandler()!!.deletelikeUnlikeRestaurant(data)
+//        getDataHandler()!!.deleteLikeUnlikeRestaurant(data)
         val mPreference = PreferenceHelper.defaultPrefs(context)
         val consumerID = mPreference.getString(KEY_CONSUMER_ID, null)
         if (consumerID != null) {

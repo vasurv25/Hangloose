@@ -36,3 +36,5 @@ const val LIKED_RESTAURANT = "LIKED_RESTAURANT"
 const val KEY_LATITUDE = "key_latitude"
 const val KEY_LONGTITUDE = "key_longtitude"
 
+const val REQUEST_CODE_DB_DELETE = 199
+

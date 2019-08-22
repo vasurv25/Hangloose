@@ -158,7 +158,13 @@ class RoomDBHandler(context: Context) : DBInf {
         }
     }
 
-    override fun deletelikeUnlikeRestaurant(restaurantData: RestaurantData, isLike: Boolean) {
+    override fun emptyLikeDislikeRestaurants() {
+        AsyncTask.execute {
+            appRoomDatabase.likedRestaurantDao().emptyLikeDislikeRestaurants()
+        }
+    }
+
+    override fun deleteLikeUnlikeRestaurant(restaurantData: RestaurantData, isLike: Boolean) {
         class deleteTask : AsyncTask<Void, Void, Int>() {
             override fun doInBackground(vararg params: Void?): Int {
                 val restaurant = LikedRestaurant(

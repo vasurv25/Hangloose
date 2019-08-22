@@ -1,6 +1,9 @@
 package com.hangloose.ui.activities
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -14,11 +17,15 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import com.hangloose.R
+import com.hangloose.database.LikedDBInf
 import com.hangloose.ui.fragment.*
 import com.hangloose.ui.model.RestaurantData
+import com.hangloose.ui.service.LikedDBService
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import kotlinx.android.synthetic.main.activity_tab.tabLayout
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, RestaurantFragment.LocationNavigationListener {
 
@@ -57,6 +64,17 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         mHeader = headerToken
         Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
         onTabSelected(tabLayout.getTabAt(0))
+
+        setAlarmForDB()
+    }
+
+    private fun setAlarmForDB() {
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.HOUR_OF_DAY, 2)
+        val intent = Intent(this, LikedDBService::class.java)
+        val pendingIntent = PendingIntent.getService(this, REQUEST_CODE_DB_DELETE, intent, 0)
+        val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarm.set(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
     }
 
     @SuppressLint("NewApi")
@@ -103,7 +121,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
             }
             tabLayout.selectedTabPosition == 1 -> {
                 replaceFragment(SearchFragment())
-                
+
             }
             tabLayout.selectedTabPosition == 2 -> {
                 replaceFragment(ProfileFragment())

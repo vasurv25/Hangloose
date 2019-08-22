@@ -20,4 +20,7 @@ abstract class LikedRestaurantDao {
     @Transaction
     @Query("Select * from LIKED_TABLE_RESTAURANT where _id = :id and isLike = :isLike")
     abstract fun getPersistedLikedRestaurant(id: String, isLike: Boolean): LiveData<LikedRestaurant>
+
+    @Query("DELETE FROM LIKED_TABLE_RESTAURANT")
+    abstract fun emptyLikeDislikeRestaurants()
 }
