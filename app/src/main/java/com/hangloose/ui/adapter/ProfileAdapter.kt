@@ -95,6 +95,7 @@ class ProfileAdapter(
                                 Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
                             }
                         }
+                        HanglooseApp.getDataHandler()!!.emptyLikeDislikeRestaurants()
                         mPreference!!.edit().clear().commit()
                         HanglooseApp.getInstance().clearApplicationData()
                         var intent = Intent(context, SignInActivity::class.java)
