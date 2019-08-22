@@ -11,8 +11,8 @@ abstract class LikedRestaurantDao {
     abstract fun insertLikedRestaurant(likedRestaurantData: LikedRestaurant): Long
 
     @Transaction
-    @Query("Select * from LIKED_TABLE_RESTAURANT")
-    abstract fun getAllLikedRestaurant(): LiveData<List<LikedRestaurant>>
+    @Query("Select * from LIKED_TABLE_RESTAURANT where isLike = :isLike")
+    abstract fun getAllLikedRestaurant(isLike: Boolean): LiveData<List<LikedRestaurant>>
 
     @Delete
     abstract fun deleteUnlikedRestaurant(likedRestaurantData: LikedRestaurant): Int
