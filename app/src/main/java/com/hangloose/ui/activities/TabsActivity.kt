@@ -70,7 +70,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
 
     private fun setAlarmForDB() {
         val cal = Calendar.getInstance()
-        cal.add(Calendar.HOUR_OF_DAY, 2)
+        cal.add(Calendar.HOUR_OF_DAY, 13)
         val intent = Intent(this, LikedDBService::class.java)
         val pendingIntent = PendingIntent.getService(this, REQUEST_CODE_DB_DELETE, intent, 0)
         val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
