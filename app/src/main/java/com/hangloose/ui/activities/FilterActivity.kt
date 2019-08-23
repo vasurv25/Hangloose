@@ -45,7 +45,6 @@ class FilterActivity : BaseActivity() {
     private var mLocationViewModel: LocationViewModel? = null
     private var mPreference: SharedPreferences? = null
     private var mHeaderToken: String? = null
-    private var mEntireRestaurantData = ArrayList<RestaurantData>()
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
     private var mSelectedTagList: ArrayList<String> = ArrayList()
 
@@ -109,10 +108,10 @@ class FilterActivity : BaseActivity() {
 
     private fun doApiCallForTags(tagsList: String) {
         mRestaurantData!!.clear()
-        mEntireRestaurantData.clear()
         mLocationViewModel!!.restaurantListApiRequest(
             mActivitiesSelectedList, mAdventuresSelectedList
-            , mLatitude!!, mLongitude!!, mHeaderToken, tagsList)
+            , mLatitude!!, mLongitude!!, mHeaderToken, tagsList
+        )
 
         mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
             val data = t!!.body()
@@ -157,52 +156,12 @@ class FilterActivity : BaseActivity() {
                         )
                     )
                 }
-
-                var logo: String? = null
-                val ambienceList: ArrayList<String>? = ArrayList()
-                val menuList: ArrayList<String>? = ArrayList()
-                (0 until data[i].documents!!.size).forEach { j ->
-                    if (data[i].documents!![j].documentType.equals("LOGO")) {
-                        Log.d(TAG, "Logo : " + data[i].documents!![j].location)
-                        logo = data[i].documents!![j].location
-                    } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
-                        ambienceList!!.add(data[i].documents!![j].location!!)
-                    } else {
-                        menuList!!.add(data[i].documents!![j].location!!)
-                    }
-                }
-                mEntireRestaurantData.add(
-                    RestaurantData(
-                        data[i].address!!,
-                        data[i].createdAt,
-                        data[i].discount,
-                        data[i].id,
-                        data[i].images,
-                        data[i].latitude,
-                        data[i].longitude,
-                        data[i].name,
-                        data[i].offer,
-                        data[i].priceFortwo,
-                        data[i].ratings,
-                        data[i].restaurantType,
-                        data[i].updatedAt,
-                        data[i].distanceFromLocation,
-                        data[i].about,
-                        data[i].tags,
-                        data[i].openCloseTime,
-                        data[i].number,
-                        logo,
-                        ambienceList,
-                        menuList
-                    )
-                )
             }
             mSelectedTagList.clear()
             val intent = Intent(this, TabsActivity::class.java)
             intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
-            intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
             startActivity(intent)
         })
     }

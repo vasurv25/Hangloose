@@ -197,11 +197,22 @@ class RoomDBHandler(context: Context) : DBInf {
         deleteTask().execute()
     }
 
-    override fun getPersistedLikedRestaurant(id: String): ModelCommunicator<LiveData<LikedRestaurant>> {
-        return object : ModelCommunicator<LiveData<LikedRestaurant>> {
-            override fun get(): LiveData<LikedRestaurant> {
-                return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(id, true, false)
+    override fun getPersistedLikedRestaurant(data: RestaurantData, type: String, listener: LikedInsertionListener) {
+
+        class getPersistedLikedRestaurantTask : AsyncTask<Void, Void, LikedRestaurant>() {
+            override fun doInBackground(vararg params: Void?): LikedRestaurant {
+                return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(data.id!!)
+            }
+
+            override fun onPostExecute(result: LikedRestaurant?) {
+                super.onPostExecute(result)
+                if (result != null) {
+                    listener.getLikeDislikeData(result, data, type)
+                } else {
+                    listener.getLikeDislikeDataIfNull(data, type)
+                }
             }
         }
+        getPersistedLikedRestaurantTask().execute()
     }
 }

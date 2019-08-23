@@ -1,21 +1,21 @@
 package com.hangloose.ui.activities
 
 import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.hangloose.R
 import com.hangloose.utils.KEY_EMAIL_ID
 import com.hangloose.utils.KEY_USER_NAME
 import com.hangloose.utils.PreferenceHelper
-import com.hangloose.utils.PreferenceHelper.set
 import kotlinx.android.synthetic.main.activity_queries_suggestions.*
 import android.content.Intent
-import android.net.Uri
 import android.support.v4.content.ContextCompat
 import android.view.View
 import com.hangloose.utils.showSnackBar
 
-class QueriesSuggestionsActivity : AppCompatActivity() {
+class QueriesSuggestionsActivity : BaseActivity() {
+    override fun init() {
+
+    }
 
     private var mPreference: SharedPreferences? = null
 

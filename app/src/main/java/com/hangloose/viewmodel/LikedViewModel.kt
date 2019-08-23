@@ -32,17 +32,17 @@ class LikedViewModel : ViewModel() {
         }
     }
 
-    fun getPersistedLikedRestaurant(id: String): ModelCommunicator<LiveData<LikedRestaurant>> {
-        return PersistedLikedRestaurantAsyncTask(id).execute().get()
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private class PersistedLikedRestaurantAsyncTask(var id: String) :
-        AsyncTask<Void, Void, ModelCommunicator<LiveData<LikedRestaurant>>>() {
-        override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<LikedRestaurant>> {
-            return getDataHandler()!!.getPersistedLikedRestaurant(id) as ModelCommunicator<LiveData<LikedRestaurant>>
-        }
-    }
+//    fun getPersistedLikedRestaurant(id: String): ModelCommunicator<LiveData<LikedRestaurant>> {
+//        return PersistedLikedRestaurantAsyncTask(id).execute().get()
+//    }
+//
+//    @Suppress("UNCHECKED_CAST")
+//    private class PersistedLikedRestaurantAsyncTask(var id: String) :
+//        AsyncTask<Void, Void, ModelCommunicator<LiveData<LikedRestaurant>>>() {
+//        override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<LikedRestaurant>> {
+//            return getDataHandler()!!.getPersistedLikedRestaurant(id) as ModelCommunicator<LiveData<LikedRestaurant>>
+//        }
+//    }
 
     fun syncLikeUnlikeRestaurants(
         data: RestaurantData, restaurantConsumerRating: RestaurantConsumerRating, likedListener: LikedInsertionListener
