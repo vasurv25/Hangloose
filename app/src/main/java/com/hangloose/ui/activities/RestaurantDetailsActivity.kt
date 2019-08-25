@@ -61,8 +61,8 @@ class RestaurantDetailsActivity : BaseActivity() {
             mSelectionViewModel!!.getRestaurantById().observe(this, Observer<Response<RestaurantList>> { t ->
                 val data = t!!.body()
                 var logo: String? = null
-                var ambienceList: ArrayList<String>? = null
-                var menuList: ArrayList<String>? = null
+                var ambienceList: ArrayList<String>? = ArrayList()
+                var menuList: ArrayList<String>? = ArrayList()
                 (0 until data!!.documents!!.size).forEach { i->
                     if (data.documents!![i].documentType.equals("LOGO")) {
                         logo = data.documents!![i].location
