@@ -38,7 +38,6 @@ class RestaurantDetailsActivity : BaseActivity() {
     private val TAG = "RestaurantDetails"
     private var restaurantData: RestaurantData? = null
     private var mMenuRecyclerViewAdapter: MenuRecyclerViewAdapter? = null
-    private var mTagList: List<String>? = ArrayList()
     private var mTagRecyclerViewAdapter: TagRecyclerViewAdapter? = null
     private var mSelectionViewModel: SelectionViewModel? = null
 
@@ -112,7 +111,6 @@ class RestaurantDetailsActivity : BaseActivity() {
             textOpenCloseTime.text = restaurantData!!.openCloseTime
             textChargesValue.text = restaurantData!!.priceFortwo
             textContact.text = restaurantData!!.number
-            mTagList = restaurantData!!.tags
             if (restaurantData!!.restaurantType!!.equals("VEGETARIAN")) {
                 textNonVeg.visibility = View.GONE
             } else {
@@ -124,7 +122,7 @@ class RestaurantDetailsActivity : BaseActivity() {
                 checkCallPermission()
             }
             restaurantData!!.menuList?.let { initMenuRecyclerView(restaurantData!!.menuList) }
-            initTagRecyclerView()
+            restaurantData!!.tags?.let { initTagRecyclerView(restaurantData!!.tags) }
         }
     }
 
@@ -183,10 +181,10 @@ class RestaurantDetailsActivity : BaseActivity() {
         rvMenu.adapter = mMenuRecyclerViewAdapter
     }
 
-    private fun initTagRecyclerView() {
+    private fun initTagRecyclerView(tagList: List<String>?) {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvTags.layoutManager = layoutManager
-        mTagRecyclerViewAdapter = mTagList?.let { TagRecyclerViewAdapter(it) }
+        mTagRecyclerViewAdapter = tagList?.let { TagRecyclerViewAdapter(it) }
         rvTags.adapter = mTagRecyclerViewAdapter
     }
 
