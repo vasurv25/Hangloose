@@ -93,13 +93,6 @@ class AccountSettingsActivity : BaseActivity() {
         this@AccountSettingsActivity.finish()
     }
 
-    /**
-     * method to dismiss keyboard on outside touch
-     */
-    fun onOutsideTouch(view: View) {
-        hideSoftKeyboard(this)
-    }
-
     private fun onNavigateOTPScreen() {
         var intent = Intent(this@AccountSettingsActivity, OTPActivity::class.java)
         intent.putExtra(getString(R.string.key_otp_recognize), OTP_RECOGNIZE.RESET_OTP.name)

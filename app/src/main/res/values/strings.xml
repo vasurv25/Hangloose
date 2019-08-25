@@ -60,8 +60,8 @@
     <string name="category_value">Dining - Music - Dance</string>
     <string name="veg">Veg</string>
     <string name="nonveg">Non-Veg</string>
-    <string name="offers_with_reservation_title">Offers with Reservation</string>
-    <string name="offers_with_reservation_subtitle">Reserve a table and get special discounts</string>
+    <string name="offers_with_reservation_title">Offers in Detail</string>
+    <string name="offers_with_reservation_subtitle">Terms and Conditions applied*</string>
     <string name="offer_on_total_bill">20% Off Total Bill</string>
     <string name="addon_offers">+2 Add-On Offers</string>
     <string name="available_now">Available Now</string>
@@ -223,7 +223,7 @@
     <string name="account_settings">Account Settings</string>
     <string name="help_support">Help &amp; Support</string>
     <string name="like">Like</string>
-    <string name="unlike">UnLike</string>
+    <string name="unlike">Dislike</string>
     <string name="queries_suggestions">Queries &amp; Suggestions</string>
     <string name="readyandroid"><![CDATA[<a href="https://readyandroid.wordpress.com/">readyandroid</a>]]></string>
     <string name="my_link"><a href="app://hangloose.com/restaurant?id=${data.id}">app://hangloose.com/restaurant?id=${data.id}</a></string>

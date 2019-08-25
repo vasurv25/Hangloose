@@ -207,9 +207,9 @@ class RoomDBHandler(context: Context) : DBInf {
             override fun onPostExecute(result: LikedRestaurant?) {
                 super.onPostExecute(result)
                 if (result != null) {
-                    listener.getLikeDislikeData(result, data, type)
+                    listener.getLikeData(result, data, type)
                 } else {
-                    listener.getLikeDislikeDataIfNull(data, type)
+                    listener.getLikeDataIfNull(data, type)
                 }
             }
         }

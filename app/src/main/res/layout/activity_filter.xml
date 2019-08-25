@@ -1,268 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="MissingPrefix">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context="com.hangloose.ui.activities.FilterActivity">
+    <data>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
+        <import type="android.view.View"/>
+
+        <variable
+                name="locationViewModel"
+                type="com.hangloose.viewmodel.LocationViewModel"/>
+    </data>
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:layout_height="match_parent"
+            tools:ignore="MissingPrefix">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent">
+        <android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="wrap_content"
+                                                     tools:context="com.hangloose.ui.activities.FilterActivity">
 
-                <TextView
-                    android:id="@+id/textExplore"
-                    style="@style/text16"
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/my_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    android:elevation="4dp"
+                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent">
+
+                    <TextView
+                            android:id="@+id/textExplore"
+                            style="@style/text16"
+                            fontPath="fonts/segoe_ui_semi_bold.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/explore"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"/>
+
+                    <ImageButton
+                            android:id="@+id/ibFilter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/ic_filter"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:padding="5dp"/>
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <TextView
+                    android:id="@+id/tv_filter"
                     fontPath="fonts/segoe_ui_semi_bold.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/explore"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="26dp"
+                    android:text="@string/filter"
+                    android:textAppearance="@style/text20"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/my_toolbar"/>
 
-                <ImageButton
-                    android:id="@+id/ibFilter"
+            <TextView
+                    android:id="@+id/tv_music"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/ic_filter"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="26dp"
+                    android:text="@string/music"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_filter"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_music"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_music"/>
+
+            <TextView
+                    android:id="@+id/tv_comedy"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_weight="1"
+                    android:text="@string/comedy"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_music"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_comedy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_comedy"/>
+
+            <TextView
+                    android:id="@+id/tv_dining"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/dining"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_comedy"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_dining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_dining"/>
+
+            <TextView
+                    android:id="@+id/tv_somethingNew"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/something_new"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_dining"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_somethingNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_somethingNew"/>
+
+            <TextView
+                    android:id="@+id/tv_features"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/features"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_somethingNew"/>
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_features"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="26dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_features"/>
+
+
+            <TextView
+                    android:id="@+id/tv_discount"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/discount"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_features"/>
+
+            <TextView
+                    android:id="@+id/minDiscount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/minDiscount"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_discount"/>
+
+            <TextView
+                    android:id="@+id/maxDiscount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="26dp"
+                    android:text="@string/maxDiscount"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_discount"/>
+
+            <io.apptik.widget.MultiSlider
+                    android:id="@+id/discount_range"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="26dp"
+                    app:drawThumbsApart="true"
+                    app:layout_constraintBottom_toTopOf="@+id/btnApplyFilter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/minDiscount"
+                    app:rangeColor="@color/colorPrimary"
+                    app:stepsThumbsApart="5"
+                    app:thumbColor="@color/colorPrimary"
+                    app:thumbNumber="2"
+                    app:thumbValue1="0"
+                    app:thumbValue2="100"
+                    app:trackColor="@color/colorGrey"/>
+
+            <Button
+                    android:id="@+id/btnApplyFilter"
+                    style="@style/text16"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="54dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="26dp"
+                    android:background="@drawable/check"
                     android:foreground="?attr/selectableItemBackground"
-                    android:padding="5dp" />
-            </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
+                    android:text="@string/apply_filter"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/discount_range"/>
 
-        <TextView
-            android:id="@+id/tv_filter"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="26dp"
-            android:text="@string/filter"
-            android:textAppearance="@style/text20"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/my_toolbar" />
+            <Button
+                    android:id="@+id/btnClearFilter"
+                    fontPath="fonts/segoe_ui_semi_bold.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="26dp"
+                    android:background="#00000000"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/clear_filter"
+                    android:textAppearance="@style/text12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnApplyFilter"/>
 
-        <TextView
-            android:id="@+id/tv_music"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="26dp"
-            android:text="@string/music"
-            android:textAppearance="@style/text12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_filter" />
+            <include
+                    android:id="@+id/pbLayout"
+                    layout="@layout/activity_progress_overlay"
+                    android:visibility="@{locationViewModel.isVisible? View.VISIBLE : View.GONE}"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_music"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_music" />
-
-        <TextView
-            android:id="@+id/tv_comedy"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
-            android:layout_weight="1"
-            android:text="@string/comedy"
-            android:textAppearance="@style/text12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_music" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_comedy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_comedy" />
-
-        <TextView
-            android:id="@+id/tv_dining"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
-            android:text="@string/dining"
-            android:textAppearance="@style/text12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_comedy" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_dining"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_dining" />
-
-        <TextView
-            android:id="@+id/tv_somethingNew"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
-            android:text="@string/something_new"
-            android:textAppearance="@style/text12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_dining" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_somethingNew"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_somethingNew" />
-
-        <TextView
-            android:id="@+id/tv_features"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
-            android:text="@string/features"
-            android:textAppearance="@style/text12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_somethingNew" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_features"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_features" />
-
-
-        <TextView
-            android:id="@+id/tv_discount"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
-            android:text="@string/discount"
-            android:textAppearance="@style/text12"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_features" />
-
-        <TextView
-            android:id="@+id/minDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/minDiscount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_discount" />
-
-        <TextView
-            android:id="@+id/maxDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="26dp"
-            android:text="@string/maxDiscount"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_discount" />
-
-        <io.apptik.widget.MultiSlider
-            android:id="@+id/discount_range"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="26dp"
-            app:drawThumbsApart="true"
-            app:layout_constraintBottom_toTopOf="@+id/btnApplyFilter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/minDiscount"
-            app:rangeColor="@color/colorPrimary"
-            app:stepsThumbsApart="5"
-            app:thumbColor="@color/colorPrimary"
-            app:thumbNumber="2"
-            app:thumbValue1="0"
-            app:thumbValue2="100"
-            app:trackColor="@color/colorGrey" />
-
-        <Button
-            android:id="@+id/btnApplyFilter"
-            style="@style/text16"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="26dp"
-            android:background="@drawable/check"
-            android:foreground="?attr/selectableItemBackground"
-            android:text="@string/apply_filter"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/discount_range" />
-
-        <Button
-            android:id="@+id/btnClearFilter"
-            fontPath="fonts/segoe_ui_semi_bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="26dp"
-            android:background="#00000000"
-            android:foreground="?attr/selectableItemBackground"
-            android:text="@string/clear_filter"
-            android:textAppearance="@style/text12"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnApplyFilter" />
-
-
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>

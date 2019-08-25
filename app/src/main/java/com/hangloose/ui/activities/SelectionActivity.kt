@@ -303,6 +303,8 @@ class SelectionActivity : BaseActivity() {
                             mLongitude = latLongFromLocationName.longitude
                             mSelectionViewModel.restaurantListApiRequest(
                                 mActivitiesSelectedList, mAdventuresSelectedList
+                                ,""
+                                ,""
                                 , latLongFromLocationName.latitude
                                 , latLongFromLocationName.longitude, mHeader
                             )

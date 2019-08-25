@@ -64,11 +64,13 @@ class SelectionViewModel : ViewModel() {
     fun restaurantListApiRequest(
         activitiesSelectedList: ArrayList<String>,
         adventuresSelectedList: ArrayList<String>,
+        minimumDiscount: String,
+        maximumDiscount: String,
         latitude: Double, longitude: Double,
         mHeader: String?
     ) {
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(mHeader!!
-            , convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 50, "")
+            , convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, minimumDiscount, maximumDiscount, 50, "")
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

@@ -44,7 +44,10 @@ interface ApiInf {
         ) activityIds: String, @Query(
             "adventureIds",
             encoded = true
-        ) adventureIds: String, @Query("latitude") latitude: Double, @Query("longitude") longitude: Double,@Query("distance") distance: Int, @Query(
+        ) adventureIds: String, @Query("latitude") latitude: Double, @Query("longitude") longitude: Double
+        , @Query("minimumDiscount") minimumDiscount: String
+        , @Query("maximumDiscount") maximumDiscount: String
+        , @Query("distance") distance: Int, @Query(
             "tags",
             encoded = true
         ) tags: String): Observable<Response<List<RestaurantList>>>

@@ -74,7 +74,7 @@ class RestaurantDetailsActivity : BaseActivity() {
                     }
                 }
                 restaurantData = RestaurantData(
-                    data.address!!,
+                    data.address,
                     data.createdAt,
                     data.discount,
                     data.id,
@@ -93,8 +93,8 @@ class RestaurantDetailsActivity : BaseActivity() {
                     data.openCloseTime,
                     data.number,
                     logo,
-                    ambienceList!!,
-                    menuList!!
+                    ambienceList,
+                    menuList
                 )
                 layoutScroll.visibility = View.VISIBLE
                 setUpViews()
@@ -104,7 +104,7 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     private fun setUpViews() {
         if (restaurantData != null) {
-            setUpAmbienceViewAdapter(restaurantData!!.ambienceList)
+            restaurantData!!.ambienceList?.let { setUpAmbienceViewAdapter(restaurantData!!.ambienceList) }
             textName.text = restaurantData!!.name
             textPlace.text = restaurantData!!.address
             textRatingValue.text = restaurantData!!.ratings
@@ -113,7 +113,7 @@ class RestaurantDetailsActivity : BaseActivity() {
             textChargesValue.text = restaurantData!!.priceFortwo
             textContact.text = restaurantData!!.number
             mTagList = restaurantData!!.tags
-            if (restaurantData!!.restaurantType!!.equals("VEGETERIAN")) {
+            if (restaurantData!!.restaurantType!!.equals("VEGETARIAN")) {
                 textNonVeg.visibility = View.GONE
             } else {
                 textNonVeg.visibility = View.VISIBLE
@@ -121,13 +121,9 @@ class RestaurantDetailsActivity : BaseActivity() {
             textOfferBill.text = restaurantData!!.offer
             textAddress.text = restaurantData!!.address
             btnCall.setOnClickListener {
-
                 checkCallPermission()
-
-
             }
-            val menuList = restaurantData!!.menuList
-            menuList?.let { initMenuRecyclerView(menuList) }
+            restaurantData!!.menuList?.let { initMenuRecyclerView(restaurantData!!.menuList) }
             initTagRecyclerView()
         }
     }

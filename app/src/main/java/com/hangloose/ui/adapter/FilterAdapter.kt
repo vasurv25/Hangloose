@@ -33,7 +33,9 @@ class FilterAdapter(val context: Context, val listFilter: List<String>) :
             itemView.cb_filter.text = item
             itemView.cb_filter.setOnCheckedChangeListener { button, b ->
                 if (button.isChecked) {
-                    mTagsList.add(item)
+                    if (!mTagsList.contains(item)) {
+                        mTagsList.add(item)
+                    }
                     button.setTextColor(ContextCompat.getColor(context, R.color.white))
                 } else {
                     mTagsList.remove(item)

@@ -47,8 +47,6 @@ import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
 import kotlinx.android.synthetic.main.activity_enable_location.*
-import kotlinx.android.synthetic.main.activity_selection.*
-import kotlinx.android.synthetic.main.fragment_restaurant.*
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
@@ -338,8 +336,9 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                                 mLatitude = locationWithLatLong.latitude
                                 mLongitude = locationWithLatLong.longitude
                                 mLocationViewModel!!.restaurantListApiRequest(
-                                    mActivitiesSelectedList, mAdventuresSelectedList
-                                    , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken,"")
+                                    mActivitiesSelectedList, mAdventuresSelectedList, "", ""
+                                    , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken,
+                                    "")
                             }
                         } else {
                             Toast.makeText(
@@ -510,6 +509,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                 mLocationViewModel!!.restaurantListApiRequest(
                     mActivitiesSelectedList,
                     mAdventuresSelectedList,
+                    "",
+                    "",
                     location.latitude,
                     location.longitude,
                     mHeaderToken, "")

@@ -6,8 +6,8 @@ import com.hangloose.ui.model.RestaurantData
 interface LikedInsertionListener {
     fun onLikedRecordInserted(id: Long)
     fun onLikedRecordError(msg : String, data: RestaurantData)
-    fun getLikeDislikeData(data: LikedRestaurant, restaurantData: RestaurantData, type: String)
-    fun getLikeDislikeDataIfNull(data: RestaurantData, type: String)
+    fun getLikeData(data: LikedRestaurant, restaurantData: RestaurantData, type: String)
+    fun getLikeDataIfNull(data: RestaurantData, type: String)
 }
 
 interface SavedInsertionListener {

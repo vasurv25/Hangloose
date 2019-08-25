@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import com.hangloose.utils.PreferenceHelper.get
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -15,6 +16,7 @@ import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.viewmodel.LocationViewModel
 import io.apptik.widget.MultiSlider
+import kotlinx.android.synthetic.main.activity_enable_location.*
 import kotlinx.android.synthetic.main.activity_filter.*
 import retrofit2.Response
 
@@ -47,6 +49,7 @@ class FilterActivity : BaseActivity() {
     private var mHeaderToken: String? = null
     private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
     private var mSelectedTagList: ArrayList<String> = ArrayList()
+    private var mEntireRestaurantData = ArrayList<RestaurantData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,7 @@ class FilterActivity : BaseActivity() {
 
         mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
+        mEntireRestaurantData = intent!!.getParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA)
         mLatitude = intent.getDoubleExtra(KEY_LATITUDE, 0.0)
         mLongitude = intent.getDoubleExtra(KEY_LONGTITUDE, 0.0)
         mPreference = PreferenceHelper.defaultPrefs(this)
@@ -101,18 +105,15 @@ class FilterActivity : BaseActivity() {
 
         btnApplyFilter.setOnClickListener {
             //clearTagList()
-            Log.d(TAG, "Tag List : " + getAllSelectedTagsList())
-            doApiCallForTags(mLocationViewModel!!.convertToCSV(getAllSelectedTagsList()))
+            mSelectedTagList = getAllSelectedTagsList()
+            Log.d(TAG, "Tag List : " + mSelectedTagList)
+            doApiCallForTags(mLocationViewModel!!.convertToCSV(mSelectedTagList))
         }
+
+        getRestaurantDataByTag()
     }
 
-    private fun doApiCallForTags(tagsList: String) {
-        mRestaurantData!!.clear()
-        mLocationViewModel!!.restaurantListApiRequest(
-            mActivitiesSelectedList, mAdventuresSelectedList
-            , mLatitude!!, mLongitude!!, mHeaderToken, tagsList
-        )
-
+    private fun getRestaurantDataByTag() {
         mLocationViewModel!!.getRestaurantList().observe(this, Observer<Response<List<RestaurantList>>> { t ->
             val data = t!!.body()
             (0 until data!!.size).forEach { i ->
@@ -157,13 +158,33 @@ class FilterActivity : BaseActivity() {
                     )
                 }
             }
-            mSelectedTagList.clear()
             val intent = Intent(this, TabsActivity::class.java)
             intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
+            intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
             startActivity(intent)
         })
+
+        mLocationViewModel!!.mShowErrorSnackBar.observe(this, Observer { t ->
+            showSnackBar(
+                layoutParentLocation,
+                t.toString(),
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.colorPrimary)
+            )
+        })
+    }
+
+    private fun doApiCallForTags(tagsList: String) {
+        mRestaurantData!!.clear()
+        Log.d(TAG, "AAAAAAAAAA Max min Discount : " + tagsList)
+        mLocationViewModel!!.restaurantListApiRequest(
+            mActivitiesSelectedList, mAdventuresSelectedList, minDiscount.text.toString().replace("%", "")
+            , maxDiscount.text.toString().replace("%", "")
+            , mLatitude!!, mLongitude!!, mHeaderToken, tagsList
+        )
+        mSelectedTagList.clear()
     }
 
     private fun setAdapters() {

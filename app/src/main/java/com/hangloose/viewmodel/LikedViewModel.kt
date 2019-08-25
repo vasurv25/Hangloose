@@ -57,9 +57,6 @@ class LikedViewModel : ViewModel() {
                         LIKE_DISLIKE.LIKE.name -> {
                             getDataHandler()!!.insertLikeUnlikeRestaurantData(data, true, likedListener)
                         }
-                        LIKE_DISLIKE.DISLIKE.name -> {
-                            getDataHandler()!!.insertLikeUnlikeRestaurantData(data, false, likedListener)
-                        }
                     }
                 } else {
                     val jObjError = JSONObject(it.errorBody()!!.string())

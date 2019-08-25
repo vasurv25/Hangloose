@@ -69,6 +69,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mActivitiesSelectedList = arguments!!.getStringArrayList(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = arguments!!.getStringArrayList(KEY_ADVENTURES_LIST)
+        mEntireRestaurantData = arguments!!.getParcelableArrayList(KEY_ENTIRE_RESTAURANT_DATA)
         mLatitude = arguments!!.getDouble(KEY_LATITUDE)
         mLongitude = arguments!!.getDouble(KEY_LONGTITUDE)
 
@@ -223,6 +224,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
                 intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
                 intent.putExtra(KEY_LATITUDE, mLatitude)
                 intent.putExtra(KEY_LONGTITUDE, mLongitude)
+                intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
                 startActivity(intent)
             }
         }
@@ -277,21 +279,11 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         Log.i("Hangloose", "onSavedRecordInserted")
     }
 
-    override fun getLikeDislikeData(data: LikedRestaurant, restaurantData: RestaurantData, type: String) {
+    override fun getLikeData(data: LikedRestaurant, restaurantData: RestaurantData, type: String) {
         Log.d("AAHangloose", "getLikeDislikeData : " + data)
-        if (data.id == restaurantData.id && (!data.isLike && data.isLike) && restaurantData.restaurantType.equals(type)) {
-            mSwipePlaceHolderView!!.addView(
-                SwipeableCardView(
-                    mContext!!,
-                    restaurantData,
-                    mSwipePlaceHolderView!!,
-                    this, this, mLikeViewModel!!
-                )
-            )
-        }
     }
 
-    override fun getLikeDislikeDataIfNull(restaurantData: RestaurantData, type: String) {
+    override fun getLikeDataIfNull(restaurantData: RestaurantData, type: String) {
         if (restaurantData.restaurantType.equals(type)) {
             mSwipePlaceHolderView!!.addView(
                 SwipeableCardView(

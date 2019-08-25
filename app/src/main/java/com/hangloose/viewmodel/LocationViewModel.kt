@@ -24,6 +24,8 @@ class LocationViewModel : ViewModel() {
     fun restaurantListApiRequest(
         activitiesSelectedList: ArrayList<String>,
         adventuresSelectedList: ArrayList<String>,
+        minimumDiscount: String,
+        maximumDiscount: String,
         latitude: Double,
         longitude: Double,
         mHeader: String?, tagsList: String
@@ -32,7 +34,9 @@ class LocationViewModel : ViewModel() {
         Log.i(TAG, "Adeventures List : $adventuresSelectedList")
         Log.i(TAG, "Consumer Deatils$mHeader")
         val disposable = HanglooseApp.getApiService()!!.getRestaurants(
-            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude, 50, tagsList)
+            mHeader!!, convertToCSV(activitiesSelectedList), convertToCSV(adventuresSelectedList), latitude, longitude
+            , minimumDiscount, maximumDiscount, 50, tagsList)
+
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
@@ -54,7 +58,7 @@ class LocationViewModel : ViewModel() {
                 Log.i(TAG, "error login")
                 mShowErrorSnackBar.value = it.localizedMessage
             })
-        mCompositeDisposable!!.add(disposable)
+        //mCompositeDisposable!!.add(disposable)
     }
 
     fun getRestaurantList(): MutableLiveData<Response<List<RestaurantList>>> {

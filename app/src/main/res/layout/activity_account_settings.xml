@@ -21,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/img_background"
-            android:onClick="@{clickHandler::onOutsideTouch}"
             tools:context="com.hangloose.ui.activities.ForgotPasswordActivity">
 
         <TextView
@@ -121,10 +120,9 @@
                   app:layout_constraintTop_toBottomOf="@+id/textLayoutEmail"
                   android:layout_marginTop="24dp"/>
 
-        <!--<include
+        <include
             android:id="@+id/pbLayout"
             layout="@layout/activity_progress_overlay"
             android:visibility="@{forgotPasswordViewModel.isVisible? View.VISIBLE : View.GONE}" />
--->
     </android.support.constraint.ConstraintLayout>
 </layout>
