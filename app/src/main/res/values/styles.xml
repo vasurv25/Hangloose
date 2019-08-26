@@ -74,4 +74,10 @@
         <item name="colorControlHighlight">@android:color/black</item>
     </style>
 
+    <style name="tutorialTextStyle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

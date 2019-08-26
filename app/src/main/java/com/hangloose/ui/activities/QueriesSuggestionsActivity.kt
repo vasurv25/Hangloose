@@ -28,7 +28,7 @@ class QueriesSuggestionsActivity : BaseActivity() {
                 val subject = resources.getString(R.string.queries_suggestions)
                 val bodyText = resources.getString(R.string.queries) + ":" +
                         editQueries.text.toString() + "   " +
-                resources.getString(R.string.suggestions) + ":" +
+                        resources.getString(R.string.suggestions) + ":" +
                         editSuggestions.text.toString()
 
                 val i = Intent(Intent.ACTION_SEND)
@@ -36,7 +36,7 @@ class QueriesSuggestionsActivity : BaseActivity() {
                 i.putExtra(Intent.EXTRA_EMAIL, arrayOf("hangloose.helpline@gmail.com"))
                 i.putExtra(Intent.EXTRA_SUBJECT, subject)
                 i.putExtra(Intent.EXTRA_TEXT, bodyText)
-
+                i.setPackage("com.google.android.gm")
                 startActivity(i)
             } else {
                 showSnackBar(
