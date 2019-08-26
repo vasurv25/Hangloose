@@ -186,4 +186,9 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
     }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.clear()
+    }
 }

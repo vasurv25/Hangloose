@@ -22,7 +22,6 @@
             android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/boys_day_out"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/tvRestaurantName"
             app:layout_constraintEnd_toEndOf="parent"

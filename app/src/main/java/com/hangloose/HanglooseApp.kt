@@ -96,8 +96,8 @@ class HanglooseApp : Application() {
         val currentTime = System.currentTimeMillis()
         Log.d("Hangloose App", "CurrentTime :" + currentTime)
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 22)
-        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 30)
         cal.set(Calendar.SECOND, 0)
         if (currentTime <= cal.timeInMillis) {
             val intent = Intent(this, EmptyDBReceiver::class.java)
@@ -105,10 +105,9 @@ class HanglooseApp : Application() {
             val pendingIntent =
                 PendingIntent.getBroadcast(this, REQUEST_CODE_DB_DELETE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
             val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarm.setRepeating(
+            alarm.set(
                 AlarmManager.RTC_WAKEUP,
                 cal.timeInMillis,
-                AlarmManager.INTERVAL_DAY,
                 pendingIntent
             )
             Toast.makeText(
