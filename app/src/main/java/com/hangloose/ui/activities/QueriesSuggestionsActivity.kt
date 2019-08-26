@@ -27,7 +27,7 @@ class QueriesSuggestionsActivity : BaseActivity() {
             if (editQueries.text.isNotEmpty() || editSuggestions.text.isNotEmpty()) {
                 val subject = resources.getString(R.string.queries_suggestions)
                 val bodyText = resources.getString(R.string.queries) + ":" +
-                        editQueries.text.toString() + "   "
+                        editQueries.text.toString() + "   " +
                 resources.getString(R.string.suggestions) + ":" +
                         editSuggestions.text.toString()
 
@@ -37,7 +37,7 @@ class QueriesSuggestionsActivity : BaseActivity() {
                 i.putExtra(Intent.EXTRA_SUBJECT, subject)
                 i.putExtra(Intent.EXTRA_TEXT, bodyText)
 
-                startActivity(Intent.createChooser(i, "Send mail..."))
+                startActivity(i)
             } else {
                 showSnackBar(
                     llQueriesSuggestions,
