@@ -1,14 +1,22 @@
 package com.hangloose
 
+import android.app.AlarmManager
 import android.app.Application
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import com.hangloose.database.RoomDBHandler
 import com.hangloose.network.ApiInf
 import com.hangloose.network.RetrofitApiHandler
+import com.hangloose.ui.receiver.EmptyDBReceiver
+import com.hangloose.utils.REQUEST_CODE_DB_DELETE
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import java.io.File
+import java.util.*
 
 class HanglooseApp : Application() {
 
@@ -22,6 +30,7 @@ class HanglooseApp : Application() {
             .setFontAttrId(R.attr.fontPath)
             .build()
         )
+        setAlarmForDB()
     }
 
     companion object {
@@ -81,5 +90,31 @@ class HanglooseApp : Application() {
             }
         }
         return dir!!.delete()
+    }
+
+    private fun setAlarmForDB() {
+        val currentTime = System.currentTimeMillis()
+        Log.d("Hangloose App", "CurrentTime :" + currentTime)
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 22)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        if (currentTime <= cal.timeInMillis) {
+            val intent = Intent(this, EmptyDBReceiver::class.java)
+            //intent.putExtra()
+            val pendingIntent =
+                PendingIntent.getBroadcast(this, REQUEST_CODE_DB_DELETE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
+            val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarm.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                cal.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
+            Toast.makeText(
+                this, "Alarm will start at time specified",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

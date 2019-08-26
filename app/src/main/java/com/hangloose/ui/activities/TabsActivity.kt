@@ -16,10 +16,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.hangloose.R
 import com.hangloose.database.LikedDBInf
 import com.hangloose.ui.fragment.*
 import com.hangloose.ui.model.RestaurantData
+import com.hangloose.ui.receiver.EmptyDBReceiver
 import com.hangloose.ui.service.LikedDBService
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
@@ -64,19 +66,6 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         mHeader = headerToken
         Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
         onTabSelected(tabLayout.getTabAt(0))
-
-        setAlarmForDB()
-    }
-
-    private fun setAlarmForDB() {
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 2)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-        val intent = Intent(this, LikedDBService::class.java)
-        val pendingIntent = PendingIntent.getService(this, REQUEST_CODE_DB_DELETE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-        val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
     @SuppressLint("NewApi")

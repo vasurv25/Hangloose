@@ -26,10 +26,10 @@
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"/>
 
-    <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.hangloose.ui.activities.TutorialFragment"
-            android:id="@+id/tutorial_fragment"
-            />
+    <!--<fragment-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:name="com.hangloose.ui.fragment.TutorialFragment"-->
+            <!--android:id="@+id/tutorial_fragment"-->
+            <!--/>-->
 </android.support.constraint.ConstraintLayout>

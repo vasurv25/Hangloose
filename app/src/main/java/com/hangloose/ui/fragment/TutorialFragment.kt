@@ -1,4 +1,4 @@
-package com.hangloose.ui.activities
+package com.hangloose.ui.fragment
 
 import android.content.Context
 import android.net.Uri

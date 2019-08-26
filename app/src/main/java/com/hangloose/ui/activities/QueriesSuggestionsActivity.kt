@@ -27,8 +27,8 @@ class QueriesSuggestionsActivity : BaseActivity() {
             if (editQueries.text.isNotEmpty() || editSuggestions.text.isNotEmpty()) {
                 val subject = resources.getString(R.string.queries_suggestions)
                 val bodyText = resources.getString(R.string.queries) + ":" +
-                        editQueries.text.toString() + "   " +
-                        resources.getString(R.string.suggestions) + ":" +
+                        editQueries.text.toString() + "\n\n" +
+                resources.getString(R.string.suggestions) + ":" +
                         editSuggestions.text.toString()
 
                 val i = Intent(Intent.ACTION_SEND)
