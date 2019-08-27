@@ -93,7 +93,6 @@
             android:layout_marginEnd="16dp"
             android:contentDescription="@null"
             android:ellipsize="end"
-            android:gravity="center_horizontal"
             android:letterSpacing="0.03"
             android:maxLines="2"
             android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
