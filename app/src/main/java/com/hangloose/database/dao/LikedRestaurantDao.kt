@@ -3,7 +3,6 @@ package com.hangloose.database.dao
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import com.hangloose.database.dbmodel.LikedRestaurant
-import com.hangloose.utils.LIKED_TABLE_RESTAURANT
 
 @Dao
 abstract class LikedRestaurantDao {

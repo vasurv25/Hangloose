@@ -2,7 +2,6 @@ package com.hangloose.ui.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.hangloose.R
@@ -21,7 +20,7 @@ class SplashActivity : BaseActivity() {
     var mHeader: String? = null
     private var mPreference: SharedPreferences? = null
 
-    internal val mRunnable: Runnable = Runnable {
+    private val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
             if (mHeader == null) {
                 val intent = Intent(applicationContext, SignInActivity::class.java)

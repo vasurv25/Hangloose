@@ -8,8 +8,8 @@ import android.util.Log
 
 class ViewPagerAdapter(
     val context: Context,
-    private val fragmentManager: FragmentManager,
-    val listOfFragment: ArrayList<Fragment>
+    fragmentManager: FragmentManager,
+    private val listOfFragment: ArrayList<Fragment>
 ) :
     FragmentStatePagerAdapter(fragmentManager) {
 

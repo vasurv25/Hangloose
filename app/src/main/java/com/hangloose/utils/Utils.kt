@@ -3,7 +3,6 @@ package com.hangloose.utils
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Point
 import android.location.Address
@@ -11,8 +10,6 @@ import android.location.Geocoder
 import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityCompat.requestPermissions
-import android.support.v4.content.ContextCompat.checkSelfPermission
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
@@ -70,24 +67,24 @@ fun validateConfirmPassword(password: String?, confirmPassword: String?): Boolea
 fun requestPermissionForOtp(activity: Activity) {
     ActivityCompat.requestPermissions(
         activity,
-        arrayOf(android.Manifest.permission.RECEIVE_SMS),
+        arrayOf(Manifest.permission.RECEIVE_SMS),
         REQUEST_PERMISSIONS
     )
 }
 
 fun getDisplaySize(windowManager: WindowManager): Point {
-    try {
+    return try {
         if (Build.VERSION.SDK_INT > 16) {
             val display = windowManager.defaultDisplay
             val displayMetrics = DisplayMetrics()
             display.getMetrics(displayMetrics)
-            return Point(displayMetrics.widthPixels, displayMetrics.heightPixels)
+            Point(displayMetrics.widthPixels, displayMetrics.heightPixels)
         } else {
-            return Point(0, 0)
+            Point(0, 0)
         }
     } catch (e: Exception) {
         e.printStackTrace()
-        return Point(0, 0)
+        Point(0, 0)
     }
 }
 
@@ -98,7 +95,7 @@ fun dpToPx(dp: Int): Int {
 fun getLatLongFromLocationName(activity: Activity, address: String?): Address? {
     var location: Address? = null
     try {
-        var geoCoder = Geocoder(activity)
+        val geoCoder = Geocoder(activity)
         var list = geoCoder.getFromLocationName(address, 1)
         location = list[0]
     } catch (e: IOException) {

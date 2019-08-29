@@ -9,12 +9,9 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.view.*
+import android.widget.EditText
+import android.widget.ImageButton
 import co.ceryle.radiorealbutton.RadioRealButtonGroup
 import com.hangloose.HanglooseApp
 import com.hangloose.R
@@ -28,12 +25,11 @@ import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.LikedViewModel
-import com.hangloose.viewmodel.LocationViewModel
 import com.mindorks.placeholderview.SwipeDecor
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.SwipeViewBuilder
 import kotlinx.android.synthetic.main.fragment_restaurant.*
-import kotlinx.android.synthetic.main.fragment_restaurant.view.editLocation
+import kotlinx.android.synthetic.main.fragment_restaurant.view.*
 
 
 class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListener, SavedInsertionListener {
@@ -54,7 +50,6 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     private lateinit var mListenerCallback: LocationNavigationListener
 
     private var mPreference: SharedPreferences? = null
-    private var mLocationViewModel: LocationViewModel? = null
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
     private var mLatitude: Double? = null
     private var mLongitude: Double? = null
@@ -200,7 +195,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_restaurant, null)
+        val rootView = inflater.inflate(R.layout.fragment_restaurant, container, false)
         mSwipePlaceHolderView = rootView!!.findViewById(R.id.swipeView) as SwipePlaceHolderView
         mBtFilter = rootView.findViewById(R.id.ibFilter) as ImageButton
         mBtRadioRealGroup = rootView.findViewById(R.id.segmentedButtonGroup) as RadioRealButtonGroup
@@ -228,10 +223,6 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
                 startActivity(intent)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun setLocationSearch(rootView: View) {
@@ -280,7 +271,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     }
 
     override fun getLikeData(data: LikedRestaurant, restaurantData: RestaurantData, type: String) {
-        Log.d("AAHangloose", "getLikeDislikeData : " + data)
+        Log.d("AAHangloose", "getLikeDislikeData : $data")
     }
 
     override fun getLikeDataIfNull(restaurantData: RestaurantData, type: String) {
@@ -320,7 +311,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mBtRadioRealGroup!!.setOnPositionChangedListener { _, currentPosition, _ ->
             when (currentPosition) {
                 0 -> {
-                    var one = mRestaurantData!!.map { it.restaurantType }.filter { it.equals("VEGETARIAN") }
+                    val one = mRestaurantData!!.map { it.restaurantType }.filter { it.equals("VEGETARIAN") }
                     Log.i(TAG, "VEG : $one")
                     setVisibleRestaurantView("VEGETARIAN", mRestaurantData)
                 }

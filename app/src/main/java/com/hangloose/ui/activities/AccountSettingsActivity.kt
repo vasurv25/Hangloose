@@ -5,12 +5,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
-import android.databinding.Observable
 import android.databinding.ObservableBoolean
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import com.hangloose.R
 import com.hangloose.databinding.ActivityAccountSettingsBinding
@@ -30,7 +26,6 @@ class AccountSettingsActivity : BaseActivity() {
     private val TAG: String = "AccountSettingsActivity"
     private var mActivityAccountSettingsBinding: ActivityAccountSettingsBinding? = null
     private lateinit var mForgotPasswordViewModel: ForgotPasswordViewModel
-    private var mPhoneNumber: String? = null
     var isPhoneValid = ObservableBoolean()
     private var mConsumerResendOtpRequest: ConsumerResendOtpRequest? =
         ConsumerResendOtpRequest(AUTH_TYPE.MOBILE.name, null, "VERIFY_MOBILE")
@@ -94,7 +89,7 @@ class AccountSettingsActivity : BaseActivity() {
     }
 
     private fun onNavigateOTPScreen() {
-        var intent = Intent(this@AccountSettingsActivity, OTPActivity::class.java)
+        val intent = Intent(this@AccountSettingsActivity, OTPActivity::class.java)
         intent.putExtra(getString(R.string.key_otp_recognize), OTP_RECOGNIZE.RESET_OTP.name)
         intent.putExtra(getString(R.string.key_mobile_no), mConsumerResendOtpRequest!!.id)
         intent.putExtra("flag", mNavigationFlag)

@@ -27,8 +27,8 @@ class ForgotPasswordViewModel : ViewModel() {
      * method to call API for registering the user credentials
      */
     fun initiateForgotPassword(consumerResendOtpRequest: ConsumerResendOtpRequest) {
-        Log.i(TAG, "Initiate Forgot Password request" + consumerResendOtpRequest.toString())
-        val disposable = HanglooseApp.getApiService()!!.initiateForgotPassword(consumerResendOtpRequest!!)
+        Log.i(TAG, "Initiate Forgot Password request$consumerResendOtpRequest")
+        val disposable = HanglooseApp.getApiService()!!.initiateForgotPassword(consumerResendOtpRequest)
             .subscribeOn(HanglooseApp.subscribeScheduler())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {

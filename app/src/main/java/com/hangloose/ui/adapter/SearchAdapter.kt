@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.saved_restaurant_item.view.*
 
 class SearchAdapter(
     val context: Context,
-    val mRestaurantData: ArrayList<RestaurantData>,
+    private val mRestaurantData: ArrayList<RestaurantData>,
     var mFilteredList: ArrayList<RestaurantData>
 ) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {

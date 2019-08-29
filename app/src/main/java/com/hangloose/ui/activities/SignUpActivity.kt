@@ -108,13 +108,6 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        /*mGoogleSignInClient!!.silentSignIn().addOnCompleteListener {
-            handleSignInResult(it)
-        }*/
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         Log.i(TAG, "onRequestPermissionsResult : $grantResults[0]")
@@ -158,13 +151,13 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                 val consumerDetails = t!!.body()!!.consumer!!
                 val headers = t.headers()
                 mPreference!![X_AUTH_TOKEN] = headers.get("X-AUTH-TOKEN").toString()
-                var typeList = t!!.body()!!.consumerAuths!!.map { it.type }
+                val typeList = t.body()!!.consumerAuths!!.map { it.type }
                 if (consumerDetails.firstName != null && consumerDetails.email != null) {
                     mPreference!![KEY_USER_NAME] = consumerDetails.firstName
                     mPreference!![KEY_EMAIL_ID] = consumerDetails.email
                     mPreference!![KEY_CONSUMER_ID] = consumerDetails.id
                 }
-                var type = typeList.get(0)
+                var type = typeList[0]
                 val consumerData = ConsumerData(
                     headers.get("X-AUTH-TOKEN").toString(),
                     consumerDetails.existing,
@@ -272,7 +265,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
 
         mFBCallbackManager = CallbackManager.Factory.create()
 
-        btnSignUpFB.setReadPermissions(Arrays.asList("email", "public_profile"))
+        btnSignUpFB.setReadPermissions(listOf("email", "public_profile"))
 
         btnSignUpFB.registerCallback(mFBCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult?) {

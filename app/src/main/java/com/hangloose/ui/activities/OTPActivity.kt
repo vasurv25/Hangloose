@@ -26,13 +26,7 @@ import com.hangloose.utils.OTP_REQUEST_REASON
 import com.hangloose.utils.hideSoftKeyboard
 import com.hangloose.utils.showSnackBar
 import com.hangloose.viewmodel.ConsumerOTPViewModel
-import kotlinx.android.synthetic.main.activity_otp.btnNext
-import kotlinx.android.synthetic.main.activity_otp.llOTP
-import kotlinx.android.synthetic.main.activity_otp.otpEdittext1
-import kotlinx.android.synthetic.main.activity_otp.otpEdittext2
-import kotlinx.android.synthetic.main.activity_otp.otpEdittext3
-import kotlinx.android.synthetic.main.activity_otp.otpEdittext4
-import kotlinx.android.synthetic.main.activity_otp.tvMobileNumber
+import kotlinx.android.synthetic.main.activity_otp.*
 
 class OTPActivity : BaseActivity(), View.OnClickListener {
 
@@ -178,8 +172,8 @@ class OTPActivity : BaseActivity(), View.OnClickListener {
                 if (mOtpNavigation.equals(OTP_RECOGNIZE.RESET_OTP.name)) {
                     val consumerDetails = t!!.body()!!.consumer!!
                     val headers = t.headers()
-                    var typeList = t.body()!!.consumerAuths!!.map { it.type }
-                    var type = typeList.get(0)
+                    val typeList = t.body()!!.consumerAuths!!.map { it.type }
+                    var type = typeList[0]
                     val consumerData = ConsumerData(
                         headers.get("X-AUTH-TOKEN").toString(),
                         null,

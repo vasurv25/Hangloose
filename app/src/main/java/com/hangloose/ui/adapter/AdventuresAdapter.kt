@@ -12,7 +12,7 @@ import com.hangloose.ui.model.AdventuresDetails
 import kotlinx.android.synthetic.main.activities_recylcer_item.view.cbSelector
 import kotlinx.android.synthetic.main.adventures_recycler_item.view.ivAdventure
 
-class AdventuresAdapter(val context: Context, var contentList: ArrayList<AdventuresDetails>) :
+class AdventuresAdapter(val context: Context, private var contentList: ArrayList<AdventuresDetails>) :
     RecyclerView.Adapter<AdventuresAdapter.AdventuresViewHolder>() {
 
     private var TAG = "AdventuresAdapter"
@@ -35,8 +35,8 @@ class AdventuresAdapter(val context: Context, var contentList: ArrayList<Adventu
 
     inner class AdventuresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindAdventuresView(contentItem: AdventuresDetails) {
-            Log.i(TAG, """Image : ${contentItem.image!!}""")
-            Glide.with(context).load(contentItem.image!!).into(itemView.ivAdventure)
+            Log.i(TAG, """Image : ${contentItem.image}""")
+            Glide.with(context).load(contentItem.image).into(itemView.ivAdventure)
             itemView.ivAdventure.setOnClickListener {
                 itemView.cbSelector.isChecked = !contentItem.checked
             }

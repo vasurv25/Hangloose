@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.hangloose.R
 import kotlinx.android.synthetic.main.layout_filter_item.view.*
 
-class FilterAdapter(val context: Context, val listFilter: List<String>) :
+class FilterAdapter(val context: Context, private val listFilter: List<String>) :
     RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
     private var mTagsList: ArrayList<String> = ArrayList()

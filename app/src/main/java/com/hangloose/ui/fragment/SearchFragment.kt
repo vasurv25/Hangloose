@@ -1,5 +1,6 @@
 package com.hangloose.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -15,7 +16,6 @@ import android.widget.EditText
 import com.hangloose.R
 import com.hangloose.ui.adapter.SearchAdapter
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.utils.KEY_DATA
 import com.hangloose.utils.KEY_ENTIRE_RESTAURANT_DATA
 import com.hangloose.utils.hideSoftKeyboard
 
@@ -33,8 +33,9 @@ class SearchFragment : Fragment(), View.OnTouchListener {
         mEntireRestaurantData = arguments!!.getParcelableArrayList(KEY_ENTIRE_RESTAURANT_DATA)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_search, null)
+        val rootView = inflater.inflate(R.layout.fragment_search, container, false)
         mRestaurantSearchList = rootView.findViewById(R.id.rvRestaurant)
         mSearchRestaurant = rootView.findViewById(R.id.etRestaurantSearch)
         retainInstance = true
@@ -51,7 +52,7 @@ class SearchFragment : Fragment(), View.OnTouchListener {
                     if (event.rawX >= mSearchRestaurant!!.right - mSearchRestaurant!!.totalPaddingRight) {
                         mSearchRestaurant!!.setText("")
                         hideSoftKeyboard(activity!!)
-                        return true;
+                        return true
                     }
                 }
             }

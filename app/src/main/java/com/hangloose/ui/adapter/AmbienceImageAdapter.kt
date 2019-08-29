@@ -11,7 +11,7 @@ import com.hangloose.R
 import com.hangloose.ui.activities.MenuViewActivity
 import kotlinx.android.synthetic.main.ambience_image_item.view.*
 
-class AmbienceImageAdapter(val context: Context, val imageList: ArrayList<String>) :
+class AmbienceImageAdapter(val context: Context, private val imageList: ArrayList<String>) :
     PagerAdapter() {
 
     private var layoutInflater: LayoutInflater? = null

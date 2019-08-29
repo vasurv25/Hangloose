@@ -1,9 +1,6 @@
 package com.hangloose.ui.activities
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -16,18 +13,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.hangloose.R
-import com.hangloose.database.LikedDBInf
-import com.hangloose.ui.fragment.*
+import com.hangloose.ui.fragment.ProfileFragment
+import com.hangloose.ui.fragment.RestaurantFragment
+import com.hangloose.ui.fragment.SearchFragment
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.ui.receiver.EmptyDBReceiver
-import com.hangloose.ui.service.LikedDBService
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
-import kotlinx.android.synthetic.main.activity_tab.tabLayout
-import java.util.*
-import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.activity_tab.*
 
 class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, RestaurantFragment.LocationNavigationListener {
 
@@ -43,7 +36,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     private val navIcons =
         intArrayOf(R.drawable.home, R.drawable.search, R.drawable.profile)
 
-    var mHeader: String? = null
+    private var mHeader: String? = null
 
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
     private var mLatitude: Double? = null
@@ -181,10 +174,6 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
                 replaceFragment(RestaurantFragment())
             }
         }
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {

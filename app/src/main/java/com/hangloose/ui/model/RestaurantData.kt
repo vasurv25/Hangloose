@@ -49,8 +49,7 @@ data class RestaurantData(
         parcel.readString(),
         parcel.createStringArrayList(),
         parcel.createStringArrayList()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(address)

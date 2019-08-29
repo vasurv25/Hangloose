@@ -80,8 +80,8 @@ class HanglooseApp : Application() {
     }
 
     private fun deleteDir(dir: File?): Boolean {
-        if (dir != null && dir!!.isDirectory()) {
-            val children = dir!!.list()
+        if (dir != null && dir.isDirectory) {
+            val children = dir.list()
             for (i in children.indices) {
                 val success = deleteDir(File(dir, children[i]))
                 if (!success) {
@@ -94,10 +94,10 @@ class HanglooseApp : Application() {
 
     private fun setAlarmForDB() {
         val currentTime = System.currentTimeMillis()
-        Log.d("Hangloose App", "CurrentTime :" + currentTime)
+        Log.d("Hangloose App", "CurrentTime :$currentTime")
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 0)
-        cal.set(Calendar.MINUTE, 30)
+        cal.set(Calendar.HOUR_OF_DAY, 20)
+        cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         if (currentTime <= cal.timeInMillis) {
             val intent = Intent(this, EmptyDBReceiver::class.java)

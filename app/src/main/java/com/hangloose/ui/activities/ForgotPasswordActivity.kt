@@ -8,22 +8,15 @@ import android.databinding.Observable
 import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.hangloose.R
 import com.hangloose.databinding.ActivityForgotPasswordBinding
 import com.hangloose.model.ConsumerResendOtpRequest
-import com.hangloose.utils.AUTH_TYPE
-import com.hangloose.utils.OTP_RECOGNIZE
-import com.hangloose.utils.VALID_PHONE
-import com.hangloose.utils.hideSoftKeyboard
-import com.hangloose.utils.showSnackBar
-import com.hangloose.utils.validatePhoneNumber
+import com.hangloose.utils.*
 import com.hangloose.viewmodel.ForgotPasswordViewModel
-import kotlinx.android.synthetic.main.activity_forgot_password.llForgotPass
-import kotlinx.android.synthetic.main.activity_forgot_password.textLayoutPhone
+import kotlinx.android.synthetic.main.activity_forgot_password.*
 import retrofit2.Response
 
 class ForgotPasswordActivity : BaseActivity() {
@@ -115,7 +108,7 @@ class ForgotPasswordActivity : BaseActivity() {
     }
 
     private fun onNavigateOTPScreen() {
-        var intent = Intent(this@ForgotPasswordActivity, OTPActivity::class.java)
+        val intent = Intent(this@ForgotPasswordActivity, OTPActivity::class.java)
         intent.putExtra(getString(R.string.key_otp_recognize), OTP_RECOGNIZE.RESET_OTP.name)
         intent.putExtra(getString(R.string.key_mobile_no), mConsumerResendOtpRequest!!.id)
         intent.putExtra("flag", mNavigationFlag)

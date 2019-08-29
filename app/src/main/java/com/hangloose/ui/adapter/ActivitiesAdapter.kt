@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.hangloose.R
 import com.hangloose.ui.model.ActivitiesDetails
-import kotlinx.android.synthetic.main.activities_recylcer_item.view.cbSelector
-import kotlinx.android.synthetic.main.activities_recylcer_item.view.ivActivities
+import kotlinx.android.synthetic.main.activities_recylcer_item.view.*
 
-class ActivitiesAdapter(val context: Context, val contentList: ArrayList<ActivitiesDetails>) :
+class ActivitiesAdapter(val context: Context, private val contentList: ArrayList<ActivitiesDetails>) :
     RecyclerView.Adapter<ActivitiesAdapter.ActivitiesViewHolder>() {
 
     private var TAG = "ActivitiesAdapter"
@@ -36,7 +35,7 @@ class ActivitiesAdapter(val context: Context, val contentList: ArrayList<Activit
     inner class ActivitiesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindActivitiesView(contentItem: ActivitiesDetails) {
             Log.i(TAG, """Image : ${contentItem.image}""")
-            Glide.with(context).load(contentItem.image!!).into(itemView.ivActivities)
+            Glide.with(context).load(contentItem.image).into(itemView.ivActivities)
             itemView.ivActivities.setOnClickListener {
                 itemView.cbSelector.isChecked = !contentItem.checked
             }

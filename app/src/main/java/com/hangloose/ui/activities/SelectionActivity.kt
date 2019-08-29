@@ -11,23 +11,21 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySelectionBinding
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.ViewPagerAdapter
 import com.hangloose.ui.fragment.ActivitiesFragment
 import com.hangloose.ui.fragment.AdventuresFragment
-import com.hangloose.ui.model.*
+import com.hangloose.ui.model.ActivitiesDetails
+import com.hangloose.ui.model.AdventuresDetails
+import com.hangloose.ui.model.RestaurantData
+import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.SelectionViewModel
-import kotlinx.android.synthetic.main.activity_selection.indicator
-import kotlinx.android.synthetic.main.activity_selection.ll_selection
-import kotlinx.android.synthetic.main.activity_selection.tvSelectionHeading
-import kotlinx.android.synthetic.main.activity_selection.viewPager
+import kotlinx.android.synthetic.main.activity_selection.*
 import retrofit2.Response
-import kotlin.collections.ArrayList
 
 class SelectionActivity : BaseActivity() {
 
@@ -42,7 +40,7 @@ class SelectionActivity : BaseActivity() {
     private var mActivitiesFragment: ActivitiesFragment? = null
     private var mAdventuresFragment: AdventuresFragment? = null
     private var mPreference: SharedPreferences? = null
-    var mHeader: String? = null
+    private var mHeader: String? = null
 
     private var mRestaurantData = ArrayList<RestaurantData>()
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
@@ -155,15 +153,13 @@ class SelectionActivity : BaseActivity() {
             (0 until data!!.size).forEach { i ->
                 if (data[i].distanceFromLocation!! <= 50) {
                     var logo: String? = null
-                    var ambienceList: ArrayList<String>? = ArrayList()
+                    val ambienceList: ArrayList<String>? = ArrayList()
                     var menuList: ArrayList<String>? = ArrayList()
                     (0 until data[i].documents!!.size).forEach { j->
-                        if (data[i].documents!![j].documentType.equals("LOGO")) {
-                            logo = data[i].documents!![j].location
-                        } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
-                            ambienceList?.add(data[i].documents!![j].location!!)
-                        } else {
-                            menuList?.add(data[i].documents!![j].location!!)
+                        when {
+                            data[i].documents!![j].documentType.equals("LOGO") -> logo = data[i].documents!![j].location
+                            data[i].documents!![j].documentType.equals("AMBIENCE") -> ambienceList?.add(data[i].documents!![j].location!!)
+                            else -> menuList?.add(data[i].documents!![j].location!!)
                         }
                     }
                     mRestaurantData.add(

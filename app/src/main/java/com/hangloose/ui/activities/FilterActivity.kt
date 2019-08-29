@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import com.hangloose.utils.PreferenceHelper.get
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.hangloose.R
@@ -14,6 +13,7 @@ import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.FilterAdapter
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
+import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.viewmodel.LocationViewModel
 import io.apptik.widget.MultiSlider
 import kotlinx.android.synthetic.main.activity_enable_location.*
@@ -93,8 +93,8 @@ class FilterActivity : BaseActivity() {
             rv_somethingNew.adapter = adapterSomethingNew
             rv_dining.adapter = adapterDining
             rv_comedy.adapter = adapterComedy
-            minDiscount.text = "0%"
-            maxDiscount.text = "100%"
+            minDiscount.text = getString(R.string.zero_percent)
+            maxDiscount.text = getString(R.string.hundred_percent)
             discount_range.clearThumbs()
             discount_range.addThumb(0)
             discount_range.addThumb(100)
@@ -106,7 +106,7 @@ class FilterActivity : BaseActivity() {
         btnApplyFilter.setOnClickListener {
             //clearTagList()
             mSelectedTagList = getAllSelectedTagsList()
-            Log.d(TAG, "Tag List : " + mSelectedTagList)
+            Log.d(TAG, "Tag List : $mSelectedTagList")
             doApiCallForTags(mLocationViewModel!!.convertToCSV(mSelectedTagList))
         }
 
@@ -119,16 +119,16 @@ class FilterActivity : BaseActivity() {
             (0 until data!!.size).forEach { i ->
                 if (data[i].distanceFromLocation!! <= 50) {
                     var logo: String? = null
-                    var ambienceList: ArrayList<String>? = ArrayList()
+                    val ambienceList: ArrayList<String>? = ArrayList()
                     var menuList: ArrayList<String>? = ArrayList()
                     (0 until data[i].documents!!.size).forEach { j ->
-                        if (data[i].documents!![j].documentType.equals("LOGO")) {
-                            Log.d(TAG, "Logo : " + data[i].documents!![j].location)
-                            logo = data[i].documents!![j].location
-                        } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
-                            ambienceList!!.add(data[i].documents!![j].location!!)
-                        } else {
-                            menuList!!.add(data[i].documents!![j].location!!)
+                        when {
+                            data[i].documents!![j].documentType.equals("LOGO") -> {
+                                Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                                logo = data[i].documents!![j].location
+                            }
+                            data[i].documents!![j].documentType.equals("AMBIENCE") -> ambienceList!!.add(data[i].documents!![j].location!!)
+                            else -> menuList!!.add(data[i].documents!![j].location!!)
                         }
                     }
                     mRestaurantData!!.add(

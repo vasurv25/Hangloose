@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-public class ListConverter {
+class ListConverter {
 
     @TypeConverter
     fun fromString(value: String?): List<String>? {

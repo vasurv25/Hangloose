@@ -61,15 +61,13 @@ class RestaurantDetailsActivity : BaseActivity() {
             mSelectionViewModel!!.getRestaurantById().observe(this, Observer<Response<RestaurantList>> { t ->
                 val data = t!!.body()
                 var logo: String? = null
-                var ambienceList: ArrayList<String>? = ArrayList()
+                val ambienceList: ArrayList<String>? = ArrayList()
                 var menuList: ArrayList<String>? = ArrayList()
                 (0 until data!!.documents!!.size).forEach { i->
-                    if (data.documents!![i].documentType.equals("LOGO")) {
-                        logo = data.documents!![i].location
-                    } else if (data.documents!![i].documentType.equals("AMBIENCE")) {
-                        ambienceList!!.add(data.documents!![i].location!!)
-                    } else {
-                        menuList!!.add(data.documents!![i].location!!)
+                    when {
+                        data.documents!![i].documentType.equals("LOGO") -> logo = data.documents!![i].location
+                        data.documents!![i].documentType.equals("AMBIENCE") -> ambienceList!!.add(data.documents!![i].location!!)
+                        else -> menuList!!.add(data.documents!![i].location!!)
                     }
                 }
                 restaurantData = RestaurantData(
@@ -111,7 +109,7 @@ class RestaurantDetailsActivity : BaseActivity() {
             textOpenCloseTime.text = restaurantData!!.openCloseTime
             textChargesValue.text = restaurantData!!.priceFortwo
             textContact.text = restaurantData!!.number
-            if (restaurantData!!.restaurantType!!.equals("VEGETARIAN")) {
+            if (restaurantData!!.restaurantType!! == "VEGETARIAN") {
                 textNonVeg.visibility = View.GONE
             } else {
                 textNonVeg.visibility = View.VISIBLE

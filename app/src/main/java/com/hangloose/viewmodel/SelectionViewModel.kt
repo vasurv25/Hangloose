@@ -8,7 +8,6 @@ import com.hangloose.HanglooseApp
 import com.hangloose.model.Activities
 import com.hangloose.model.Adventures
 import com.hangloose.model.RestaurantList
-import com.hangloose.ui.model.ConsumerDetails
 import com.hangloose.ui.model.SelectionList
 import com.hangloose.utils.MESSAGE_KEY
 import io.reactivex.Observable
@@ -30,8 +29,8 @@ class SelectionViewModel : ViewModel() {
 
     fun selectionListApiRequest(mHeader: String?) {
 
-        var callActivities = HanglooseApp.getApiService()!!.getActivities(mHeader!!)
-        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(mHeader!!)
+        val callActivities = HanglooseApp.getApiService()!!.getActivities(mHeader!!)
+        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(mHeader)
 
         val disposable =
             Observable.zip(callActivities, callAdventures,
@@ -144,6 +143,6 @@ class SelectionViewModel : ViewModel() {
         for (name in list) {
             listInString = if (listInString.isNotEmpty()) listInString.append(",").append(name) else listInString.append(name)
         }
-        return listInString.toString();
+        return listInString.toString()
     }
 }

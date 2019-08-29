@@ -9,7 +9,7 @@ import com.hangloose.HanglooseApp
 class EmptyDBReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Toast.makeText(context, "Broadcast receiver for DB deletion",
-            Toast.LENGTH_SHORT).show();
+            Toast.LENGTH_SHORT).show()
         HanglooseApp.getDataHandler()!!.emptyLikeDislikeRestaurants()
     }
 }

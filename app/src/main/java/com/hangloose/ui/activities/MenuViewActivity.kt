@@ -2,14 +2,14 @@ package com.hangloose.ui.activities
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.hangloose.R
-import android.support.v4.app.FragmentPagerAdapter
-import android.view.ViewGroup
-import android.view.LayoutInflater
 import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.hangloose.R
 import kotlinx.android.synthetic.main.activity_menu_view.*
 
 
@@ -17,12 +17,12 @@ class MenuViewActivity : BaseActivity() {
     override fun init() {
 
     }
-    var imageFragmentPagerAdapter: ImageFragmentPagerAdapter? = null
+    private var imageFragmentPagerAdapter: ImageFragmentPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_view)
-        var menuImageList = intent.getStringArrayListExtra("IMAGE")
+        val menuImageList = intent.getStringArrayListExtra("IMAGE")
         imageFragmentPagerAdapter = ImageFragmentPagerAdapter(supportFragmentManager, menuImageList)
         pager.adapter = imageFragmentPagerAdapter
         ic_next.setOnClickListener {
@@ -62,7 +62,7 @@ class MenuViewActivity : BaseActivity() {
                 val bundle = Bundle()
                 bundle.putInt("position", position)
                 bundle.putStringArrayList("MENU_IMAGES", IMAGE_NAME)
-                swipeFragment.setArguments(bundle)
+                swipeFragment.arguments = bundle
                 return swipeFragment
             }
         }

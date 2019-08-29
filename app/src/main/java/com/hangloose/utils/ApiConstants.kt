@@ -8,7 +8,7 @@ enum class AUTH_TYPE(val type: Int) {
     LINKEDIN(5)
 }
 
-val STATUS_OK = 200
+const val STATUS_OK = 200
 val STATUS_CREATED = 201
 val STATUS_NOCONTENT = 204
 

@@ -9,18 +9,14 @@ import android.view.View
 class RecyclerItemClickListener(context: Context, private val mListener: OnItemClickListener?) :
     RecyclerView.OnItemTouchListener {
 
-    internal var mGestureDetector: GestureDetector
+    private var mGestureDetector: GestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            return true
+        }
+    })
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int)
-    }
-
-    init {
-        mGestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapUp(e: MotionEvent): Boolean {
-                return true
-            }
-        })
     }
 
     override fun onInterceptTouchEvent(view: RecyclerView, e: MotionEvent): Boolean {

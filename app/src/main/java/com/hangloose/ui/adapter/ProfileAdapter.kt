@@ -74,7 +74,7 @@ class ProfileAdapter(
                     }
 
                     context.resources.getString(R.string.account_settings) -> {
-                        var intent = Intent(context, AccountSettingsActivity::class.java)
+                        val intent = Intent(context, AccountSettingsActivity::class.java)
                         intent.putExtra("flag", 1)
                         context.startActivity(intent)
                     }
@@ -92,11 +92,11 @@ class ProfileAdapter(
                         }
                         if (mGoogleApiClient!!.isConnected) {
                             Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback {
-                                Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show()
                             }
                         }
                         HanglooseApp.getDataHandler()!!.emptyLikeDislikeRestaurants()
-                        mPreference!!.edit().clear().commit()
+                        mPreference!!.edit().clear().apply()
                         HanglooseApp.getInstance().clearApplicationData()
                         var intent = Intent(context, SignInActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

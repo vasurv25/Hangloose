@@ -65,12 +65,12 @@ class LocationViewModel : ViewModel() {
         return mRestaurantListResponse
     }
 
-    public fun convertToCSV(list : ArrayList<String>) : String {
+    fun convertToCSV(list : ArrayList<String>) : String {
         var listInString = StringBuilder()
 
         for (name in list) {
             listInString = if (listInString.isNotEmpty()) listInString.append(",").append(name) else listInString.append(name)
         }
-        return listInString.toString();
+        return listInString.toString()
     }
 }

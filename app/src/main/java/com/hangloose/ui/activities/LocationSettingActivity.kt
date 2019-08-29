@@ -3,50 +3,49 @@ package com.hangloose.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
+import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
-import android.util.Log
-import android.view.View
-import android.widget.Toast
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.hangloose.R
-import com.hangloose.viewmodel.LocationViewModel
-import android.arch.lifecycle.Observer
-import android.content.Context
-import android.content.SharedPreferences
-import android.databinding.DataBindingUtil
-import android.location.Geocoder
-import android.location.LocationManager
-import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
+import android.view.View
+import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
-import com.hangloose.model.RestaurantList
-import com.hangloose.ui.model.RestaurantData
-import retrofit2.Response
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.hangloose.R
 import com.hangloose.databinding.ActivityEnableLocationBinding
+import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.PlacesAutoCompleteAdapter
 import com.hangloose.ui.adapter.RecyclerItemClickListener
+import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
+import com.hangloose.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_enable_location.*
+import retrofit2.Response
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
@@ -72,7 +71,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     private val LOCATION_REQUEST_CODE = 109
     private val REQUEST_CHECK_SETTINGS = 110
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    var mManager: LocationManager? = null
+    private var mManager: LocationManager? = null
     var mFlagLocationNavigation = 0
 
     private var mActivityLocationBinding: ActivityEnableLocationBinding? = null
@@ -140,13 +139,14 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         when (v!!.id) {
             etLocationSearchLocation!!.id -> {
                 if (event!!.action == MotionEvent.ACTION_UP) {
-                    if (event.rawX >= etLocationSearchLocation!!.right - etLocationSearchLocation!!.getTotalPaddingRight()) {
+                    if (event.rawX >= etLocationSearchLocation!!.right - etLocationSearchLocation!!.totalPaddingRight) {
                         etLocationSearchLocation!!.setText("")
-                        return true;
+                        return true
                     }
                 }
             }
@@ -203,16 +203,16 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             (0 until data!!.size).forEach { i ->
                 if (data[i].distanceFromLocation!! <= 50) {
                     var logo: String? = null
-                    var ambienceList: ArrayList<String>? = ArrayList()
+                    val ambienceList: ArrayList<String>? = ArrayList()
                     var menuList: ArrayList<String>? = ArrayList()
                     (0 until data[i].documents!!.size).forEach { j ->
-                        if (data[i].documents!![j].documentType.equals("LOGO")) {
-                            Log.d(TAG, "Logo : " + data[i].documents!![j].location)
-                            logo = data[i].documents!![j].location
-                        } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
-                            ambienceList!!.add(data[i].documents!![j].location!!)
-                        } else {
-                            menuList!!.add(data[i].documents!![j].location!!)
+                        when {
+                            data[i].documents!![j].documentType.equals("LOGO") -> {
+                                Log.d(TAG, "Logo : " + data[i].documents!![j].location)
+                                logo = data[i].documents!![j].location
+                            }
+                            data[i].documents!![j].documentType.equals("AMBIENCE") -> ambienceList!!.add(data[i].documents!![j].location!!)
+                            else -> menuList!!.add(data[i].documents!![j].location!!)
                         }
                     }
                     mRestaurantData!!.add(
@@ -307,7 +307,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     private fun setAdapterForLocationList() {
         val layoutManager = LinearLayoutManager(this)
         rvAddressesLocation.layoutManager = layoutManager
-        mAdapter = PlacesAutoCompleteAdapter(this, mGoogleApiClient!!, mLatLngBounds!!)
+        mAdapter = PlacesAutoCompleteAdapter(this, mGoogleApiClient!!, mLatLngBounds)
         rvAddressesLocation.adapter = mAdapter
         addSearchListener()
 

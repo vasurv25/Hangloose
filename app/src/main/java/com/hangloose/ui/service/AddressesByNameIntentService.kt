@@ -3,15 +3,13 @@ package com.hangloose.ui.service
 import android.app.IntentService
 import android.content.Intent
 import android.location.Address
-import android.text.TextUtils
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.ResultReceiver
+import android.text.TextUtils
 import android.util.Log
-import java.util.*
-import java.util.Locale.*
-import kotlin.collections.ArrayList
+import java.util.Locale.getDefault
 
 class AddressesByNameIntentService : IntentService("Address Service") {
 
@@ -31,7 +29,7 @@ class AddressesByNameIntentService : IntentService("Address Service") {
             return
         }
 
-        val addressName = intent?.getStringExtra("address_name")
+        val addressName = intent.getStringExtra("address_name")
 
         if (addressName == null) {
             msg = "No name found"
@@ -60,8 +58,7 @@ class AddressesByNameIntentService : IntentService("Address Service") {
         } else {
             Log.d(TAG, "number of addresses received " + addresses.size)
             val addressList : Array<String> = arrayOf(addresses.size.toString())
-            var j = 0
-            for (address in addresses) {
+            for ((j, address) in addresses.withIndex()) {
                 val addressInfo = ArrayList<String>()
                 for (i in 0..address.maxAddressLineIndex) {
                     addressInfo.add(address.getAddressLine(i))
@@ -71,7 +68,6 @@ class AddressesByNameIntentService : IntentService("Address Service") {
                     addressInfo
                 )
                 Log.d(TAG, "Address" + addressList[j])
-                j++
             }
             sendResultsToReceiver(2, "", addressList)
         }

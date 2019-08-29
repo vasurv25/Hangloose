@@ -21,7 +21,7 @@
             tools:replace="android:allowBackup">
         <service
                 android:name=".ui.service.LikedDBService"
-                android:enabled="true"
+                android:enabled="false"
                 android:exported="true">
         </service>
 
@@ -121,7 +121,7 @@
         <receiver
                 android:name=".ui.receiver.SMSBroadcastReceiver"
                 android:enabled="true"
-                android:exported="true">
+                android:exported="false">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>

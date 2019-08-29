@@ -3,18 +3,12 @@ package com.hangloose.database
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.os.AsyncTask
-import android.util.Log
-import com.hangloose.HanglooseApp
 import com.hangloose.database.dbmodel.ModelCommunicator
 import com.hangloose.database.dbmodel.LikedRestaurant
 import com.hangloose.database.dbmodel.SavedRestaurant
 import com.hangloose.listener.LikedInsertionListener
 import com.hangloose.listener.SavedInsertionListener
-import com.hangloose.model.RestaurantConsumerRating
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.utils.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import org.json.JSONObject
 
 class RoomDBHandler(context: Context) : DBInf {
 
@@ -68,7 +62,7 @@ class RoomDBHandler(context: Context) : DBInf {
     }
 
     override fun deleteUnsavedRestaurant(restaurantData: RestaurantData) {
-        class deleteTask : AsyncTask<Void, Void, Int>() {
+        class DeleteTask : AsyncTask<Void, Void, Int>() {
             override fun doInBackground(vararg params: Void?): Int {
                 val restaurant = SavedRestaurant(
                     restaurantData.address,
@@ -96,7 +90,7 @@ class RoomDBHandler(context: Context) : DBInf {
                 return appRoomDatabase.savedRestaurantDao().deleteUnSavedRestaurant(restaurant)
             }
         }
-        deleteTask().execute()
+        DeleteTask().execute()
     }
 
     override fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<SavedRestaurant>> {
@@ -165,7 +159,7 @@ class RoomDBHandler(context: Context) : DBInf {
     }
 
     override fun deleteLikeUnlikeRestaurant(restaurantData: RestaurantData, isLike: Boolean) {
-        class deleteTask : AsyncTask<Void, Void, Int>() {
+        class DeleteTask : AsyncTask<Void, Void, Int>() {
             override fun doInBackground(vararg params: Void?): Int {
                 val restaurant = LikedRestaurant(
                     restaurantData.address,
@@ -194,12 +188,12 @@ class RoomDBHandler(context: Context) : DBInf {
                 return appRoomDatabase.likedRestaurantDao().deleteUnlikedRestaurant(restaurant)
             }
         }
-        deleteTask().execute()
+        DeleteTask().execute()
     }
 
     override fun getPersistedLikedRestaurant(data: RestaurantData, type: String, listener: LikedInsertionListener) {
 
-        class getPersistedLikedRestaurantTask : AsyncTask<Void, Void, LikedRestaurant>() {
+        class GetPersistedLikedRestaurantTask : AsyncTask<Void, Void, LikedRestaurant>() {
             override fun doInBackground(vararg params: Void?): LikedRestaurant {
                 return appRoomDatabase.likedRestaurantDao().getPersistedLikedRestaurant(data.id!!)
             }
@@ -213,6 +207,6 @@ class RoomDBHandler(context: Context) : DBInf {
                 }
             }
         }
-        getPersistedLikedRestaurantTask().execute()
+        GetPersistedLikedRestaurantTask().execute()
     }
 }

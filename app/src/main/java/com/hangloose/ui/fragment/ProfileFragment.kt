@@ -9,17 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.hangloose.R
 import com.hangloose.ui.adapter.ProfileAdapter
-import kotlinx.android.synthetic.main.content_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.*
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.hangloose.utils.KEY_EMAIL_ID
 import com.hangloose.utils.KEY_USER_NAME
 import com.hangloose.utils.PreferenceHelper
 import com.hangloose.utils.PreferenceHelper.get
+import kotlinx.android.synthetic.main.content_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment() {
 
@@ -32,7 +32,7 @@ class ProfileFragment : Fragment() {
             "Help & Support",
             "Logout"
         )
-    var isShow = true
+    private var isShow = true
     var scrollRange = -1
 
     private val listProfileIcons = arrayListOf(
@@ -49,7 +49,7 @@ class ProfileFragment : Fragment() {
     private var email: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_profile, null)
+        val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
         val textName = rootView.findViewById<TextView>(R.id.tvName)
         val textEmail = rootView.findViewById<TextView>(R.id.tvEmailId)
         textName.text = name

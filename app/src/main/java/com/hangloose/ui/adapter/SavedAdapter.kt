@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.saved_restaurant_item.view.*
 
 class SavedAdapter(
     val context: Context,
-    val mRestaurantData: ArrayList<RestaurantData>,
+    private val mRestaurantData: ArrayList<RestaurantData>,
     val type: String
 ) :
     RecyclerView.Adapter<SavedAdapter.SavedViewHolder>() {
@@ -35,7 +35,7 @@ class SavedAdapter(
 
     inner class SavedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindSearchItems(itemDetails: RestaurantData) {
-            if (type.equals(context.resources.getString(R.string.key_saved))) {
+            if (type == context.resources.getString(R.string.key_saved)) {
                 itemView.ibDelete.visibility = View.VISIBLE
             } else {
                 itemView.ibDelete.visibility = View.GONE

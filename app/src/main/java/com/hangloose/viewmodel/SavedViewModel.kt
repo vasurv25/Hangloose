@@ -16,7 +16,7 @@ class SavedViewModel : ViewModel() {
     private class SavedRestaurantAsyncTask :
         AsyncTask<Void, Void, ModelCommunicator<LiveData<List<SavedRestaurant>>>>() {
         override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<List<SavedRestaurant>>> {
-            return getDataHandler()!!.getAllSavedRestaurant() as ModelCommunicator<LiveData<List<SavedRestaurant>>>
+            return getDataHandler()!!.getAllSavedRestaurant()
         }
     }
 
@@ -28,7 +28,7 @@ class SavedViewModel : ViewModel() {
     private class PersistedSavedRestaurantAsyncTask(var id: String) :
         AsyncTask<Void, Void, ModelCommunicator<LiveData<SavedRestaurant>>>() {
         override fun doInBackground(vararg params: Void?): ModelCommunicator<LiveData<SavedRestaurant>> {
-            return getDataHandler()!!.getPersistedSavedRestaurant(id) as ModelCommunicator<LiveData<SavedRestaurant>>
+            return getDataHandler()!!.getPersistedSavedRestaurant(id)
         }
     }
 }

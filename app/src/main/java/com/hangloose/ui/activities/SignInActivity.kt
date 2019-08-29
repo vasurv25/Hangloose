@@ -17,13 +17,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import com.facebook.AccessToken
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.GraphRequest
-import com.facebook.Profile
-import com.facebook.ProfileTracker
+import com.facebook.*
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -33,7 +27,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySignInBinding
-import com.hangloose.model.Consumer
 import com.hangloose.model.ConsumerAuthDetailResponse
 import com.hangloose.model.ConsumerLoginRequest
 import com.hangloose.ui.model.*
@@ -42,7 +35,10 @@ import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
 import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import java.util.Arrays
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.forEach
+import kotlin.collections.map
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
 
@@ -199,7 +195,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     private fun intializeGoogleSignInOptions() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.server_client_id))
             .requestEmail()
             .build()
@@ -210,7 +206,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     private fun signInWithFacebook() {
         mFBCallbackManager = CallbackManager.Factory.create()
 
-        btnSignInFB.setReadPermissions(Arrays.asList("email", "public_profile"))
+        btnSignInFB.setReadPermissions(listOf("email", "public_profile"))
 
         btnSignInFB.registerCallback(mFBCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult?) {

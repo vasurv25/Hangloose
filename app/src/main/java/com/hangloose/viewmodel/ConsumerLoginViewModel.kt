@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import com.hangloose.HanglooseApp
 import com.hangloose.HanglooseApp.Companion.getApiService
 import com.hangloose.HanglooseApp.Companion.subscribeScheduler
 import com.hangloose.model.Activities
@@ -132,8 +131,8 @@ class ConsumerLoginViewModel : ViewModel() {
 
     fun selectionListApiRequest(mHeader: String?) {
 
-        var callActivities = getApiService()!!.getActivities(mHeader!!)
-        var callAdventures = getApiService()!!.getAdventures(mHeader!!)
+        val callActivities = getApiService()!!.getActivities(mHeader!!)
+        var callAdventures = getApiService()!!.getAdventures(mHeader)
 
         val disposable =
             Observable.zip(callActivities, callAdventures,
@@ -143,7 +142,7 @@ class ConsumerLoginViewModel : ViewModel() {
                         t2.body()!!
                     )
                 })
-                .subscribeOn(HanglooseApp.subscribeScheduler())
+                .subscribeOn(subscribeScheduler())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     isVisible.set(true)

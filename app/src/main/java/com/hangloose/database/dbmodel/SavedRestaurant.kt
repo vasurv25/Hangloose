@@ -4,7 +4,6 @@ import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.hangloose.utils.SAVED_TABLE_RESTAURANT
-import com.hangloose.utils.TABLE_RESTAURANT
 
 @Entity(tableName = SAVED_TABLE_RESTAURANT)
 data class SavedRestaurant(

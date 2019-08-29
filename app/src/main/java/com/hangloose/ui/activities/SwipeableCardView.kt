@@ -16,24 +16,23 @@ import com.hangloose.listener.LikedInsertionListener
 import com.hangloose.listener.SavedInsertionListener
 import com.hangloose.model.RestaurantConsumerRating
 import com.hangloose.ui.model.RestaurantData
-import com.hangloose.utils.*
+import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
+import com.hangloose.utils.KEY_CONSUMER_ID
+import com.hangloose.utils.LIKE_DISLIKE
+import com.hangloose.utils.PreferenceHelper
 import com.hangloose.viewmodel.LikedViewModel
 import com.hangloose.viewmodel.SavedViewModel
 import com.mindorks.placeholderview.SwipePlaceHolderView
 import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
 import com.mindorks.placeholderview.annotations.View
-import com.mindorks.placeholderview.annotations.swipe.SwipeCancelState
-import com.mindorks.placeholderview.annotations.swipe.SwipeIn
-import com.mindorks.placeholderview.annotations.swipe.SwipeInState
-import com.mindorks.placeholderview.annotations.swipe.SwipeOut
-import com.mindorks.placeholderview.annotations.swipe.SwipeOutState
+import com.mindorks.placeholderview.annotations.swipe.*
 
 @Layout(R.layout.swipeable_card_view)
 class SwipeableCardView(
     val context: Context,
     val data: RestaurantData,
-    val swipeView: SwipePlaceHolderView,
+    private val swipeView: SwipePlaceHolderView,
     val likedListener: LikedInsertionListener,
     val savedListener: SavedInsertionListener,
     val mLikedViewModel: LikedViewModel
@@ -110,16 +109,13 @@ class SwipeableCardView(
             context.startActivity(intent)
         }
 
-        save!!.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(view: CompoundButton?, isCheck: Boolean) {
-                if (isCheck) {
-                    getDataHandler()!!.insertSavedRestaurantData(data, savedListener)
-                } else {
-                    getDataHandler()!!.deleteUnsavedRestaurant(data)
-                }
+        save!!.setOnCheckedChangeListener { view, isCheck ->
+            if (isCheck) {
+                getDataHandler()!!.insertSavedRestaurantData(data, savedListener)
+            } else {
+                getDataHandler()!!.deleteUnsavedRestaurant(data)
             }
-
-        })
+        }
         btnShare!!.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"

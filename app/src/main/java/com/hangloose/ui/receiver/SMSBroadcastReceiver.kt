@@ -22,7 +22,7 @@ class SMSBroadcastReceiver : BroadcastReceiver() {
                 for (i in pdusObj.indices) {
 
                     val currentMessage = SmsMessage.createFromPdu(pdusObj[i] as ByteArray)
-                    val phoneNumber = currentMessage.getDisplayOriginatingAddress()
+                    val phoneNumber = currentMessage.displayOriginatingAddress
 
                     val pattern = Pattern.compile("(\\d{4})")
 

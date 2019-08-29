@@ -21,7 +21,7 @@ class AdventuresFragment : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mContext: Context
     private var mContentList: ArrayList<AdventuresDetails> = ArrayList()
-    var mAdapter: AdventuresAdapter? = null
+    private var mAdapter: AdventuresAdapter? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -37,7 +37,7 @@ class AdventuresFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_adventures, null)
+        val rootView = inflater.inflate(R.layout.fragment_adventures, container, false)
         mRecyclerView = rootView.findViewById(R.id.recyclerView) as RecyclerView
         mRecyclerView!!.isNestedScrollingEnabled = false
         mRecyclerView!!.setHasFixedSize(false)

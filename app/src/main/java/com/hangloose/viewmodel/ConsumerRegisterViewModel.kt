@@ -194,8 +194,8 @@ class ConsumerRegisterViewModel : ViewModel() {
 
     fun selectionListApiRequest(mHeader: String?) {
 
-        var callActivities = HanglooseApp.getApiService()!!.getActivities(mHeader!!)
-        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(mHeader!!)
+        val callActivities = HanglooseApp.getApiService()!!.getActivities(mHeader!!)
+        var callAdventures = HanglooseApp.getApiService()!!.getAdventures(mHeader)
 
         val disposable =
             Observable.zip(callActivities, callAdventures,
