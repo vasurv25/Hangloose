@@ -27,10 +27,12 @@
 
         <activity
                 android:name=".ui.activities.QueriesSuggestionsActivity"
+                android:screenOrientation="portrait"
                 android:theme="@style/AppThemeNoActionBarBlack">
         </activity>
         <activity
                 android:name=".ui.activities.MenuViewActivity"
+                android:screenOrientation="portrait"
                 android:theme="@style/AppThemeNoActionBar">
         </activity>
         <activity
@@ -39,6 +41,7 @@
         </activity>
         <activity
                 android:name=".ui.activities.FilterActivity"
+                android:screenOrientation="portrait"
                 android:launchMode="singleTask"
                 android:theme="@style/AppThemeNoActionBar">
         </activity>
