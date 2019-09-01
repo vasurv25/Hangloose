@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_restaurant_details.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 import retrofit2.Response
+import com.hangloose.databinding.ActivityRestaurantDetailsBinding
 
 class RestaurantDetailsActivity : BaseActivity() {
     override fun init() {
@@ -39,19 +41,21 @@ class RestaurantDetailsActivity : BaseActivity() {
     private var restaurantData: RestaurantData? = null
     private var mMenuRecyclerViewAdapter: MenuRecyclerViewAdapter? = null
     private var mTagRecyclerViewAdapter: TagRecyclerViewAdapter? = null
-    private var mSelectionViewModel: SelectionViewModel? = null
+    private var mActivityRestaurantDetailsBinding: ActivityRestaurantDetailsBinding? = null
+    private lateinit var mSelectionViewModel: SelectionViewModel
 
     private var mAmbienceAdapter: AmbienceImageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_restaurant_details)
+        mActivityRestaurantDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_restaurant_details)
         mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
+        mActivityRestaurantDetailsBinding!!.selectionViewModel = mSelectionViewModel
 
         val data = intent.data
         if (data == null) {
             layoutScroll.visibility = View.VISIBLE
-            restaurantData = intent.getParcelableExtra<RestaurantData>(EXTRA_RESTAURANT_DETAILS_DATA)
+            restaurantData = intent.getParcelableExtra(EXTRA_RESTAURANT_DETAILS_DATA)
             Log.i(TAG, restaurantData.toString())
             setUpViews()
         } else {

@@ -170,6 +170,8 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
                 replaceFragment(RestaurantFragment())
             } else {
                 mRestaurantData = data.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
+                mLatitude = data.getDoubleExtra(KEY_LATITUDE, 0.0)
+                mLongitude = data.getDoubleExtra(KEY_LONGTITUDE, 0.0)
                 Log.d(TAG, "LikedRestaurant Data : $mRestaurantData")
                 replaceFragment(RestaurantFragment())
             }

@@ -37,6 +37,7 @@
         </activity>
         <activity
                 android:name=".ui.activities.SavedLikedRestaurantActivity"
+                android:screenOrientation="portrait"
                 android:theme="@style/AppThemeNoActionBar">
         </activity>
         <activity
@@ -145,6 +146,7 @@
         <activity
                 android:name=".ui.activities.RestaurantDetailsActivity"
                 android:theme="@style/AppThemeNoActionBar"
+                android:screenOrientation="portrait"
                 android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

@@ -96,7 +96,7 @@ class HanglooseApp : Application() {
         val currentTime = System.currentTimeMillis()
         Log.d("Hangloose App", "CurrentTime :$currentTime")
         val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 20)
+        cal.set(Calendar.HOUR_OF_DAY, 2)
         cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         if (currentTime <= cal.timeInMillis) {

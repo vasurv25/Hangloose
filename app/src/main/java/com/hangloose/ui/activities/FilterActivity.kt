@@ -4,11 +4,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.hangloose.R
+import com.hangloose.databinding.ActivityFilterBinding
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.FilterAdapter
 import com.hangloose.ui.model.RestaurantData
@@ -19,7 +21,6 @@ import io.apptik.widget.MultiSlider
 import kotlinx.android.synthetic.main.activity_enable_location.*
 import kotlinx.android.synthetic.main.activity_filter.*
 import retrofit2.Response
-
 
 class FilterActivity : BaseActivity() {
     override fun init() {
@@ -51,9 +52,11 @@ class FilterActivity : BaseActivity() {
     private var mSelectedTagList: ArrayList<String> = ArrayList()
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
 
+    private var mActivityFilterBinding: ActivityFilterBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_filter)
+        initBinding()
         setSupportActionBar(findViewById(R.id.my_toolbar))
 
         mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
@@ -63,8 +66,6 @@ class FilterActivity : BaseActivity() {
         mLongitude = intent.getDoubleExtra(KEY_LONGTITUDE, 0.0)
         mPreference = PreferenceHelper.defaultPrefs(this)
         mHeaderToken = mPreference!![X_AUTH_TOKEN]
-
-        mLocationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
 
         setAdapters()
         ibFilter.setOnClickListener { finish() }
@@ -111,6 +112,12 @@ class FilterActivity : BaseActivity() {
         }
 
         getRestaurantDataByTag()
+    }
+
+    private fun initBinding() {
+        mActivityFilterBinding = DataBindingUtil.setContentView(this, R.layout.activity_filter)
+        mLocationViewModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)
+        mActivityFilterBinding!!.locationViewModel = mLocationViewModel
     }
 
     private fun getRestaurantDataByTag() {
@@ -163,6 +170,8 @@ class FilterActivity : BaseActivity() {
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
             intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
             intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
+            intent.putExtra(KEY_LATITUDE, mLatitude)
+            intent.putExtra(KEY_LONGTITUDE, mLongitude)
             startActivity(intent)
         })
 
