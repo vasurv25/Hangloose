@@ -21,6 +21,7 @@ import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
 import kotlinx.android.synthetic.main.activity_tab.*
+import kotlin.collections.ArrayList
 
 class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, RestaurantFragment.LocationNavigationListener {
 
@@ -45,7 +46,6 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tab)
-
         mPreference = PreferenceHelper.defaultPrefs(this)
 
         mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)

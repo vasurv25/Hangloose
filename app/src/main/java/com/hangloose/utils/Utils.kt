@@ -19,6 +19,8 @@ import android.widget.Toast
 import com.hangloose.R
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
@@ -128,4 +130,12 @@ fun deleteDir(dir: File?): Boolean {
     } else {
         false
     }
+}
+
+fun getCurrentDate(): String {
+    val dateFormat = SimpleDateFormat(
+        "yyyy-MM-dd", Locale.getDefault()
+    )
+    val date = Date()
+    return dateFormat.format(date)
 }

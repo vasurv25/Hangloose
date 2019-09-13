@@ -19,6 +19,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.hangloose.R
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.AmbienceImageAdapter
@@ -30,6 +32,7 @@ import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 import retrofit2.Response
 import com.hangloose.databinding.ActivityRestaurantDetailsBinding
+import java.io.File
 
 class RestaurantDetailsActivity : BaseActivity() {
     override fun init() {
@@ -208,7 +211,11 @@ class RestaurantDetailsActivity : BaseActivity() {
 
         inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bindMenuItem(menuUrl: String) {
-                Glide.with(context).load(menuUrl).into(itemView.ivMenu)
+                Glide.with(context)
+                    .load(menuUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontTransform()
+                    .into(itemView.ivMenu)
                 itemView.setOnClickListener {
                     val intent = Intent(context, MenuViewActivity::class.java)
                     intent.putStringArrayListExtra("IMAGE", urlList as java.util.ArrayList<String>?)

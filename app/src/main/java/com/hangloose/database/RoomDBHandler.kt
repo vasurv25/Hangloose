@@ -104,6 +104,7 @@ class RoomDBHandler(context: Context) : DBInf {
     override fun insertLikeUnlikeRestaurantData(
         restaurantData: RestaurantData,
         isLike: Boolean,
+        currentDate: String,
         listener: LikedInsertionListener
     ) {
 
@@ -131,7 +132,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.logo,
                     restaurantData.ambienceList,
                     restaurantData.menuList,
-                    isLike
+                    isLike,
+                    currentDate
                 )
                 return appRoomDatabase.likedRestaurantDao().insertLikedRestaurant(restaurant)
             }
@@ -155,6 +157,12 @@ class RoomDBHandler(context: Context) : DBInf {
     override fun emptyLikeDislikeRestaurants() {
         AsyncTask.execute {
             appRoomDatabase.likedRestaurantDao().emptyLikeDislikeRestaurants()
+        }
+    }
+
+    override fun emptyRestroForOldDate(date: String) {
+        AsyncTask.execute {
+            appRoomDatabase.likedRestaurantDao().emptyLikedRestroWithOldDate(date)
         }
     }
 
@@ -183,7 +191,8 @@ class RoomDBHandler(context: Context) : DBInf {
                     restaurantData.logo,
                     restaurantData.ambienceList,
                     restaurantData.menuList,
-                    isLike
+                    isLike,
+                    ""
                 )
                 return appRoomDatabase.likedRestaurantDao().deleteUnlikedRestaurant(restaurant)
             }

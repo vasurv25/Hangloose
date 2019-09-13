@@ -72,5 +72,8 @@ data class LikedRestaurant(
     val menu: List<String>?,
 
     @ColumnInfo(name = "isLike")
-    val isLike: Boolean
+    val isLike: Boolean,
+
+    @ColumnInfo(name = "currentDate")
+    val currentDate: String
 )

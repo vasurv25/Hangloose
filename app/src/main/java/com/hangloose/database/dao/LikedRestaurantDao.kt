@@ -22,4 +22,7 @@ abstract class LikedRestaurantDao {
 
     @Query("DELETE FROM LIKED_TABLE_RESTAURANT")
     abstract fun emptyLikeDislikeRestaurants()
+
+    @Query("DELETE FROM LIKED_TABLE_RESTAURANT where currentDate != :date")
+    abstract fun emptyLikedRestroWithOldDate(date: String)
 }

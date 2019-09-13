@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.View
+import com.hangloose.HanglooseApp
 import com.hangloose.R
 import com.hangloose.databinding.ActivitySelectionBinding
 import com.hangloose.model.RestaurantList

@@ -7,13 +7,15 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.hangloose.R
 import kotlinx.android.synthetic.main.activity_menu_view.*
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.github.chrisbanes.photoview.PhotoView
 
 
 class MenuViewActivity : BaseActivity() {
+
     override fun init() {
 
     }
@@ -48,11 +50,15 @@ class MenuViewActivity : BaseActivity() {
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             val swipeView = inflater.inflate(R.layout.layout_swipe_fragment, container, false)
-            val imageView = swipeView.findViewById(R.id.imageView) as ImageView
+            val imageView = swipeView.findViewById(R.id.imageView) as PhotoView
             val bundle = arguments
             val position = bundle!!.getInt("position")
             val imageList = bundle.getStringArrayList("MENU_IMAGES")
-            Glide.with(context!!).load(imageList[position]).into(imageView)
+            Glide.with(context!!)
+                .load(imageList[position])
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontTransform()
+                .into(imageView)
             return swipeView
         }
 

@@ -1,24 +1,22 @@
 package com.hangloose
 
-import android.app.AlarmManager
 import android.app.Application
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.OnLifecycleEvent
+import android.arch.lifecycle.ProcessLifecycleOwner
 import android.util.Log
-import android.widget.Toast
 import com.hangloose.database.RoomDBHandler
 import com.hangloose.network.ApiInf
 import com.hangloose.network.RetrofitApiHandler
-import com.hangloose.ui.receiver.EmptyDBReceiver
-import com.hangloose.utils.REQUEST_CODE_DB_DELETE
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import java.io.File
-import java.util.*
+import com.hangloose.utils.getCurrentDate
 
-class HanglooseApp : Application() {
+
+class HanglooseApp : Application(), LifecycleObserver {
 
     override fun onCreate() {
         super.onCreate()
@@ -30,7 +28,7 @@ class HanglooseApp : Application() {
             .setFontAttrId(R.attr.fontPath)
             .build()
         )
-        setAlarmForDB()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
     companion object {
@@ -92,28 +90,18 @@ class HanglooseApp : Application() {
         return dir!!.delete()
     }
 
-    private fun setAlarmForDB() {
-        val currentTime = System.currentTimeMillis()
-        Log.d("Hangloose App", "CurrentTime :$currentTime")
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, 2)
-        cal.set(Calendar.MINUTE, 0)
-        cal.set(Calendar.SECOND, 0)
-        if (currentTime <= cal.timeInMillis) {
-            val intent = Intent(this, EmptyDBReceiver::class.java)
-            //intent.putExtra()
-            val pendingIntent =
-                PendingIntent.getBroadcast(this, REQUEST_CODE_DB_DELETE, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-            val alarm = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarm.set(
-                AlarmManager.RTC_WAKEUP,
-                cal.timeInMillis,
-                pendingIntent
-            )
-            Toast.makeText(
-                this, "Alarm will start at time specified",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onAppBackgrounded() {
+        Log.d("Awww", "App in background")
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onAppForegrounded() {
+        Log.d("Yeeey", "App in foreground")
+        checkForOldDateRetros()
+    }
+
+    private fun checkForOldDateRetros() {
+        getDataHandler()!!.emptyRestroForOldDate(getCurrentDate())
     }
 }

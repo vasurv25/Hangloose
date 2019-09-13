@@ -15,6 +15,8 @@ import com.hangloose.utils.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LikedViewModel : ViewModel() {
     private var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
@@ -55,7 +57,7 @@ class LikedViewModel : ViewModel() {
                     Log.i(TAG, "success register${it.code()}")
                     when (restaurantConsumerRating.ratingAction) {
                         LIKE_DISLIKE.LIKE.name -> {
-                            getDataHandler()!!.insertLikeUnlikeRestaurantData(data, true, likedListener)
+                            getDataHandler()!!.insertLikeUnlikeRestaurantData(data, true, getCurrentDate(), likedListener)
                         }
                     }
                 } else {
