@@ -17,6 +17,7 @@ interface SavedDBInf {
     fun deleteUnsavedRestaurant(restaurantData: RestaurantData)
     fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<SavedRestaurant>>
     fun emptyRestroForOldDate(date: String)
+    fun updateSavedRestaurantData(restaurantData: RestaurantData, listener: SavedInsertionListener)
 }
 
 interface LikedDBInf {
@@ -25,4 +26,5 @@ interface LikedDBInf {
     fun deleteLikeUnlikeRestaurant(restaurantData: RestaurantData, isLike: Boolean)
     fun getPersistedLikedRestaurant(data: RestaurantData, type: String, listener: LikedInsertionListener)
     fun emptyLikeDislikeRestaurants()
+    fun updateLikedRestaurantData(restaurantData: RestaurantData, listener: LikedInsertionListener)
 }

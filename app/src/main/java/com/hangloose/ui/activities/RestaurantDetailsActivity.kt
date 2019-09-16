@@ -21,6 +21,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.hangloose.R
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.AmbienceImageAdapter
@@ -33,6 +34,8 @@ import kotlinx.android.synthetic.main.restaurant_tag_item.view.*
 import retrofit2.Response
 import com.hangloose.databinding.ActivityRestaurantDetailsBinding
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RestaurantDetailsActivity : BaseActivity() {
     override fun init() {

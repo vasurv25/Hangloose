@@ -36,8 +36,8 @@ class ProfileFragment : Fragment() {
     var scrollRange = -1
 
     private val listProfileIcons = arrayListOf(
-        R.drawable.saved_icon,
-        R.drawable.order_icon,
+        R.drawable.favourite,
+        R.drawable.liked_restaurant,
         //R.drawable.offers_icon,
         R.drawable.settings_icon,
         R.drawable.help_icon,

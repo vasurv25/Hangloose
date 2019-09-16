@@ -53,6 +53,41 @@ class RoomDBHandler(context: Context) : DBInf {
 
     }
 
+    override fun updateSavedRestaurantData(restaurantData: RestaurantData, listener: SavedInsertionListener) {
+
+        class InsertTask : AsyncTask<Void, Void, Long>() {
+            override fun doInBackground(vararg params: Void): Long {
+
+                return appRoomDatabase.savedRestaurantDao().updateSavedRestaurantData(restaurantData.id!!,restaurantData.address!!,
+                    restaurantData.createdAt!!,
+                    restaurantData.discount!!,
+                    restaurantData.images!!,
+                    restaurantData.latitude!!,
+                    restaurantData.longitude!!,
+                    restaurantData.name!!,
+                    restaurantData.offer!!,
+                    restaurantData.priceFortwo!!,
+                    restaurantData.ratings!!,
+                    restaurantData.restaurantType!!,
+                    restaurantData.updatedAt!!,
+                    restaurantData.distanceFromLocation!!,
+                    restaurantData.about!!,
+                    restaurantData.tags!!,
+                    restaurantData.openCloseTime!!,
+                    restaurantData.number!!,
+                    restaurantData.logo!!,
+                    restaurantData.ambienceList!!,
+                    restaurantData.menuList!!)
+            }
+
+            override fun onPostExecute(result: Long?) {
+                super.onPostExecute(result)
+                listener.onSavedRecordInserted(result!!)
+            }
+        }
+        InsertTask().execute()
+    }
+
     override fun getAllSavedRestaurant(): ModelCommunicator<LiveData<List<SavedRestaurant>>> {
         return object : ModelCommunicator<LiveData<List<SavedRestaurant>>> {
             override fun get(): LiveData<List<SavedRestaurant>> {
@@ -145,6 +180,41 @@ class RoomDBHandler(context: Context) : DBInf {
         }
         InsertTask().execute()
     }
+
+    override fun updateLikedRestaurantData(restaurantData: RestaurantData, listener: LikedInsertionListener) {
+        class InsertTask : AsyncTask<Void, Void, Long>() {
+            override fun doInBackground(vararg params: Void): Long {
+
+                return appRoomDatabase.likedRestaurantDao().updateLikedRestaurantData(restaurantData.id!!,restaurantData.address!!,
+                    restaurantData.createdAt!!,
+                    restaurantData.discount!!,
+                    restaurantData.images!!,
+                    restaurantData.latitude!!,
+                    restaurantData.longitude!!,
+                    restaurantData.name!!,
+                    restaurantData.offer!!,
+                    restaurantData.priceFortwo!!,
+                    restaurantData.ratings!!,
+                    restaurantData.restaurantType!!,
+                    restaurantData.updatedAt!!,
+                    restaurantData.distanceFromLocation!!,
+                    restaurantData.about!!,
+                    restaurantData.tags!!,
+                    restaurantData.openCloseTime!!,
+                    restaurantData.number!!,
+                    restaurantData.logo!!,
+                    restaurantData.ambienceList!!,
+                    restaurantData.menuList!!)
+            }
+
+            override fun onPostExecute(result: Long?) {
+                super.onPostExecute(result)
+                listener.onLikedRecordInserted(result!!)
+            }
+        }
+        InsertTask().execute()
+    }
+
 
     override fun getAllLikedRestaurant(): ModelCommunicator<LiveData<List<LikedRestaurant>>> {
         return object : ModelCommunicator<LiveData<List<LikedRestaurant>>> {

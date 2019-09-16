@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.bumptech.glide.signature.ObjectKey
 import com.hangloose.HanglooseApp
 import com.hangloose.R
 import com.hangloose.ui.activities.RestaurantDetailsActivity
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.EXTRA_RESTAURANT_DETAILS_DATA
 import kotlinx.android.synthetic.main.saved_restaurant_item.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SavedAdapter(
     val context: Context,

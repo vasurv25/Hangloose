@@ -13,7 +13,10 @@ import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp
 import com.hangloose.R
+import com.hangloose.database.dbmodel.LikedRestaurant
 import com.hangloose.databinding.ActivitySelectionBinding
+import com.hangloose.listener.LikedInsertionListener
+import com.hangloose.listener.SavedInsertionListener
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.ViewPagerAdapter
 import com.hangloose.ui.fragment.ActivitiesFragment
@@ -28,7 +31,7 @@ import com.hangloose.viewmodel.SelectionViewModel
 import kotlinx.android.synthetic.main.activity_selection.*
 import retrofit2.Response
 
-class SelectionActivity : BaseActivity() {
+class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertionListener {
 
     private var TAG = "SelectionActivity"
     var didClickNextButton: (() -> Unit)? = null
@@ -227,6 +230,13 @@ class SelectionActivity : BaseActivity() {
                         menuList
                     )
                 )
+                if (doesDatabaseExist(SAVED_TABLE_RESTAURANT)) {
+                    HanglooseApp.getDataHandler()!!.updateSavedRestaurantData(mEntireRestaurantData[i], this)
+                }
+
+                if (doesDatabaseExist(LIKED_TABLE_RESTAURANT)) {
+                    HanglooseApp.getDataHandler()!!.updateLikedRestaurantData(mEntireRestaurantData[i], this)
+                }
             }
             onNavigateToTabsActivity()
         })
@@ -264,6 +274,28 @@ class SelectionActivity : BaseActivity() {
                 ContextCompat.getColor(this, R.color.colorPrimary)
             )
         })
+    }
+
+    private fun doesDatabaseExist(dbName: String): Boolean {
+        var dbFile = this.getDatabasePath(dbName);
+        return dbFile.exists()
+    }
+
+    override fun onSavedRecordInserted(id: Long) {
+        Log.i("Hangloose", "onSavedRecordInserted")
+    }
+
+    override fun onLikedRecordError(msg: String, data: RestaurantData) {
+    }
+
+    override fun getLikeData(data: LikedRestaurant, restaurantData: RestaurantData, type: String) {
+    }
+
+    override fun getLikeDataIfNull(data: RestaurantData, type: String) {
+    }
+
+    override fun onLikedRecordInserted(id: Long) {
+        Log.i("Hangloose", "onLikedRecordInserted")
     }
 
     fun oNextClick(view: View?) {

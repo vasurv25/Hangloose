@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.hangloose.R
 import com.hangloose.ui.activities.MenuViewActivity
 import kotlinx.android.synthetic.main.ambience_image_item.view.*
+import kotlin.collections.ArrayList
+
 
 class AmbienceImageAdapter(val context: Context, private val imageList: ArrayList<String>) :
     PagerAdapter() {
@@ -31,8 +32,6 @@ class AmbienceImageAdapter(val context: Context, private val imageList: ArrayLis
         val itemView = layoutInflater!!.inflate(R.layout.ambience_image_item, parent, false)
         Glide.with(context)
             .load(imageList[position])
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .dontTransform()
             .into(itemView.ivAmbience)
         parent.addView(itemView.ivAmbience)
         itemView.ivAmbience.setOnClickListener { val intent = Intent(context, MenuViewActivity::class.java)

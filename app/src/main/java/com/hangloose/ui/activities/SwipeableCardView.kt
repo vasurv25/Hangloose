@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.hangloose.HanglooseApp.Companion.getDataHandler
 import com.hangloose.R
 import com.hangloose.database.dbmodel.SavedRestaurant
@@ -27,6 +29,7 @@ import com.mindorks.placeholderview.annotations.Layout
 import com.mindorks.placeholderview.annotations.Resolve
 import com.mindorks.placeholderview.annotations.View
 import com.mindorks.placeholderview.annotations.swipe.*
+import java.util.*
 
 @Layout(R.layout.swipeable_card_view)
 class SwipeableCardView(
