@@ -101,4 +101,14 @@
     <string name="search_restaurant">Search Restaurant</string>
     <string name="zero_percent">0%</string>
     <string name="hundred_percent">100%</string>
+    <string name="select_your_desired_group">Select your desired group</string>
+    <string name="click_on_next_button">Click on next button</string>
+    <string name="choose_your_location">Choose your location</string>
+    <string name="variety_of_filters">You can also see \n variety of filters here</string>
+    <string name="veg_nonveg_bar">You can choose from \n Veg, Non-Veg, Bar</string>
+    <string name="right_swipe">Right swipe to LIKE \n the restaurants/cafes</string>
+    <string name="left_swipe">Left swipe to DISLIKE \n the restaurants/cafes</string>
+    <string name="tap_to_favourite">Tap to FAVOURITE</string>
+    <string name="profile_section">You can view your FAVOURITE \n list in the PROFILE section</string>
+    <string name="search_section">You can search \n restaurants and cafe here</string>
 </resources>

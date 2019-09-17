@@ -17,6 +17,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import com.hangloose.R
+import com.hangloose.utils.PreferenceHelper.get
+import com.hangloose.utils.PreferenceHelper.set
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -138,4 +140,14 @@ fun getCurrentDate(): String {
     )
     val date = Date()
     return dateFormat.format(date)
+}
+
+fun isTutorialShown(context: Context, key: String): Boolean {
+    val mPreference = PreferenceHelper.defaultPrefs(context)
+    return mPreference[key]!!
+}
+
+fun setTutorialShown(context: Context, key: String){
+    val mPreference = PreferenceHelper.defaultPrefs(context)
+    mPreference[key] = true
 }

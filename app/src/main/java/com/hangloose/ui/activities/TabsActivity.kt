@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.hangloose.R
@@ -20,10 +21,12 @@ import com.hangloose.ui.fragment.SearchFragment
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
+import kotlinx.android.synthetic.main.activity_selection.*
 import kotlinx.android.synthetic.main.activity_tab.*
 import kotlin.collections.ArrayList
 
-class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, RestaurantFragment.LocationNavigationListener {
+class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, RestaurantFragment.LocationNavigationListener,
+    View.OnClickListener {
 
     private val TAG = "TabsActivity"
     private var mRestaurantData: ArrayList<RestaurantData>? = null
@@ -42,6 +45,7 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
     private var mLatitude: Double? = null
     private var mLongitude: Double? = null
+    private var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +63,30 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         mHeader = headerToken
         Log.i(TAG, "LikedRestaurant data : $mRestaurantData")
         onTabSelected(tabLayout.getTabAt(0))
+        setTutorialVisibilityFirst(KEY_HOME_TUTORIAL)
+    }
+
+    private fun setTutorialVisibilityFirst(key: String) {
+        if (isTutorialShown(this, key)) {
+            tutorial_home_first.visibility = View.GONE
+        } else {
+            tutorial_home_first.visibility = View.VISIBLE
+            tutorial_home_first.setOnClickListener(this)
+        }
+    }
+
+    override fun onClick(view: View?) {
+        when (view!!.id) {
+            tutorial_home_first.id -> {
+                tutorial_home_first.visibility = View.GONE
+                tutorial_home_second.visibility = View.VISIBLE
+                tutorial_home_second.setOnClickListener(this)
+                setTutorialShown(this, KEY_HOME_TUTORIAL)
+            }
+            tutorial_home_second.id -> {
+                tutorial_home_second.visibility = View.GONE
+            }
+        }
     }
 
     @SuppressLint("NewApi")

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import com.hangloose.HanglooseApp
 import com.hangloose.R
@@ -31,7 +32,7 @@ import com.hangloose.viewmodel.SelectionViewModel
 import kotlinx.android.synthetic.main.activity_selection.*
 import retrofit2.Response
 
-class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertionListener {
+class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertionListener, View.OnClickListener {
 
     private var TAG = "SelectionActivity"
     var didClickNextButton: (() -> Unit)? = null
@@ -73,7 +74,9 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
 
     override fun init() {}
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 
     private fun getIntentData() {
         mActivitiesList = intent!!.getParcelableArrayListExtra(KEY_ACTIVITIES_LIST)
@@ -93,6 +96,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
         viewPager.adapter = viewPagerAdapter
         indicator.setViewPager(viewPager)
         viewPager.currentItem = 0
+        setTutorialVisibilityActivities(KEY_ACTIVITIES_TUTORIAL)
         viewPagerAdapter.registerDataSetObserver(indicator.dataSetObserver)
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -100,6 +104,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
                     tvSelectionHeading.text = getString(R.string.select_your_activities)
                 } else {
                     tvSelectionHeading.text = getString(R.string.select_your_adventure)
+                    setTutorialVisibilityAdventures(KEY_ADVENTURES_TUTORIAL)
                 }
             }
 
@@ -109,6 +114,30 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
             override fun onPageSelected(position: Int) {
             }
         })
+    }
+
+    override fun onClick(view: View?) {
+        view!!.visibility = View.GONE
+    }
+
+    private fun setTutorialVisibilityActivities(key: String) {
+        if (isTutorialShown(this@SelectionActivity, key)) {
+            tutorial_view_activity.visibility = View.GONE
+        } else {
+            tutorial_view_activity.visibility = View.VISIBLE
+            tutorial_view_activity.setOnClickListener(this)
+            setTutorialShown(this@SelectionActivity, key)
+        }
+    }
+
+    private fun setTutorialVisibilityAdventures(key: String) {
+        if (isTutorialShown(this@SelectionActivity, key)) {
+            tutorial_view_adventure.visibility = View.GONE
+        } else {
+            tutorial_view_adventure.visibility = View.VISIBLE
+            tutorial_view_adventure.setOnClickListener(this)
+            setTutorialShown(this@SelectionActivity, key)
+        }
     }
 
     private fun initBinding() {
@@ -159,7 +188,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
                     var logo: String? = null
                     val ambienceList: ArrayList<String>? = ArrayList()
                     var menuList: ArrayList<String>? = ArrayList()
-                    (0 until data[i].documents!!.size).forEach { j->
+                    (0 until data[i].documents!!.size).forEach { j ->
                         when {
                             data[i].documents!![j].documentType.equals("LOGO") -> logo = data[i].documents!![j].location
                             data[i].documents!![j].documentType.equals("AMBIENCE") -> ambienceList?.add(data[i].documents!![j].location!!)
@@ -196,7 +225,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
                 var logo: String? = null
                 val ambienceList: ArrayList<String>? = ArrayList()
                 val menuList: ArrayList<String>? = ArrayList()
-                (0 until data[i].documents!!.size).forEach { j->
+                (0 until data[i].documents!!.size).forEach { j ->
                     if (data[i].documents!![j].documentType.equals("LOGO")) {
                         logo = data[i].documents!![j].location
                     } else if (data[i].documents!![j].documentType.equals("AMBIENCE")) {
@@ -315,6 +344,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
 
             }
             1 -> {
+                setTutorialVisibilityAdventures(KEY_ADVENTURES_TUTORIAL)
                 mActivitiesSelectedList.clear()
                 mAdventuresSelectedList.clear()
                 mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())
@@ -332,15 +362,15 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
                             mLongitude = latLongFromLocationName.longitude
                             mSelectionViewModel.restaurantListApiRequest(
                                 mActivitiesSelectedList, mAdventuresSelectedList
-                                ,""
-                                ,""
+                                , ""
+                                , ""
                                 , latLongFromLocationName.latitude
                                 , latLongFromLocationName.longitude, mHeader
                             )
                         }
                     }
-                }else{
-                    if (mActivitiesSelectedList.size == 0  && mAdventuresSelectedList.size == 0) {
+                } else {
+                    if (mActivitiesSelectedList.size == 0 && mAdventuresSelectedList.size == 0) {
                         showSnackBar(
                             ll_selection,
                             "Please Select at least one Activities and Adventure!",
