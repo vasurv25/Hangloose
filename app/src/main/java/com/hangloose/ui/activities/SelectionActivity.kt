@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import com.hangloose.HanglooseApp
 import com.hangloose.R
@@ -96,7 +95,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
         viewPager.adapter = viewPagerAdapter
         indicator.setViewPager(viewPager)
         viewPager.currentItem = 0
-        setTutorialVisibilityActivities(KEY_ACTIVITIES_TUTORIAL)
+        setTutorialVisibility(KEY_ACTIVITIES_TUTORIAL)
         viewPagerAdapter.registerDataSetObserver(indicator.dataSetObserver)
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -104,7 +103,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
                     tvSelectionHeading.text = getString(R.string.select_your_activities)
                 } else {
                     tvSelectionHeading.text = getString(R.string.select_your_adventure)
-                    setTutorialVisibilityAdventures(KEY_ADVENTURES_TUTORIAL)
+                    setTutorialVisibility(KEY_ADVENTURES_TUTORIAL)
                 }
             }
 
@@ -120,22 +119,12 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
         view!!.visibility = View.GONE
     }
 
-    private fun setTutorialVisibilityActivities(key: String) {
+    private fun setTutorialVisibility(key: String) {
         if (isTutorialShown(this@SelectionActivity, key)) {
-            tutorial_view_activity.visibility = View.GONE
+            tutorial_view.visibility = View.GONE
         } else {
-            tutorial_view_activity.visibility = View.VISIBLE
-            tutorial_view_activity.setOnClickListener(this)
-            setTutorialShown(this@SelectionActivity, key)
-        }
-    }
-
-    private fun setTutorialVisibilityAdventures(key: String) {
-        if (isTutorialShown(this@SelectionActivity, key)) {
-            tutorial_view_adventure.visibility = View.GONE
-        } else {
-            tutorial_view_adventure.visibility = View.VISIBLE
-            tutorial_view_adventure.setOnClickListener(this)
+            tutorial_view.visibility = View.VISIBLE
+            tutorial_view.setOnClickListener(this)
             setTutorialShown(this@SelectionActivity, key)
         }
     }
@@ -344,7 +333,6 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
 
             }
             1 -> {
-                setTutorialVisibilityAdventures(KEY_ADVENTURES_TUTORIAL)
                 mActivitiesSelectedList.clear()
                 mAdventuresSelectedList.clear()
                 mActivitiesSelectedList.addAll(mActivitiesFragment!!.getSelectedActivities())

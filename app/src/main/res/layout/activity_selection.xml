@@ -97,12 +97,8 @@
             android:visibility="@{selectionViewModel.isVisible? View.VISIBLE : View.GONE}" />
 
         <include layout="@layout/layout_tutorial_activites"
-                 android:id="@+id/tutorial_view_activity"
+                 android:id="@+id/tutorial_view"
                 android:visibility="gone"/>
-
-        <include layout="@layout/layout_tutorial_activites"
-                 android:id="@+id/tutorial_view_adventure"
-                 android:visibility="gone"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>
