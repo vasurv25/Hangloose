@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
             android:id="@+id/tvSelectionHeading"
             fontPath="fonts/segoe_ui_italic.ttf"
@@ -98,7 +99,7 @@
 
         <include layout="@layout/layout_tutorial_activites"
                  android:id="@+id/tutorial_view"
-                android:visibility="gone"/>
+                 android:visibility="gone"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

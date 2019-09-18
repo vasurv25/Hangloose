@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING
 import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp
@@ -74,7 +75,6 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
     override fun init() {}
 
     override fun onBackPressed() {
-        super.onBackPressed()
     }
 
     private fun getIntentData() {
@@ -99,11 +99,15 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
         viewPagerAdapter.registerDataSetObserver(indicator.dataSetObserver)
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-                if (viewPager.currentItem == 0) {
-                    tvSelectionHeading.text = getString(R.string.select_your_activities)
-                } else {
-                    tvSelectionHeading.text = getString(R.string.select_your_adventure)
-                    setTutorialVisibility(KEY_ADVENTURES_TUTORIAL)
+                when(state){
+                    SCROLL_STATE_SETTLING -> {
+                        if (viewPager.currentItem == 0) {
+                            tvSelectionHeading.text = getString(R.string.select_your_activities)
+                        } else {
+                            tvSelectionHeading.text = getString(R.string.select_your_adventure)
+                            setTutorialVisibility(KEY_ADVENTURES_TUTORIAL)
+                        }
+                    }
                 }
             }
 
@@ -122,6 +126,7 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
     private fun setTutorialVisibility(key: String) {
         if (isTutorialShown(this@SelectionActivity, key)) {
             tutorial_view.visibility = View.GONE
+            tutorial_view.setOnClickListener(null)
         } else {
             tutorial_view.visibility = View.VISIBLE
             tutorial_view.setOnClickListener(this)
