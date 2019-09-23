@@ -405,8 +405,8 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
         val intent = Intent(this, TabsActivity::class.java)
         intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
         intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
-        intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
-        intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
+        setRestaurantData(mRestaurantData)
+        setEntireRestaurantData(mEntireRestaurantData)
         intent.putExtra(KEY_LATITUDE, mLatitude)
         intent.putExtra(KEY_LONGTITUDE, mLongitude)
         startActivity(intent)
@@ -428,4 +428,9 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
 //        Log.d(TAG, "onSaveInstanceState : " + outState)
 //        super.onSaveInstanceState(outState)
 //    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.clear()
+    }
 }

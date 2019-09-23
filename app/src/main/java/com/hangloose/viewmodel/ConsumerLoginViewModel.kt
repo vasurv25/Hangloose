@@ -7,6 +7,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.hangloose.HanglooseApp.Companion.getApiService
 import com.hangloose.HanglooseApp.Companion.subscribeScheduler
 import com.hangloose.model.Activities
@@ -37,6 +40,7 @@ class ConsumerLoginViewModel : ViewModel() {
     var isVisible = ObservableBoolean()
     private var mPhoneNumber: String? = null
     private var mSelectionList: MutableLiveData<SelectionList> = MutableLiveData()
+    private var mGoogleApiClient: GoogleSignInClient? = null
 
     val phoneWatcher = object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -119,6 +123,12 @@ class ConsumerLoginViewModel : ViewModel() {
                     val header = response.headers()
                     Log.i(TAG, "Header : ${header.get("X-AUTH-TOKEN")}")
                 } else {
+                    if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null) {
+                        //log out
+                        LoginManager.getInstance().logOut()
+
+                    }
+                    mGoogleApiClient!!.signOut()
                     val jObjError = JSONObject(response.errorBody()!!.string())
                     mShowErrorSnackBar.value = jObjError.getString(MESSAGE_KEY)
                 }
@@ -179,5 +189,9 @@ class ConsumerLoginViewModel : ViewModel() {
     fun reset() {
         unSubscribeFromObservable()
         mCompositeDisposable = null
+    }
+
+    fun setGoogleApiClient(googleApiClient: GoogleSignInClient?) {
+        mGoogleApiClient = googleApiClient
     }
 }

@@ -1,5 +1,6 @@
 package com.hangloose.model
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.annotations.SerializedName
 
 data class Consumer(

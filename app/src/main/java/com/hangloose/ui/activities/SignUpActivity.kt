@@ -60,7 +60,6 @@ import kotlinx.android.synthetic.main.activity_sign_up.ilPhone
 import kotlinx.android.synthetic.main.activity_sign_up.ll_signup
 import kotlinx.android.synthetic.main.activity_sign_up.tvSignUpClick
 import retrofit2.Response
-import java.util.Arrays
 
 class SignUpActivity : BaseActivity(), View.OnClickListener {
 
@@ -352,6 +351,7 @@ class SignUpActivity : BaseActivity(), View.OnClickListener {
                     account!!.idToken
                 )
             )
+            mConsumerRegisterViewModel.setGoogleApiClient(mGoogleSignInClient)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

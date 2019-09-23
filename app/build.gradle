@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'io.fabric'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -129,6 +131,9 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     //pinch to zoom images with Glide
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation ('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
+        transitive = true;
+    }
 }
 
 //task ktlint(type: JavaExec, group: "verification") {

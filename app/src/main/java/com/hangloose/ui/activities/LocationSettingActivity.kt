@@ -46,6 +46,7 @@ import com.hangloose.utils.PreferenceHelper.set
 import com.hangloose.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_enable_location.*
 import retrofit2.Response
+import java.io.IOException
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
@@ -62,7 +63,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     private var mAddress: String? = null
 
     private var mLocationViewModel: LocationViewModel? = null
-    private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
+    private var mRestaurantData: ArrayList<RestaurantData> = ArrayList()
     private var mPreference: SharedPreferences? = null
     private var mHeaderToken: String? = null
     private var mActivitiesSelectedList = ArrayList<String>()
@@ -173,15 +174,12 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             val intent = Intent(this, TabsActivity::class.java)
             intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
-            intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
-            intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
             intent.putExtra(KEY_LATITUDE, mLatitude)
             intent.putExtra(KEY_LONGTITUDE, mLongitude)
             startActivity(intent)
         } else {
             Log.d(TAG, "LikedRestaurant Data : $mRestaurantData")
             val intent = Intent()
-            intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
             intent.putExtra(KEY_LATITUDE, mLatitude)
             intent.putExtra(KEY_LONGTITUDE, mLongitude)
             setResult(START_LOCATION_SCREEN, intent)
@@ -283,6 +281,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             }
             Log.d(TAG, "Response")
             mPreference!![PREFERENCE_ADDRESS] = mAddress
+            setRestaurantData(mRestaurantData)
+            setEntireRestaurantData(mEntireRestaurantData)
             navigateToRestaurantScreen()
         })
 
@@ -497,24 +497,33 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
 
     private fun onLocationChanged(location: Location) {
         mFusedLocationClient.removeLocationUpdates(mCallback)
-        val geoCoder = Geocoder(this)
-        val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-        if (address.size > 0) {
-            mAddress = address[0].getAddressLine(0)
-            Log.d("Fragment", "Addressssssssss : $mAddress")
-            hideSoftKeyboard(this)
-            location.let {
-                mLatitude = location.latitude
-                mLongitude = location.longitude
-                mLocationViewModel!!.restaurantListApiRequest(
-                    mActivitiesSelectedList,
-                    mAdventuresSelectedList,
-                    "",
-                    "",
-                    location.latitude,
-                    location.longitude,
-                    mHeaderToken, "")
+        try {
+            val geoCoder = Geocoder(this)
+            val address = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+            if (address.size > 0) {
+                mAddress = address[0].getAddressLine(0)
+                Log.d("Fragment", "Addressssssssss : $mAddress")
+                hideSoftKeyboard(this)
+                location.let {
+                    mLatitude = location.latitude
+                    mLongitude = location.longitude
+                    mLocationViewModel!!.restaurantListApiRequest(
+                        mActivitiesSelectedList,
+                        mAdventuresSelectedList,
+                        "",
+                        "",
+                        location.latitude,
+                        location.longitude,
+                        mHeaderToken, ""
+                    )
+                }
             }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(
+                this, "Network Error",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -579,5 +588,10 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.clear()
     }
 }

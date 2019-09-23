@@ -110,5 +110,6 @@
     <string name="left_swipe">Left swipe to DISLIKE \n the restaurants/cafes</string>
     <string name="tap_to_favourite">Tap to FAVOURITE</string>
     <string name="profile_section">You can view your FAVOURITE \n list in the PROFILE section</string>
+    <string name="like_profile_section">You can view your LIKED \n list in the PROFILE section \n (This will be refreshed daily)</string>
     <string name="search_section">You can search \n restaurants and cafe here</string>
 </resources>

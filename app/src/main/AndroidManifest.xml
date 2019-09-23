@@ -158,6 +158,9 @@
         <service
                 android:name=".ui.service.AddressesByNameIntentService"
                 android:exported="false"/>
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="0b33e335c54258cb61af4baefd8c22cd4f0f8b0a" />
     </application>
 
 </manifest>

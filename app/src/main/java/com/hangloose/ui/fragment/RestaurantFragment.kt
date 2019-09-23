@@ -18,6 +18,7 @@ import com.hangloose.R
 import com.hangloose.database.dbmodel.LikedRestaurant
 import com.hangloose.listener.LikedInsertionListener
 import com.hangloose.listener.SavedInsertionListener
+import com.hangloose.ui.activities.BaseActivity
 import com.hangloose.ui.activities.FilterActivity
 import com.hangloose.ui.activities.SwipeableCardView
 import com.hangloose.ui.activities.TabsActivity
@@ -63,8 +64,8 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
         mPreference = PreferenceHelper.defaultPrefs(mContext!!)
         mRestaurantData = arguments!!.getParcelableArrayList(KEY_DATA)
         mActivitiesSelectedList = arguments!!.getStringArrayList(KEY_ACTIVITIES_LIST)
-        mAdventuresSelectedList = arguments!!.getStringArrayList(KEY_ADVENTURES_LIST)
-        mEntireRestaurantData = arguments!!.getParcelableArrayList(KEY_ENTIRE_RESTAURANT_DATA)
+        mRestaurantData = BaseActivity.getRestaurantData()
+        mEntireRestaurantData = BaseActivity.getEntireRestaurantData()
         mLatitude = arguments!!.getDouble(KEY_LATITUDE)
         mLongitude = arguments!!.getDouble(KEY_LONGTITUDE)
 
@@ -275,6 +276,7 @@ class RestaurantFragment : Fragment(), View.OnClickListener, LikedInsertionListe
     }
 
     override fun getLikeDataIfNull(restaurantData: RestaurantData, type: String) {
+        Log.d("AAHangloose", "getDislikeData : $restaurantData")
         if (restaurantData.restaurantType.equals(type)) {
             mSwipePlaceHolderView!!.addView(
                 SwipeableCardView(

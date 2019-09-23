@@ -85,7 +85,7 @@ class PlacesAutoCompleteAdapter(
             val status = autocompletePredictions.status
             if (!status.isSuccess) {
                 Toast.makeText(
-                    mContext, "Error contacting API: $status",
+                    mContext, "${status.statusMessage}",
                     Toast.LENGTH_SHORT
                 ).show()
                 Log.e("", "Error getting autocomplete prediction API call: $status")

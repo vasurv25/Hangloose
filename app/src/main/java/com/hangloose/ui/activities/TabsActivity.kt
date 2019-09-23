@@ -54,8 +54,8 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
 
         mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
-        mRestaurantData = intent.getParcelableArrayListExtra(KEY_RESTAURANT_DATA)
-        mEntireRestaurantData = intent.getParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA)
+        mRestaurantData = getRestaurantData()
+        mEntireRestaurantData = getEntireRestaurantData()
         mLatitude = intent.getDoubleExtra(KEY_LATITUDE, 0.0)
         mLongitude = intent.getDoubleExtra(KEY_LONGTITUDE, 0.0)
         val headerToken: String? = mPreference!![X_AUTH_TOKEN]

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="250dp"
+            android:layout_marginTop="230dp"
             android:text="@string/select_your_desired_group"
             android:textColor="@color/white"
             fontPath="fonts/segoe_ui_italic.ttf"
@@ -30,6 +30,7 @@
             android:src="@drawable/arrow_one"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView

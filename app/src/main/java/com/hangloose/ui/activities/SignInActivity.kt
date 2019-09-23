@@ -35,7 +35,6 @@ import com.hangloose.utils.PreferenceHelper.get
 import com.hangloose.utils.PreferenceHelper.set
 import com.hangloose.viewmodel.ConsumerLoginViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.forEach
 import kotlin.collections.map
@@ -292,6 +291,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     account.idToken
                 )
             )
+            mConsumerLoginViewModel.setGoogleApiClient(mGoogleSignInClient)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

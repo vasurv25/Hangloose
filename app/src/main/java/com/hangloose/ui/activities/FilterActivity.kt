@@ -30,7 +30,7 @@ class FilterActivity : BaseActivity() {
     private var TAG = "FilterActivity"
     private val musicList = arrayListOf("Live", "Soft", "Live Instrument", "DJ Night")
     private val comedyList = arrayListOf("Live Comedy Show", "Open Mic")
-    private val diningList = arrayListOf("Fancy", "Casual", "Daba Style", "Something Casual")
+    private val diningList = arrayListOf("Fancy", "Casual", "Daba Style", "Somthing Casual")
     private val somethingNewList = arrayListOf("New Dish", "New In Town")
     private val featuresList = arrayListOf("Hookah", "Hookah & Bar", "Bar")
 
@@ -48,7 +48,7 @@ class FilterActivity : BaseActivity() {
     private var mLocationViewModel: LocationViewModel? = null
     private var mPreference: SharedPreferences? = null
     private var mHeaderToken: String? = null
-    private var mRestaurantData: ArrayList<RestaurantData>? = ArrayList()
+    private var mRestaurantData: ArrayList<RestaurantData> = ArrayList()
     private var mSelectedTagList: ArrayList<String> = ArrayList()
     private var mEntireRestaurantData = ArrayList<RestaurantData>()
 
@@ -61,7 +61,6 @@ class FilterActivity : BaseActivity() {
 
         mActivitiesSelectedList = intent.getStringArrayListExtra(KEY_ACTIVITIES_LIST)
         mAdventuresSelectedList = intent.getStringArrayListExtra(KEY_ADVENTURES_LIST)
-        mEntireRestaurantData = intent!!.getParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA)
         mLatitude = intent.getDoubleExtra(KEY_LATITUDE, 0.0)
         mLongitude = intent.getDoubleExtra(KEY_LONGTITUDE, 0.0)
         mPreference = PreferenceHelper.defaultPrefs(this)
@@ -138,7 +137,7 @@ class FilterActivity : BaseActivity() {
                             else -> menuList!!.add(data[i].documents!![j].location!!)
                         }
                     }
-                    mRestaurantData!!.add(
+                    mRestaurantData.add(
                         RestaurantData(
                             data[i].address!!,
                             data[i].createdAt,
@@ -168,8 +167,8 @@ class FilterActivity : BaseActivity() {
             val intent = Intent(this, TabsActivity::class.java)
             intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
             intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
-            intent.putParcelableArrayListExtra(KEY_RESTAURANT_DATA, mRestaurantData)
-            intent.putParcelableArrayListExtra(KEY_ENTIRE_RESTAURANT_DATA, mEntireRestaurantData)
+            setRestaurantData(mRestaurantData)
+            setEntireRestaurantData(mEntireRestaurantData)
             intent.putExtra(KEY_LATITUDE, mLatitude)
             intent.putExtra(KEY_LONGTITUDE, mLongitude)
             startActivity(intent)
@@ -245,5 +244,8 @@ class FilterActivity : BaseActivity() {
         adapterSomethingNew!!.getTagsList().clear()
         adapterFeatures!!.getTagsList().clear()
         mSelectedTagList.clear()
+    }
+
+    override fun onBackPressed() {
     }
 }
