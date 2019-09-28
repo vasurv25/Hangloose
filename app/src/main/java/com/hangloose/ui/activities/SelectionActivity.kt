@@ -261,6 +261,8 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
                     HanglooseApp.getDataHandler()!!.updateLikedRestaurantData(mEntireRestaurantData[i], this)
                 }
             }
+            setRestaurantData(mRestaurantData)
+            setEntireRestaurantData(mEntireRestaurantData)
             onNavigateToTabsActivity()
         })
 
@@ -405,8 +407,6 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
         val intent = Intent(this, TabsActivity::class.java)
         intent.putStringArrayListExtra(KEY_ACTIVITIES_LIST, mActivitiesSelectedList)
         intent.putStringArrayListExtra(KEY_ADVENTURES_LIST, mAdventuresSelectedList)
-        setRestaurantData(mRestaurantData)
-        setEntireRestaurantData(mEntireRestaurantData)
         intent.putExtra(KEY_LATITUDE, mLatitude)
         intent.putExtra(KEY_LONGTITUDE, mLongitude)
         startActivity(intent)
