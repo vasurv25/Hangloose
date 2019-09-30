@@ -96,6 +96,7 @@ class ProfileAdapter(
                             }
                         }
                         HanglooseApp.getDataHandler()!!.emptyLikeDislikeRestaurants()
+                        HanglooseApp.getDataHandler()!!.emptySavedRestaurants()
                         mPreference!!.edit().clear().apply()
                         HanglooseApp.getInstance().clearApplicationData()
                         var intent = Intent(context, SignInActivity::class.java)

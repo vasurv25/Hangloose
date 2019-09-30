@@ -224,6 +224,12 @@ class RoomDBHandler(context: Context) : DBInf {
         }
     }
 
+    override fun emptySavedRestaurants() {
+        AsyncTask.execute {
+            appRoomDatabase.savedRestaurantDao().emptySavedRestaurants()
+        }
+    }
+
     override fun emptyLikeDislikeRestaurants() {
         AsyncTask.execute {
             appRoomDatabase.likedRestaurantDao().emptyLikeDislikeRestaurants()

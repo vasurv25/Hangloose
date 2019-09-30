@@ -17,6 +17,7 @@ interface SavedDBInf {
     fun deleteUnsavedRestaurant(restaurantData: RestaurantData)
     fun getPersistedSavedRestaurant(id: String): ModelCommunicator<LiveData<SavedRestaurant>>
     fun emptyRestroForOldDate(date: String)
+    fun emptySavedRestaurants()
     fun updateSavedRestaurantData(restaurantData: RestaurantData, listener: SavedInsertionListener)
 }
 
