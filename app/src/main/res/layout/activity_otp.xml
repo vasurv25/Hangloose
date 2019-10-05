@@ -16,7 +16,7 @@
             type="com.hangloose.ui.activities.OTPActivity" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/llOTP"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -164,5 +164,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/otpEdittext2" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -8,8 +8,8 @@ import android.graphics.Point
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
@@ -33,7 +33,7 @@ fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
     val snackbarView = snackbar.view
     snackbarView.setBackgroundColor(bgColor)
     val textView =
-        snackbarView.findViewById(android.support.design.R.id.snackbar_text) as TextView
+        snackbarView.findViewById(R.id.snackbar_text) as TextView
     textView.setTextColor(color)
     textView.textSize = 14f
     snackbar.show()
@@ -41,7 +41,9 @@ fun showSnackBar(view: View, msg: String, color: Int, bgColor: Int) {
 
 fun hideSoftKeyboard(activity: Activity) {
     val inputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+    if (activity.currentFocus != null) {
+        inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+    }
 }
 
 fun validatePhoneNumber(phoneNumber: String?): Boolean {

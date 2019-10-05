@@ -8,7 +8,7 @@ import com.hangloose.utils.KEY_USER_NAME
 import com.hangloose.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_queries_suggestions.*
 import android.content.Intent
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import com.hangloose.utils.showSnackBar
 

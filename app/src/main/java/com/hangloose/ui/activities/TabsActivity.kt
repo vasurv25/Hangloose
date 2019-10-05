@@ -7,8 +7,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
+import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -206,8 +206,8 @@ class TabsActivity : BaseActivity(), TabLayout.OnTabSelectedListener, Restaurant
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState!!.clear()
+        outState.clear()
     }
 }

@@ -12,7 +12,7 @@
                 type="com.hangloose.viewmodel.LocationViewModel"/>
 
     </data>
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <ScrollView
@@ -20,12 +20,12 @@
                 android:layout_height="match_parent"
                 tools:ignore="MissingPrefix">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:context="com.hangloose.ui.activities.FilterActivity">
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                         android:id="@+id/my_toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
@@ -66,7 +66,7 @@
                                 android:foreground="?attr/selectableItemBackground"
                                 android:padding="5dp"/>
                     </RelativeLayout>
-                </android.support.v7.widget.Toolbar>
+                </androidx.appcompat.widget.Toolbar>
 
                 <TextView
                         android:id="@+id/tv_filter"
@@ -95,7 +95,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_filter"/>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_music"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/rv_music"/>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_comedy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/rv_comedy"/>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_dining"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/rv_dining"/>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_somethingNew"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/rv_somethingNew"/>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_features"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -277,12 +277,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnApplyFilter"/>
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
         <include
                 android:id="@+id/pbLayout"
                 layout="@layout/activity_progress_overlay"
                 android:visibility="@{locationViewModel.isVisible? View.VISIBLE : View.GONE}"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

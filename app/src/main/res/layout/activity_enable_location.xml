@@ -15,7 +15,7 @@
             type="com.hangloose.ui.activities.LocationSettingActivity" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutParentLocation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +31,6 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/location_search_view"
             android:drawableStart="@drawable/ic_search_black"
-            android:drawableEnd="@drawable/ic_cancel_black"
             android:drawablePadding="10dp"
             android:singleLine="true"
             android:hint="@string/search_for_your_location"
@@ -44,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutSearchArrowBackLocation" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutSearchArrowBackLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,7 +79,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <View
@@ -120,7 +119,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvGetCurrentLocation" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAddressesLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -134,5 +133,5 @@
             android:id="@+id/pbLayout"
             layout="@layout/activity_progress_overlay"
             android:visibility="@{locationViewModel.isVisible? View.VISIBLE : View.GONE}" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

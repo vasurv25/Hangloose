@@ -1,15 +1,15 @@
 package com.hangloose.ui.activities
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
-import android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.SCROLL_STATE_SETTLING
 import android.util.Log
 import android.view.View
 import com.hangloose.HanglooseApp
@@ -429,8 +429,8 @@ class SelectionActivity : BaseActivity(), SavedInsertionListener, LikedInsertion
 //        super.onSaveInstanceState(outState)
 //    }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState!!.clear()
+        outState.clear()
     }
 }

@@ -1,7 +1,7 @@
 package com.hangloose.ui.activities
 
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.hangloose.ui.model.RestaurantData
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import com.crashlytics.android.Crashlytics;

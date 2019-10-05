@@ -1,13 +1,13 @@
 package com.hangloose.ui.activities
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import com.hangloose.R
 import com.hangloose.databinding.ActivityFilterBinding
@@ -196,27 +196,47 @@ class FilterActivity : BaseActivity() {
     }
 
     private fun setAdapters() {
-        val lLMMusic = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val lLMMusic = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapterMusic = FilterAdapter(this, musicList)
         rv_music.layoutManager = lLMMusic
         rv_music.adapter = adapterMusic
 
-        val lLMComedy = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val lLMComedy = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapterComedy = FilterAdapter(this, comedyList)
         rv_comedy.layoutManager = lLMComedy
         rv_comedy.adapter = adapterComedy
 
-        val lLMDining = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val lLMDining = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapterDining = FilterAdapter(this, diningList)
         rv_dining.layoutManager = lLMDining
         rv_dining.adapter = adapterDining
 
-        val lLMSomethingNew = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val lLMSomethingNew = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapterSomethingNew = FilterAdapter(this, somethingNewList)
         rv_somethingNew.layoutManager = lLMSomethingNew
         rv_somethingNew.adapter = adapterSomethingNew
 
-        val lLMFeatures = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val lLMFeatures = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapterFeatures = FilterAdapter(this, featuresList)
         rv_features.layoutManager = lLMFeatures
         rv_features.adapter = adapterFeatures

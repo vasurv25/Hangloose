@@ -16,7 +16,7 @@
                 type="com.hangloose.ui.activities.AccountSettingsActivity"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llForgotPass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,7 +38,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,9 +64,9 @@
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textLayoutEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
                 android:id="@+id/imageView2"
@@ -126,5 +126,5 @@
             android:id="@+id/pbLayout"
             layout="@layout/activity_progress_overlay"
             android:visibility="@{forgotPasswordViewModel.isVisible? View.VISIBLE : View.GONE}" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

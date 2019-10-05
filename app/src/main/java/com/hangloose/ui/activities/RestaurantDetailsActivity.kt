@@ -1,19 +1,19 @@
 package com.hangloose.ui.activities
 
 import android.Manifest
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -183,14 +183,22 @@ class RestaurantDetailsActivity : BaseActivity() {
     }
 
     private fun initMenuRecyclerView(menuList: List<String>?) {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         rvMenu.layoutManager = layoutManager
         mMenuRecyclerViewAdapter = menuList?.let { MenuRecyclerViewAdapter(this, it) }
         rvMenu.adapter = mMenuRecyclerViewAdapter
     }
 
     private fun initTagRecyclerView(tagList: List<String>?) {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         rvTags.layoutManager = layoutManager
         mTagRecyclerViewAdapter = tagList?.let { TagRecyclerViewAdapter(it) }
         rvTags.adapter = mTagRecyclerViewAdapter

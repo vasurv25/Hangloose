@@ -1,6 +1,6 @@
 package com.hangloose.database
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import android.content.Context
 import android.os.AsyncTask
 import com.hangloose.database.dbmodel.ModelCommunicator

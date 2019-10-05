@@ -16,7 +16,7 @@
             type="com.hangloose.ui.activities.SignUpActivity" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_signup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -132,7 +132,7 @@
             app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn" />
 
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ilPhone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--<TextView
             android:id="@+id/tvCountryCode"
@@ -183,7 +183,7 @@
             app:layout_constraintTop_toBottomOf="@+id/firstSeperator"
             app:layout_constraintStart_toEndOf="@+id/tvCountryCode" />
     -->
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ilPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -210,9 +210,9 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ilConfirmPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -239,7 +239,7 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btSignUp"
@@ -284,5 +284,5 @@
             layout="@layout/activity_progress_overlay"
             android:visibility="@{consumerRegisterViewModel.isVisible? View.VISIBLE : View.GONE}" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

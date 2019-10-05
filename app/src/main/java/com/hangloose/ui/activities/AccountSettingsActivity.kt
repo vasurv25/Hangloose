@@ -1,11 +1,11 @@
 package com.hangloose.ui.activities
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.SharedPreferences
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableBoolean
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableBoolean
 import android.os.Bundle
 import android.view.View
 import com.hangloose.R

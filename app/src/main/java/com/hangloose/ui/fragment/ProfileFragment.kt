@@ -2,9 +2,9 @@ package com.hangloose.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,7 +95,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        val lLM = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val lLM = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         rv_profile.layoutManager = lLM
         rv_profile.adapter = ProfileAdapter(context!!, listProfile, listProfileIcons, mGoogleApiClient)
     }

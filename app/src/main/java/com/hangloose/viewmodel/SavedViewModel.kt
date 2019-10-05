@@ -1,7 +1,7 @@
 package com.hangloose.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import android.os.AsyncTask
 import com.hangloose.HanglooseApp.Companion.getDataHandler
 import com.hangloose.database.dbmodel.ModelCommunicator

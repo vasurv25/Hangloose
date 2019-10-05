@@ -12,7 +12,7 @@
                 type="com.hangloose.viewmodel.SelectionViewModel"/>
 
     </data>
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <ScrollView
@@ -24,11 +24,11 @@
                 tools:context="com.hangloose.ui.activities.RestaurantDetailsActivity"
                 tools:ignore="MissingPrefix">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <android.support.v4.view.ViewPager
+                <androidx.viewpager.widget.ViewPager
                         android:id="@+id/vpAmbience"
                         android:layout_width="match_parent"
                         android:layout_height="175dp"
@@ -162,7 +162,7 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -250,9 +250,9 @@
                             app:layout_constraintTop_toBottomOf="@+id/textCharges"
                             tools:layout_conversion_wrapHeight="43"
                             tools:layout_conversion_wrapWidth="167"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -335,9 +335,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/textAddOnOffers"
                         tools:layout_conversion_wrapHeight="43"
                         tools:layout_conversion_wrapWidth="198" />-->
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -363,7 +363,7 @@
                             tools:layout_conversion_wrapHeight="56"
                             tools:layout_conversion_wrapWidth="106"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvMenu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -374,9 +374,9 @@
                             tools:layout_conversion_wrapHeight="500"
                             tools:layout_conversion_wrapWidth="106"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -444,9 +444,9 @@
                                 android:background="@android:color/transparent"
                                 android:padding="16dp"/>
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -472,7 +472,7 @@
                             tools:layout_conversion_wrapHeight="56"
                             tools:layout_conversion_wrapWidth="94"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvTags"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -482,9 +482,9 @@
                             app:layout_constraintTop_toBottomOf="@+id/textTags"
                             tools:layout_conversion_wrapHeight="500"
                             tools:layout_conversion_wrapWidth="106"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -555,9 +555,9 @@
                             tools:layout_conversion_wrapHeight="106"
                             tools:layout_conversion_wrapWidth="366"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -584,14 +584,14 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:layout_conversion_wrapHeight="126"
                             tools:layout_conversion_wrapWidth="922"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
         <include
                 android:id="@+id/pbLayout"
                 layout="@layout/activity_progress_overlay"
                 android:visibility="@{selectionViewModel.isVisible? View.VISIBLE : View.GONE}"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

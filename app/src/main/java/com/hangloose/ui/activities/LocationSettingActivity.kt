@@ -3,13 +3,13 @@ package com.hangloose.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -17,10 +17,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -31,9 +31,13 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.location.places.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.hangloose.R
 import com.hangloose.databinding.ActivityEnableLocationBinding
 import com.hangloose.model.RestaurantList
@@ -47,16 +51,17 @@ import com.hangloose.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.activity_enable_location.*
 import retrofit2.Response
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 //https://www.androhub.com/bottom-sheets-dialog-in-android/
 //https://www.androidhive.info/2017/12/android-working-with-bottom-sheet/
+//https://medium.com/skillhive/android-google-places-autocomplete-feature-bb3064308f05
 class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener {
 
     private var TAG = "LocationSettingActivity"
-
-    private var mAdapter: PlacesAutoCompleteAdapter? = null
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private val mLatLngBounds: LatLngBounds = LatLngBounds(LatLng(-0.0, 0.0), LatLng(0.0, 0.0))
@@ -71,6 +76,7 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
 
     private val LOCATION_REQUEST_CODE = 109
     private val REQUEST_CHECK_SETTINGS = 110
+    private val AUTOCOMPLETE_REQUEST_CODE = 22
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var mManager: LocationManager? = null
     var mFlagLocationNavigation = 0
@@ -92,14 +98,26 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mPreference = PreferenceHelper.defaultPrefs(this)
+        if (!com.google.android.libraries.places.api.Places.isInitialized()) {
+            com.google.android.libraries.places.api.Places.initialize(this, "AIzaSyAtN-pysxdUadTT-r4Y1sfC6maTvbDTGfs")
+        }
         getIntentData()
         initBinding()
         getHeaderAndAddressFromPreference()
         buildGoogleApiClient()
-        setAdapterForLocationList()
     }
 
     override fun init() {}
+
+    private fun onSearchCalled() {
+        // Set the fields to specify which types of place data to return.
+        var fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
+        // Start the autocomplete intent.
+        var intent = Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, fields).setCountry("IN") //INDIA
+                .build(this)
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
+    }
 
     override fun onResume() {
         super.onResume()
@@ -148,6 +166,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                     if (event.rawX >= etLocationSearchLocation!!.right - etLocationSearchLocation!!.totalPaddingRight) {
                         etLocationSearchLocation!!.setText("")
                         return true
+                    } else {
+                        onSearchCalled()
                     }
                 }
             }
@@ -303,89 +323,6 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             ivArrowBackLocation.visibility = View.VISIBLE
         }
     }
-
-    private fun setAdapterForLocationList() {
-        val layoutManager = LinearLayoutManager(this)
-        rvAddressesLocation.layoutManager = layoutManager
-        mAdapter = PlacesAutoCompleteAdapter(this, mGoogleApiClient!!, mLatLngBounds)
-        rvAddressesLocation.adapter = mAdapter
-        addSearchListener()
-
-        rvAddressesLocation.addOnItemTouchListener(
-            RecyclerItemClickListener(this, object : RecyclerItemClickListener.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    val item = mAdapter!!.getItem(position)
-                    val placeId: String = item.placeId.toString()
-                    Log.i(TAG, "Autocomplete item selected: " + item.description)
-
-                    val placeResult = Places.GeoDataApi
-                        .getPlaceById(mGoogleApiClient!!, placeId)
-                    placeResult.setResultCallback { places ->
-                        if (places.count == 1) {
-                            //Do the things here on Click.....
-                            mAddress = item.description.toString()
-                            var locationWithLatLong = getLatLongFromLocationName(this@LocationSettingActivity, mAddress)
-                            Log.d(TAG, "LocationWithLatLong : $locationWithLatLong")
-                            hideSoftKeyboard(this@LocationSettingActivity)
-                            etLocationSearchLocation.setText("")
-                            locationWithLatLong?.let {
-                                Log.d(
-                                    TAG,
-                                    "LatLong : " + locationWithLatLong.latitude + "-" + locationWithLatLong.longitude
-                                )
-                                mLatitude = locationWithLatLong.latitude
-                                mLongitude = locationWithLatLong.longitude
-                                mLocationViewModel!!.restaurantListApiRequest(
-                                    mActivitiesSelectedList, mAdventuresSelectedList, "", ""
-                                    , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken,
-                                    "")
-                            }
-                        } else {
-                            Toast.makeText(
-                                this@LocationSettingActivity,
-                                getString(R.string.slow_internet),
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-                    }
-                    Log.i(TAG, "Clicked: " + item.description)
-                    Log.i(TAG, "Called getPlaceById to get Place details for " + item.placeId)
-                }
-            }
-            ))
-    }
-
-    private fun addSearchListener() {
-        etLocationSearchLocation.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d(TAG, "Address : " + s.toString())
-                if (s.toString() == "" || !mGoogleApiClient!!.isConnected) {
-                    if (mGoogleApiClient!!.isConnected) {
-                        mAdapter!!.filter.filter(s.toString())
-                    }
-                } else {
-                    mAdapter!!.filter.filter(s.toString())
-                }
-                if (s.toString() != "" && mGoogleApiClient!!.isConnected) {
-                    mAdapter!!.filter.filter(s.toString())
-                    tvGetCurrentLocation!!.visibility = View.GONE
-                    firstSeperatorLocation!!.visibility = View.GONE
-                } else if (!mGoogleApiClient!!.isConnected) {
-                    tvGetCurrentLocation!!.visibility = View.VISIBLE
-                    firstSeperatorLocation!!.visibility = View.VISIBLE
-                } else {
-                    tvGetCurrentLocation!!.visibility = View.VISIBLE
-                    firstSeperatorLocation!!.visibility = View.VISIBLE
-                }
-            }
-        })
-    }
-
 
     @Synchronized
     private fun buildGoogleApiClient() {
@@ -587,11 +524,59 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
                     }
                 }
             }
+
+            AUTOCOMPLETE_REQUEST_CODE -> {
+                if (resultCode == RESULT_OK) {
+                    var place = Autocomplete.getPlaceFromIntent(data!!)
+                    Log.i(
+                        TAG,
+                        "Place: " + place.name + ", " + place.id + ", " + place.address
+                    )
+                    // do query with address
+                    doRestaurantApiCallUsingLatLong(place)
+
+                } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                    // TODO: Handle the error.
+                    var status = Autocomplete.getStatusFromIntent(data!!)
+                    Toast.makeText(
+                        this,
+                        "Error: " + status.getStatusMessage(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    Log.i(TAG, status.getStatusMessage());
+                } else if (resultCode == RESULT_CANCELED) {
+                    // The user canceled the operation.
+                }
+            }
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState!!.clear()
+        outState.clear()
+    }
+
+    private fun doRestaurantApiCallUsingLatLong(place: Place) {
+        //Do the things here on Click.....
+        mAddress = place.address
+        var locationWithLatLong = getLatLongFromLocationName(this@LocationSettingActivity, mAddress)
+        Log.d(TAG, "LocationWithLatLong : $locationWithLatLong")
+        hideSoftKeyboard(this@LocationSettingActivity)
+        etLocationSearchLocation.setText("")
+        locationWithLatLong?.let {
+            Log.d(
+                TAG,
+                "LatLong : " + locationWithLatLong.latitude + "-" + locationWithLatLong.longitude
+            )
+            mLatitude = locationWithLatLong.latitude
+            mLongitude = locationWithLatLong.longitude
+            mLocationViewModel!!.restaurantListApiRequest(
+                mActivitiesSelectedList, mAdventuresSelectedList, "", ""
+                , locationWithLatLong.latitude, locationWithLatLong.longitude, mHeaderToken,
+                ""
+            )
+        }
+        Log.i(TAG, "Clicked: " + place.address)
+        Log.i(TAG, "Called getPlaceById to get Place details for " + place.id)
     }
 }

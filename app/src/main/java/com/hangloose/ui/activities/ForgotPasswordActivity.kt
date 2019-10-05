@@ -1,13 +1,13 @@
 package com.hangloose.ui.activities
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.databinding.Observable
-import android.databinding.ObservableBoolean
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.databinding.ObservableBoolean
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View

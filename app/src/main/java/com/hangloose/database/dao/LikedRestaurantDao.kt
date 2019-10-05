@@ -1,7 +1,7 @@
 package com.hangloose.database.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.hangloose.database.dbmodel.LikedRestaurant
 
 @Dao

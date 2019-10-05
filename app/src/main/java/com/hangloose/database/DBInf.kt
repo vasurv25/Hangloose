@@ -1,6 +1,6 @@
 package com.hangloose.database
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.hangloose.database.dbmodel.ModelCommunicator
 import com.hangloose.database.dbmodel.LikedRestaurant
 import com.hangloose.database.dbmodel.SavedRestaurant

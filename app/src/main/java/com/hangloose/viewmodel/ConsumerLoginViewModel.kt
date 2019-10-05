@@ -1,8 +1,8 @@
 package com.hangloose.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.databinding.ObservableBoolean
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log

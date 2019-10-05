@@ -1,7 +1,7 @@
 package com.hangloose.ui.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +16,14 @@ import com.hangloose.R
 import kotlinx.android.synthetic.main.location_search_adapter.view.*
 import java.util.*
 import java.util.concurrent.TimeUnit
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.PlacesClient
+
 
 /**
  * Note that this adapter requires a valid [GoogleApiClient].
@@ -27,6 +35,8 @@ class PlacesAutoCompleteAdapter(
     private var mBounds: LatLngBounds?
 ) : RecyclerView.Adapter<PlacesAutoCompleteAdapter.PredictionHolder>(), Filterable {
     private var mResultList: ArrayList<PlaceAutocomplete>? = null
+    private var placesClient: PlacesClient? = null
+
 
     /**
      * Sets the bounds for all subsequent queries.
@@ -65,45 +75,49 @@ class PlacesAutoCompleteAdapter(
     }
 
     private fun getAutocomplete(constraint: CharSequence?): ArrayList<PlaceAutocomplete>? {
-        if (mGoogleApiClient.isConnected) {
-            Log.i("", "Starting autocomplete query for: " + constraint!!)
 
-            // Submit the query to the autocomplete API and retrieve a PendingResult that will
-            // contain the results when the query completes.
-            val results = Places.GeoDataApi
-                .getAutocompletePredictions(
-                    mGoogleApiClient, constraint.toString(),
-                    mBounds, null
-                )
+        if (!com.google.android.libraries.places.api.Places.isInitialized()) {
+            com.google.android.libraries.places.api.Places.initialize(mContext, "AIzaSyAtN-pysxdUadTT-r4Y1sfC6maTvbDTGfs")
+        }
 
-            // This method should have been called off the main UI thread. Block and wait for at most 60s
-            // for a result from the API.
-            val autocompletePredictions = results
-                .await(60, TimeUnit.SECONDS)
+        // Create a new Places client instance.
+        placesClient = com.google.android.libraries.places.api.Places.createClient(mContext)
 
-            // Confirm that the query completed successfully, otherwise return null
-            val status = autocompletePredictions.status
-            if (!status.isSuccess) {
-                Toast.makeText(
-                    mContext, "${status.statusMessage}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                Log.e("", "Error getting autocomplete prediction API call: $status")
-                autocompletePredictions.release()
-                return null
-            }
+        Toast.makeText(
+            mContext,
+            constraint.toString(),
+            Toast.LENGTH_SHORT
+        ).show()
+        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
+        // and once again when the user makes a selection (for example when calling fetchPlace()).
+        val token = AutocompleteSessionToken.newInstance()
+        // Create a RectangularBounds object.
+        val bounds = RectangularBounds.newInstance(
+            LatLng(-33.880490, 151.184363), //dummy lat/lng
+            LatLng(-33.858754, 151.229596)
+        )
+        // Use the builder to create a FindAutocompletePredictionsRequest.
+        val request = FindAutocompletePredictionsRequest.builder()
+            // Call either setLocationBias() OR setLocationRestriction().
+            .setLocationBias(bounds)
+            //.setLocationRestriction(bounds)
+            .setCountry("in")
+            .setTypeFilter(TypeFilter.ADDRESS)
+            .setSessionToken(token)
+            .setQuery(constraint.toString())
+            .build()
 
-            Log.i(
-                "", "Query completed. Received " + autocompletePredictions.count
-                        + " predictions."
-            )
+        val resultList = null
 
-            // Copy the results into our own data structure, because we can't hold onto the buffer.
-            // AutocompletePrediction objects encapsulate the API response (place ID and description).
+        placesClient!!.findAutocompletePredictions(request).addOnSuccessListener {
+            val autocompletePredictions = it.autocompletePredictions
+//            for (prediction in autocompletePredictions) {
+//
+//            }
 
             val iterator = autocompletePredictions.iterator()
-            Log.d("PlaceAuto" , "Count : " + autocompletePredictions.count)
-            val resultList = ArrayList<PlaceAutocomplete>(autocompletePredictions.count)
+            Log.d("PlaceAuto" , "Count : " + autocompletePredictions.count())
+            val resultList = ArrayList<PlaceAutocomplete>(autocompletePredictions.count())
             while (iterator.hasNext()) {
                 val prediction = iterator.next()
                 // Get the details of this prediction and copy it into a new PlaceAutocomplete object.
@@ -114,14 +128,13 @@ class PlacesAutoCompleteAdapter(
                     )
                 )
             }
-
-            // Release the buffer now that all data has been copied.
-            autocompletePredictions.release()
-
-            return resultList
+        }.addOnFailureListener {
+            if (it is ApiException) {
+                    var apiException =  it
+                    Log.e("PlaceAutoComplete", "Place not found: " + apiException.getStatusCode());
+                }
         }
-        Log.e("", "Google API client is not connected for autocomplete query.")
-        return null
+        return resultList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PredictionHolder {

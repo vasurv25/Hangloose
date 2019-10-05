@@ -17,7 +17,7 @@
     </data>
 
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_Reset_Pass"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ilPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,9 +62,9 @@
                 android:inputType="textPassword"
                 android:textColor="@android:color/white" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ilConfirmPassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 android:inputType="textPassword"
                 android:textColor="@android:color/white" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/button2"
@@ -130,5 +130,5 @@
             layout="@layout/activity_progress_overlay"
             android:visibility="@{resetPasswordViewModel.isVisible? View.VISIBLE : View.GONE}" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
