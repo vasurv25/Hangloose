@@ -12,20 +12,19 @@ import kotlinx.android.synthetic.main.layout_filter_item.view.*
 class FilterAdapter(val context: Context, private val listFilter: List<String>) :
     RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
-    private var mTagsList: ArrayList<String> = ArrayList()
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FilterViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.layout_filter_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): FilterViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_filter_item, parent, false)
         return FilterViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return listFilter.size
+    override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
+        holder.bindFilterItems(listFilter[position])
     }
 
-    override fun onBindViewHolder(holder: FilterViewHolder?, position: Int) {
-        holder!!.bindFilterItems(listFilter[position])
+    private var mTagsList: ArrayList<String> = ArrayList()
 
+    override fun getItemCount(): Int {
+        return listFilter.size
     }
 
     inner class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

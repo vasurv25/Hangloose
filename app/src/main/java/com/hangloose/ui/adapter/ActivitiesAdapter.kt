@@ -14,22 +14,22 @@ import kotlinx.android.synthetic.main.activities_recylcer_item.view.*
 class ActivitiesAdapter(val context: Context, private val contentList: ArrayList<ActivitiesDetails>) :
     RecyclerView.Adapter<ActivitiesAdapter.ActivitiesViewHolder>() {
 
-    private var TAG = "ActivitiesAdapter"
-    private var mActivitiesList: ArrayList<String>? = ArrayList()
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ActivitiesViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.activities_recylcer_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivitiesViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.activities_recylcer_item, parent, false)
         Log.i(TAG, "onCreateViewHolder")
         return ActivitiesViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return contentList.size
+    override fun onBindViewHolder(holder: ActivitiesViewHolder, position: Int) {
+        Log.i(TAG, "onBindViewHolder")
+        holder.bindActivitiesView(contentList[position])
     }
 
-    override fun onBindViewHolder(holder: ActivitiesViewHolder?, position: Int) {
-        Log.i(TAG, "onBindViewHolder")
-        holder!!.bindActivitiesView(contentList[position])
+    private var TAG = "ActivitiesAdapter"
+    private var mActivitiesList: ArrayList<String>? = ArrayList()
+
+    override fun getItemCount(): Int {
+        return contentList.size
     }
 
     inner class ActivitiesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

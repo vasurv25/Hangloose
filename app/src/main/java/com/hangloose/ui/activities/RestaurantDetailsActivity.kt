@@ -199,17 +199,17 @@ class RestaurantDetailsActivity : BaseActivity() {
     private class MenuRecyclerViewAdapter(val context: Context, val urlList: List<String>) :
         RecyclerView.Adapter<MenuRecyclerViewAdapter.MenuViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MenuViewHolder {
-            val view = LayoutInflater.from(parent!!.context).inflate(R.layout.restaurant_menu_item, parent, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_menu_item, parent, false)
             return MenuViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
+            holder.bindMenuItem(urlList[position])
         }
 
         override fun getItemCount(): Int {
             return urlList.size
-        }
-
-        override fun onBindViewHolder(holder: MenuViewHolder?, position: Int) {
-            holder!!.bindMenuItem(urlList[position])
         }
 
         inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -230,18 +230,17 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     private class TagRecyclerViewAdapter(val tagList: List<String>) :
         RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TagViewHolder {
-            val view = LayoutInflater.from(parent!!.context).inflate(R.layout.restaurant_tag_item, parent, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_tag_item, parent, false)
             return TagViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
+            holder.bindMenuItem(tagList[position])
         }
 
         override fun getItemCount(): Int {
             return tagList.size
-        }
-
-        override fun onBindViewHolder(holder: TagViewHolder?, position: Int) {
-            holder!!.bindMenuItem(tagList[position])
         }
 
         inner class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

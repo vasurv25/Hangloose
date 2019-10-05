@@ -124,8 +124,8 @@ class PlacesAutoCompleteAdapter(
         return null
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PredictionHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.location_search_adapter, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PredictionHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.location_search_adapter, parent, false)
         Log.i("Place", "onCreateViewHolder")
         return PredictionHolder(view)
     }
@@ -141,9 +141,9 @@ class PlacesAutoCompleteAdapter(
         return mResultList!![position]
     }
 
-    override fun onBindViewHolder(holder: PredictionHolder?, position: Int) {
+    override fun onBindViewHolder(holder: PredictionHolder, position: Int) {
         Log.i("Place", "onBindViewHolder")
-        holder!!.bindActivitiesView(mResultList!![position])
+        holder.bindActivitiesView(mResultList!![position])
     }
 
     inner class PredictionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

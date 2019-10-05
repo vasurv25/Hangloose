@@ -23,17 +23,18 @@ class SavedAdapter(
     val type: String
 ) :
     RecyclerView.Adapter<SavedAdapter.SavedViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SavedViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.saved_restaurant_item, parent, false)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.saved_restaurant_item, parent, false)
         return SavedViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SavedViewHolder, position: Int) {
+        SavedViewHolder(holder!!.itemView).bindSearchItems(mRestaurantData[position])
     }
 
     override fun getItemCount(): Int {
         return mRestaurantData.size
-    }
-
-    override fun onBindViewHolder(holder: SavedViewHolder?, position: Int) {
-        SavedViewHolder(holder!!.itemView).bindSearchItems(mRestaurantData[position])
     }
 
     inner class SavedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

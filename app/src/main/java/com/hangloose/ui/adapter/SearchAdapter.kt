@@ -18,17 +18,18 @@ class SearchAdapter(
     var mFilteredList: ArrayList<RestaurantData>
 ) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.search_restaurant_item, parent, false)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_restaurant_item, parent, false)
         return SearchViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+        SearchViewHolder(holder!!.itemView).bindSearchItems(mFilteredList[position])
     }
 
     override fun getItemCount(): Int {
         return mFilteredList.size
-    }
-
-    override fun onBindViewHolder(holder: SearchViewHolder?, position: Int) {
-        SearchViewHolder(holder!!.itemView).bindSearchItems(mFilteredList[position])
     }
 
     fun filterSearchData(query: String) {

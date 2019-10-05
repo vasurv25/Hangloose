@@ -75,20 +75,23 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setAdapter()
-        app_bar.addOnOffsetChangedListener { appBarLayout: AppBarLayout, verticalOffset: Int ->
-            if (scrollRange == -1) {
-                scrollRange = appBarLayout.totalScrollRange
+        app_bar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout!!.totalScrollRange
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    toolbar_layout.title = resources.getString(R.string.profile)
+                    cardViewProfile.visibility = ViewGroup.GONE
+                    isShow = true
+                } else if (isShow) {
+                    toolbar_layout.title = " "
+                    cardViewProfile.visibility = ViewGroup.VISIBLE
+                    isShow = false
+                }
             }
-            if (scrollRange + verticalOffset == 0) {
-                toolbar_layout.title = resources.getString(R.string.profile)
-                cardViewProfile.visibility = ViewGroup.GONE
-                isShow = true
-            } else if (isShow) {
-                toolbar_layout.title = " "
-                cardViewProfile.visibility = ViewGroup.VISIBLE
-                isShow = false
-            }
-        }
+
+        })
     }
 
     private fun setAdapter() {

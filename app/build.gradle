@@ -9,14 +9,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.hangloose"
         minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 28
+        versionCode 6
+        versionName "1.5"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         hangLooseDebug {
@@ -49,7 +49,7 @@ android {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [appName: "$project.APPLICATION_NAME" + "_Debug"]
             signingConfig android.signingConfigs.hangLooseDebug
-            buildConfigField "String", "BASE_URL", '"http://dev.hangloose.in/"'
+            buildConfigField "String", "BASE_URL", '"https://dev.hangloose.in/"'
         }
     }
 
@@ -108,7 +108,7 @@ dependencies {
     implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
     implementation 'info.hoang8f:android-segmented:1.0.6'
     //Swipeable cards
-    implementation 'com.github.ceryle:RadioRealButton:v2.1.1'
+    implementation 'com.github.patgdut:RadioRealButton:v2.1.2'
     implementation 'com.mindorks:placeholderview:0.7.3'
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.9.0") {
@@ -119,6 +119,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:' + google_play_services
     implementation 'com.google.android.gms:play-services-places:' + google_play_services
     implementation 'com.google.android.gms:play-services-auth:' + google_play_services
+    implementation 'com.google.android.gms:play-services-base:16.0.1'
+    implementation 'com.google.android.gms:play-services-identity:16.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:16.0.0'
+
     //Expandable TextView
     implementation 'com.ms-square:expandableTextView:0.1.4'
     //Range Slider

@@ -30,21 +30,20 @@ class ProfileAdapter(
     private val mGoogleApiClient: GoogleApiClient?
 ) :
     RecyclerView.Adapter<ProfileAdapter.FilterViewHolder>() {
-
-    private var mPreference: SharedPreferences? = null
-
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FilterViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.layout_profile_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_profile_item, parent, false)
         mPreference = PreferenceHelper.defaultPrefs(context)
         return FilterViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return listProfile.size
+    override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
+        holder.bindFilterItems(listProfile[position], listProfileIcons[position], position)
     }
 
-    override fun onBindViewHolder(holder: FilterViewHolder?, position: Int) {
-        holder!!.bindFilterItems(listProfile[position], listProfileIcons[position], position)
+    private var mPreference: SharedPreferences? = null
+
+    override fun getItemCount(): Int {
+        return listProfile.size
     }
 
     inner class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

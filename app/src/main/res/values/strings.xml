@@ -4,7 +4,7 @@
     <string name="fb_login_protocol_scheme">fb570529616729330</string>
 
     <string name="server_client_id">430634342873-unvagf3q4qkttp8jgoksj8vnj2gv2kh3.apps.googleusercontent.com</string>
-
+    <string name="servcer_client_secret">Ux2SShMhe6AFaRmKh2IVihOA</string>
     <string name="your_phone">Your Phone</string>
     <string name="your_location">Your Location</string>
     <string name="no_network_connectivity">No network available. Please try again!</string>

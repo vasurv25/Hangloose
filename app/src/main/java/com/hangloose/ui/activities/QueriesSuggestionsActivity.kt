@@ -24,7 +24,7 @@ class QueriesSuggestionsActivity : BaseActivity() {
         setContentView(R.layout.activity_queries_suggestions)
         getPrefData()
         btnSend.setOnClickListener {
-            if (editQueries.text.isNotEmpty() || editSuggestions.text.isNotEmpty()) {
+            if (editQueries.text!!.isNotEmpty() || editSuggestions.text!!.isNotEmpty()) {
                 val subject = resources.getString(R.string.queries_suggestions)
                 val bodyText = resources.getString(R.string.queries) + ":" +
                         editQueries.text.toString() + "\n\n" +
