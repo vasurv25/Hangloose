@@ -20,14 +20,17 @@ import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -35,6 +38,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.location.places.Places
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
@@ -42,7 +50,6 @@ import com.hangloose.R
 import com.hangloose.databinding.ActivityEnableLocationBinding
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.PlacesAutoCompleteAdapter
-import com.hangloose.ui.adapter.RecyclerItemClickListener
 import com.hangloose.ui.model.RestaurantData
 import com.hangloose.utils.*
 import com.hangloose.utils.PreferenceHelper.get
@@ -62,6 +69,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener {
 
     private var TAG = "LocationSettingActivity"
+
+    private var mAdapter: PlacesAutoCompleteAdapter? = null
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private val mLatLngBounds: LatLngBounds = LatLngBounds(LatLng(-0.0, 0.0), LatLng(0.0, 0.0))
@@ -87,6 +96,9 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
     private var mLatitude: Double? = null
     private var mLongitude: Double? = null
 
+    // Create a new Places client instance.
+    private var placesClient:PlacesClient? = null
+
     val mCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
@@ -101,10 +113,18 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
         if (!com.google.android.libraries.places.api.Places.isInitialized()) {
             com.google.android.libraries.places.api.Places.initialize(this, "AIzaSyAtN-pysxdUadTT-r4Y1sfC6maTvbDTGfs")
         }
+
+        //setSupportActionBar(my_toolbar)
+        //placesClient = Places.createClient(this);
         getIntentData()
         initBinding()
         getHeaderAndAddressFromPreference()
         buildGoogleApiClient()
+        /*val layoutManager = LinearLayoutManager(this)
+        rvAddressesLocation.layoutManager = layoutManager
+        mAdapter = PlacesAutoCompleteAdapter(this, mGoogleApiClient!!, mLatLngBounds)
+        rvAddressesLocation.adapter = mAdapter
+        addSearchListener()*/
     }
 
     override fun init() {}
@@ -131,6 +151,23 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
         if (mGoogleApiClient!!.isConnected) {
             mGoogleApiClient!!.disconnect()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the options menu from XML
+        var inflater = getMenuInflater()
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.search -> {
+                onSearchCalled()
+                return true
+            }
+        }
+        return false
     }
 
 
@@ -323,6 +360,8 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
             ivArrowBackLocation.visibility = View.VISIBLE
         }
     }
+
+
 
     @Synchronized
     private fun buildGoogleApiClient() {
@@ -579,4 +618,63 @@ class LocationSettingActivity : BaseActivity(), View.OnClickListener, GoogleApiC
         Log.i(TAG, "Clicked: " + place.address)
         Log.i(TAG, "Called getPlaceById to get Place details for " + place.id)
     }
+
+    private fun addSearchListener() {
+        etLocationSearchLocation.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Log.d(TAG, "Address : " + s.toString())
+                if (s.toString() == "" || !mGoogleApiClient!!.isConnected) {
+                    if (mGoogleApiClient!!.isConnected) {
+                        mAdapter!!.filter.filter(s.toString())
+                        //placesAutoCompletePredictions(s.toString())
+                    }
+                } else {
+                    //placesAutoCompletePredictions(s.toString())
+                    mAdapter!!.filter.filter(s.toString())
+                }
+                if (s.toString() != "" && mGoogleApiClient!!.isConnected) {
+                    //placesAutoCompletePredictions(s.toString())
+                    mAdapter!!.filter.filter(s.toString())
+                    tvGetCurrentLocation!!.visibility = View.GONE
+                    firstSeperatorLocation!!.visibility = View.GONE
+                } else if (!mGoogleApiClient!!.isConnected) {
+                    tvGetCurrentLocation!!.visibility = View.VISIBLE
+                    firstSeperatorLocation!!.visibility = View.VISIBLE
+                } else {
+                    tvGetCurrentLocation!!.visibility = View.VISIBLE
+                    firstSeperatorLocation!!.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun placesAutoCompletePredictions(queryText: String) {
+        var token = AutocompleteSessionToken.newInstance()
+        var bounds = RectangularBounds.newInstance(LatLng(-33.880490, 151.184363), LatLng(-33.858754, 151.229596))
+        var request = FindAutocompletePredictionsRequest.builder()
+            // Call either setLocationBias() OR setLocationRestriction().
+            //.setLocationRestriction(bounds)
+            .setCountry("in")//Nigeria
+            .setTypeFilter(TypeFilter.ADDRESS)
+            .setSessionToken(token)
+            .setQuery(queryText)
+            .build();
+
+        placesClient!!.findAutocompletePredictions(request).addOnSuccessListener {
+            for (prediction in it.autocompletePredictions) {
+                Log.d(TAG, "00000" + prediction.getPlaceId())
+                Log.d(TAG, "00000" + prediction.getPrimaryText(null).toString())
+            }
+        }.addOnFailureListener {
+            if (it is ApiException) {
+                var apiException = it
+                Log.e(TAG, "Place not found: " + apiException.localizedMessage);
+            }
+        }
+    }
+
 }

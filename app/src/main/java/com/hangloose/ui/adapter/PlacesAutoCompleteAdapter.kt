@@ -23,6 +23,7 @@ import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.PlacesClient
+import kotlin.collections.ArrayList
 
 
 /**
@@ -34,7 +35,7 @@ class PlacesAutoCompleteAdapter(
     private val mContext: Context, private val mGoogleApiClient: GoogleApiClient,
     private var mBounds: LatLngBounds?
 ) : RecyclerView.Adapter<PlacesAutoCompleteAdapter.PredictionHolder>(), Filterable {
-    private var mResultList: ArrayList<PlaceAutocomplete>? = null
+    private var mResultList: ArrayList<PlaceAutocomplete>? = ArrayList()
     private var placesClient: PlacesClient? = null
 
 
@@ -56,6 +57,7 @@ class PlacesAutoCompleteAdapter(
                 if (constraint != null) {
                     // Query the autocomplete API for the (constraint) search string.
                     mResultList = getAutocomplete(constraint)
+                    Log.d("AutoComplete", "ResultList : " + mResultList)
                     if (mResultList != null) {
                         // The API successfully returned results.
                         results.values = mResultList
@@ -67,8 +69,10 @@ class PlacesAutoCompleteAdapter(
 
             override fun publishResults(constraint: CharSequence, results: FilterResults?) =
                 if (results != null && results.count > 0) {
+                    Log.d("AutoComplete", "publishResults : " + results.values)
                     notifyDataSetChanged()
                 } else {
+                    Log.d("AutoComplete", "publishResults : " + results!!.values)
                     notifyDataSetChanged()
                 }
         }
@@ -98,8 +102,7 @@ class PlacesAutoCompleteAdapter(
         )
         // Use the builder to create a FindAutocompletePredictionsRequest.
         val request = FindAutocompletePredictionsRequest.builder()
-            // Call either setLocationBias() OR setLocationRestriction().
-            .setLocationBias(bounds)
+            // Call either setLocationBias() OR setLocationRestriction().\
             //.setLocationRestriction(bounds)
             .setCountry("in")
             .setTypeFilter(TypeFilter.ADDRESS)
@@ -107,7 +110,7 @@ class PlacesAutoCompleteAdapter(
             .setQuery(constraint.toString())
             .build()
 
-        val resultList = null
+        var resultList:ArrayList<PlaceAutocomplete>? = ArrayList()
 
         placesClient!!.findAutocompletePredictions(request).addOnSuccessListener {
             val autocompletePredictions = it.autocompletePredictions
@@ -117,16 +120,18 @@ class PlacesAutoCompleteAdapter(
 
             val iterator = autocompletePredictions.iterator()
             Log.d("PlaceAuto" , "Count : " + autocompletePredictions.count())
-            val resultList = ArrayList<PlaceAutocomplete>(autocompletePredictions.count())
+            resultList = ArrayList<PlaceAutocomplete>(autocompletePredictions.count())
             while (iterator.hasNext()) {
                 val prediction = iterator.next()
                 // Get the details of this prediction and copy it into a new PlaceAutocomplete object.
-                resultList.add(
+                resultList!!.add(
                     PlaceAutocomplete(
                         prediction.placeId,
                         prediction.getFullText(null)
                     )
                 )
+                mResultList!!.addAll(resultList!!)
+                Log.d("AutoComplete", "iterator : " + resultList)
             }
         }.addOnFailureListener {
             if (it is ApiException) {
@@ -134,7 +139,8 @@ class PlacesAutoCompleteAdapter(
                     Log.e("PlaceAutoComplete", "Place not found: " + apiException.getStatusCode());
                 }
         }
-        return resultList
+        Log.d("AutoComplete", "Result : " + mResultList)
+        return mResultList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PredictionHolder {
@@ -155,7 +161,7 @@ class PlacesAutoCompleteAdapter(
     }
 
     override fun onBindViewHolder(holder: PredictionHolder, position: Int) {
-        Log.i("Place", "onBindViewHolder")
+        Log.i("Place", "onBindViewHolder : " + mResultList!![position])
         holder.bindActivitiesView(mResultList!![position])
     }
 

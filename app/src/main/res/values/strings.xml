@@ -92,7 +92,7 @@
     <string name="send">Send</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="search_for_your_location">Search for your Location...</string>
+    <string name="search_for_your_location">Tap to search your Location...</string>
     <string name="search_for_your_restaurant">List based on Selected Activities/Adventures</string>
     <string name="email">Email</string>
     <string name="search_location">Search Location</string>
