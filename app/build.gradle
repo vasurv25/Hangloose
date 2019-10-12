@@ -14,8 +14,8 @@ android {
         applicationId "com.hangloose"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 6
-        versionName "1.5"
+        versionCode 9
+        versionName "1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -43,7 +43,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [appName: project.APPLICATION_NAME]
             signingConfig android.signingConfigs.hangLooseRelease
-            buildConfigField "String", "BASE_URL", '"http://api.hangloose.in/"'
+            buildConfigField "String", "BASE_URL", '"https://api.hangloose.in/"'
         }
         debug {
             applicationIdSuffix ".debug"
