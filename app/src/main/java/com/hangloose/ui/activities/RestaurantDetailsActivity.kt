@@ -20,8 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.signature.ObjectKey
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.hangloose.R
 import com.hangloose.model.RestaurantList
 import com.hangloose.ui.adapter.AmbienceImageAdapter
@@ -54,58 +53,76 @@ class RestaurantDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mActivityRestaurantDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_restaurant_details)
+        mActivityRestaurantDetailsBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_restaurant_details)
         mSelectionViewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
         mActivityRestaurantDetailsBinding!!.selectionViewModel = mSelectionViewModel
 
-        val data = intent.data
-        if (data == null) {
+
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+                getData(deepLink)
+            }
+            .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
+    }
+
+    private fun getData(deepLink: Uri?) {
+        if (deepLink == null) {
             layoutScroll.visibility = View.VISIBLE
             restaurantData = intent.getParcelableExtra(EXTRA_RESTAURANT_DETAILS_DATA)
             Log.i(TAG, restaurantData.toString())
             setUpViews()
         } else {
-            val id = data.getQueryParameter("id")
-            Log.i("Anjani", id)
+            val id = deepLink.getQueryParameter("hotelID")
             mSelectionViewModel!!.restaurantDetailsByIdApiRequest(id)
-            mSelectionViewModel!!.getRestaurantById().observe(this, Observer<Response<RestaurantList>> { t ->
-                val data = t!!.body()
-                var logo: String? = null
-                val ambienceList: ArrayList<String>? = ArrayList()
-                var menuList: ArrayList<String>? = ArrayList()
-                (0 until data!!.documents!!.size).forEach { i->
-                    when {
-                        data.documents!![i].documentType.equals("LOGO") -> logo = data.documents!![i].location
-                        data.documents!![i].documentType.equals("AMBIENCE") -> ambienceList!!.add(data.documents!![i].location!!)
-                        else -> menuList!!.add(data.documents!![i].location!!)
+            mSelectionViewModel!!.getRestaurantById()
+                .observe(this, Observer<Response<RestaurantList>> { t ->
+                    val data = t!!.body()
+                    var logo: String? = null
+                    val ambienceList: ArrayList<String>? = ArrayList()
+                    var menuList: ArrayList<String>? = ArrayList()
+                    (0 until data!!.documents!!.size).forEach { i ->
+                        when {
+                            data.documents!![i].documentType.equals("LOGO") -> logo =
+                                data.documents!![i].location
+                            data.documents!![i].documentType.equals("AMBIENCE") -> ambienceList!!.add(
+                                data.documents!![i].location!!
+                            )
+                            else -> menuList!!.add(data.documents!![i].location!!)
+                        }
                     }
-                }
-                restaurantData = RestaurantData(
-                    data.address,
-                    data.createdAt,
-                    data.discount,
-                    data.id,
-                    data.images,
-                    data.latitude,
-                    data.longitude,
-                    data.name,
-                    data.offer,
-                    data.priceFortwo,
-                    data.ratings,
-                    data.restaurantType,
-                    data.updatedAt,
-                    data.distanceFromLocation,
-                    data.about,
-                    data.tags,
-                    data.openCloseTime,
-                    data.number,
-                    logo,
-                    ambienceList,
-                    menuList
-                )
-                layoutScroll.visibility = View.VISIBLE
-                setUpViews()
-            })
+                    restaurantData = RestaurantData(
+                        data.address,
+                        data.createdAt,
+                        data.discount,
+                        data.id,
+                        data.images,
+                        data.latitude,
+                        data.longitude,
+                        data.name,
+                        data.offer,
+                        data.priceFortwo,
+                        data.ratings,
+                        data.restaurantType,
+                        data.updatedAt,
+                        data.distanceFromLocation,
+                        data.about,
+                        data.tags,
+                        data.openCloseTime,
+                        data.number,
+                        logo,
+                        ambienceList,
+                        menuList
+                    )
+                    layoutScroll.visibility = View.VISIBLE
+                    setUpViews()
+                })
         }
     }
 
@@ -143,7 +160,11 @@ class RestaurantDetailsActivity : BaseActivity() {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
             }
 
             override fun onPageSelected(position: Int) {
@@ -173,7 +194,11 @@ class RestaurantDetailsActivity : BaseActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CALL_PHONE -> {
@@ -208,7 +233,8 @@ class RestaurantDetailsActivity : BaseActivity() {
         RecyclerView.Adapter<MenuRecyclerViewAdapter.MenuViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_menu_item, parent, false)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.restaurant_menu_item, parent, false)
             return MenuViewHolder(view)
         }
 
@@ -239,7 +265,8 @@ class RestaurantDetailsActivity : BaseActivity() {
     private class TagRecyclerViewAdapter(val tagList: List<String>) :
         RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_tag_item, parent, false)
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.restaurant_tag_item, parent, false)
             return TagViewHolder(view)
         }
 

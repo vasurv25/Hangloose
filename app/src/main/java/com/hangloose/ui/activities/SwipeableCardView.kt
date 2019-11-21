@@ -4,13 +4,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.signature.ObjectKey
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.hangloose.HanglooseApp.Companion.getDataHandler
 import com.hangloose.R
 import com.hangloose.database.dbmodel.SavedRestaurant
@@ -120,9 +120,31 @@ class SwipeableCardView(
             }
         }
         btnShare!!.setOnClickListener {
+            Log.d("SwipeableCardView", "getDynamicLink")
+            FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(context.intent)
+                .addOnSuccessListener { pendingDynamicLinkData ->
+                    // Get deep link from result (may be null if no link is found)
+                    var deepLink: Uri? = null
+                    if (pendingDynamicLinkData != null) {
+                        deepLink = pendingDynamicLinkData.link
+                        Log.d("SwipeableCardView", "getDynamicLink:onSuccess$deepLink")
+                    }
+                }
+                .addOnFailureListener { e -> Log.d("SwipeableCardView", "getDynamicLink:onFailure", e) }
+
+            val dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://hangloose.page.link?hotelID=${data.id}"))
+                .setDomainUriPrefix("https://hangloose.page.link")
+                // Open links with this app on Android
+                //.setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+                .buildDynamicLink()
+
+            val dynamicLinkUri = dynamicLink.uri
+            Log.d("SwipeableCardView", "getDynamicLink:onSuccess$dynamicLinkUri")
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            val url = "https://hangloose.in/restaurant?id=${data.id}"
+            val url = dynamicLinkUri
             intent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Via")
             intent.putExtra(Intent.EXTRA_TEXT, "Check Out: $url ")
             context.startActivity(intent)

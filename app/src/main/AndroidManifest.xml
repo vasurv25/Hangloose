@@ -146,8 +146,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
 
                 <data
-                        android:host="hangloose.in"
-                        android:pathPrefix="/restaurant"
+                        android:host="hangloose.page.link"
                         android:scheme="https"/>
             </intent-filter>
         </activity>

@@ -2,6 +2,7 @@ package com.hangloose.ui.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -44,9 +45,7 @@ class SavedAdapter(
             } else {
                 itemView.ibDelete.visibility = View.GONE
             }
-            itemDetails.logo?.let {
-                itemView.ivRestaurant.visibility = View.VISIBLE
-                Glide.with(context).load(itemDetails.logo).into(itemView.ivRestaurant) }
+            Glide.with(context).load(itemDetails.logo).into(itemView.ivRestaurant)
             itemView.tvRestaurantName.text = itemDetails.name
             itemView.tvRestuarntDesc.text = itemDetails.about
             itemView.setOnClickListener {
@@ -54,7 +53,11 @@ class SavedAdapter(
                 intent.putExtra(EXTRA_RESTAURANT_DETAILS_DATA, itemDetails)
                 context.startActivity(intent)
             }
-            itemView.ibDelete.setOnClickListener { HanglooseApp.getDataHandler()!!.deleteUnsavedRestaurant(itemDetails) }
+            itemView.ibDelete.setOnClickListener {
+                HanglooseApp.getDataHandler()!!.deleteUnsavedRestaurant(
+                    itemDetails
+                )
+            }
         }
     }
 }
