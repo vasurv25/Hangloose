@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "617461953187",
+    "firebase_url": "https://hanglooseios-1540957305705.firebaseio.com",
+    "project_id": "hanglooseios-1540957305705",
+    "storage_bucket": "hanglooseios-1540957305705.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617461953187:android:f893de7a58a5693d758516",
+        "android_client_info": {
+          "package_name": "com.hangloose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617461953187-i4t06lnim0sfi7k5phrorghthq608lm4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv071UhCxiDidX1WlKIS_kYzTQDfS4P1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617461953187-i4t06lnim0sfi7k5phrorghthq608lm4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "617461953187-ft8k0r8lcg0ijbu6thh07f2k1ek30541.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hangloose.ios",
+                "app_store_id": "1484191188"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617461953187:android:162f4c8c00e8e25b758516",
+        "android_client_info": {
+          "package_name": "com.hangloose.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617461953187-nre7abn7bq0e1k9b90eiseh3ifv4dmp6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hangloose.debug",
+            "certificate_hash": "72c37cac01649fb41e32ea81123995b66309b1bb"
+          }
+        },
+        {
+          "client_id": "617461953187-i4t06lnim0sfi7k5phrorghthq608lm4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv071UhCxiDidX1WlKIS_kYzTQDfS4P1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617461953187-i4t06lnim0sfi7k5phrorghthq608lm4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "617461953187-ft8k0r8lcg0ijbu6thh07f2k1ek30541.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hangloose.ios",
+                "app_store_id": "1484191188"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
